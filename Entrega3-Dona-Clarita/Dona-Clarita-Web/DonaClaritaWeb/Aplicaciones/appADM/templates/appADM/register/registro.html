@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<!-- Mirrored from dreamguys.co.in/demo/doccure/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 30 Nov 2019 04:12:46 GMT -->
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+	<title>Registro - Hostal Doña Clarita</title>
+    {% load static %}
+	<!-- Favicon -->
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'appADM/assets/img/favicondc.PNG' %}">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="{% static 'appADM/assets/css/bootstrap.min.css' %}">
+
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="{% static 'appADM/assets/css/font-awesome.min.css' %}">
+
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'appADM/assets/css/style.css' %}">
+
+    <script src="{% static 'appADM/assets/js/validarut.js' %}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+</head>
+
+<body>
+
+<!-- Main Wrapper -->
+<div class="main-wrapper login-body">
+	<div class="login-wrapper">
+		<div class="container">
+			<div class="loginbox">
+				<div class="login-left">
+					<img src="{% static 'appADM/assets/img/logodcwhite.png' %}" alt="Logo" width="320">
+				</div>
+				<div class="login-right">
+					<div class="login-right-wrap">						
+						<h1>Registro de Usuario</h1>
+						{% if mensaje != 'ok' %}
+						{% if vrut  %}
+						<p class="account-subtitle">Completa el formulario para registrarte</p>
+						{% elif vrut == 0 or vrut == '' %}
+						<p class="account-subtitle">Ingrese su Rut de la Empresa para continuar con el Registro</p>
+						{% endif %}
+						{% else %}
+						<p class="account-subtitle"> Completado Correctamente</p>
+						<hr>
+						{% endif %}
+						<h6 class="alert alert-info text-center"><i class="fa fa-info-circle"></i> <strong>ATENCIÓN:</strong><br> Campos Obligatorios se identifican con <strong class="text-danger">*</strong></h6>
+						<!-- Form -->
+						<form name="form1" onSubmit="javascript:return Rut(document.form1.rut.value)" method="POST" autocomplete="off">
+							{% csrf_token %}	
+							{% if mensaje != 'ok' %}						
+							{% if vrut != 0 and vrut != ''  %}
+							<input class="form-control" type="text" placeholder="Ingrese Nombres" name="rut" value="{{vrut}}" hidden>
+							<div class="form-group">
+								<label>Razon Social <strong class="text-danger">*</strong></label>
+								<input class="form-control" type="text" placeholder="Ingrese Nombres" name="nombre"
+									id="nombre" value="{{razon_social}}">
+							</div>
+							<div class="form-group">
+								<label>Nombre de Usuario <strong class="text-danger">*</strong></label>
+								<input class="form-control" type="text" placeholder="Ingrese Nombres" name="username"
+									id="nombre" value="{{nombre_usuario}}">
+							</div>
+							<div class="form-group">
+								<label>Correo Electrónico <strong class="text-danger">*</strong></label>
+								<input class="form-control" type="text" placeholder="Ingrese Correo electrónico"
+									name="email" id="username"  value="{{email}}">
+							</div>
+							<div class="form-group">
+								<label>Contraseña <strong class="text-danger">*</strong></label>
+								<input class="form-control" type="password" placeholder="Ingrese Contraseña (Mínimo 8 Caracteres)"
+									name="password1" id="password1">
+							</div>
+							<div class="form-group">
+								<label>Confirmar Contraseña <strong class="text-danger">*</strong></label>
+								<input class="form-control" type="password" placeholder="Confirme Contraseña (Mínimo 8 Caracteres)"
+									name="password2" id="password2">
+							</div>
+
+							{% elif vrut == 0 or vrut == '' %}
+							<div class="form-group">
+								<label>Rut de Empresa <strong class="text-danger">*</strong></label>
+								<input class="form-control" type="text" placeholder="Ingrese RUT de Empresa" name="rut">
+							</div>	
+							{% endif %}
+							{% endif %}
+							{% if mensaje == 'error Rut' %}
+							<div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+								<strong>Error en Registro: </strong> El rut ingresado ya es un Usuario de Hostal Doña Clarita
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							{% elif mensaje == 'error Mail' %}
+							<div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+								<strong>Error en Registro: </strong> El email ingresado ya corresponde a un Usuario de Hostal Doña Clarita, Corrija e intente nuevamente
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>																						
+							{% elif  mensaje == 'passlargo'%}
+							<div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+								<strong>Error en Contraseñas</strong> Las contraseñas ingresadas deben tener un largo mínimo de 8 Caracteres
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>                            
+							{% elif  mensaje == 'ok'%}
+							<div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+								<strong>Usuario Registrado</strong> El usuario se ha Registrado Correctamente, ya puedes
+								iniciar Sesión
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							{% endif %}
+							{% if mensaje != 'ok' %}	
+							{% if vrut  %}
+							<div class="form-group mb-0">
+								<button class="btn btn-primary btn-block text-center" type="submit">Registrar</button>
+							</div>
+							{% elif vrut == 0 or vrut == '' %}
+							<div class="form-group mb-0">
+								<button class="btn btn-primary btn-block text-center" type="submit">Validar</button>
+							</div>
+							{% endif %}
+							{% else %}
+							<div class="form-group mb-0">
+								<a class="btn btn-primary btn-block text-center" href="{% url 'login_new' %}">Iniciar Sesión</a>
+							</div>
+							{% endif %}
+
+						</form>
+						<!-- /Form -->
+						<br>
+						<!-- Social Login -->
+						{% if mensaje != 'ok' %}
+						<div class="social-login">
+							<span>Registraste con:</span>
+							<a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+						</div>
+						<!-- /Social Login -->
+						<div class="login-or">
+							<span class="or-line"></span>
+							<span class="span-or">Ó</span>
+						</div>
+						<div class="text-center dont-have">¿Ya tienes cuenta? <a href="{% url 'login_new' %}">Iniciar Sesión
+								Aquí</a>
+						</div>
+						<hr>
+						<div class="text-center">
+							<a class="btn btn-danger white-font" href="{% url 'index' %}"><i class="fa fa-reply"></i> Volver a Inicio</a>
+						</div>
+						{% else %}
+						<!-- /Social Login -->
+						<div class="login-or">
+							<span class="or-line"></span>
+							<span class="span-or">Ó</span>
+						</div>
+						<div class="text-center">
+							<a class="btn btn-danger white-font" href="{% url 'index' %}"><i class="fa fa-reply"></i> Volver a Inicio</a>
+						</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<!-- jQuery -->
+	<script src="{% static 'appADM/assets/js/jquery-3.2.1.min.js' %}"></script>
+
+	<!-- Bootstrap Core JS -->
+	<script src="{% static 'appADM/assets/js/popper.min.js' %}"></script>
+	<script src="{% static 'appADM/assets/js/bootstrap.min.js' %}"></script>
+
+	<!-- Custom JS -->
+	<script src="{% static 'appADM/assets/js/script.js' %}"></script>
+
+	{% if messages %}
+	<div>
+		{% for message in messages %}
+		{% if message.tags  == 'error'%}
+			<script>
+				Swal.fire({
+					title: "Error en Validación",
+					text: "{{message}}",
+					icon: "error",
+					timer: 5000,
+					timerProgressBar: true
+				})
+			</script>
+	{% elif message.tags  == 'warning'%}
+	<script>
+		Swal.fire({
+			title: "Campos Vacios",
+				text: "{{message}}",
+				icon: "warning",
+				timer: 5000,
+				timerProgressBar: true
+		})
+	</script>			
+		{% else%}
+		<script>
+			Swal.fire({
+				title: "Cliente Creado Correctamente",
+					text: "{{message}}",
+					icon: "success",
+					timer: 5000,
+					timerProgressBar: true
+			})
+		</script>
+		{% endif %}
+		{% endfor %}
+	</div>
+	{% endif %}
+</body>
+</html>

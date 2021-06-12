@@ -1,0 +1,184 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Nuevo Empleado{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title"><i class="fa fa-address-card"></i> Nuevo Tipo de Producto</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Nuevo Tipo de Producto</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+			<div class="col-12">
+				<!-- General -->
+				<div class="card">
+					<div class="row">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-8">
+							<div class="card">
+								<div class="card-header text-center">
+									<hr>
+									<h4 class="card-title">Información de Tipo de Producto</h4>
+									<hr>
+									<h6 class="alert alert-info"><i class="fa fa-info-circle"></i>
+										<strong>ATENCIÓN:</strong> Campos Obligatorios se identifican con <strong
+											class="text-danger">*</strong></h6>
+									<hr>
+								</div>
+								<div class="card-body">
+									<form action="#" method="POST">
+										{% csrf_token %}
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Nombre de Tipo Producto <strong class="text-danger">*</strong></label>
+													<input type="text" class="form-control" name="nombre"
+														placeholder="Ingrese Tipo Producto ">
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Estado  <strong class="text-danger">*</strong></label>
+													<select name="estado" id="" class="cb-single form-control">
+														<option value="1">Activo</option>
+														<option value="0">Inactivo</option>
+													</select>
+												</div>
+											</div>											
+										</div>
+										<div class="row">
+											<div class="col-md-4"></div>
+											<div class="col-md-4">
+												<div class="form-group mb-0">
+													<button class="btn btn2 btn-info btn-block text-center"
+														type="submit"><i class="fa fa-save"></i> Guardar</button>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+								<hr>
+								<h4 class="page-title text-center">Listado Tipos de Productos</h4>
+								<hr>
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="datatable table table-hover table-center mb-0">
+											<thead>
+												<tr>													
+													<th>Nombre</th>
+													<th class="text-center">Estado</th>
+													<th class="text-center">Acciones</th>
+												</tr>
+											</thead>
+											<tbody>
+												{% for tipo_producto in tipo_productos%}
+												<tr>
+													<td>{{tipo_producto.1}}</td>
+													<td class="text-center">
+														{% if tipo_producto.2 %}
+														<span
+															class="badge badge-pill bg-success inv-badge" >Activo</span>
+														{% else %}
+														<span
+															class="badge badge-pill bg-danger inv-badge">Inactivo</span>
+														{% endif %}
+													</td>
+													<td class="text-center">
+														<div class="actions">
+															<a class="btn btn-sm bg-success-light" title="Editar Tipo de Producto" data-toggle="tooltip"
+																href="{% url 'edit-tipo-producto' tipo_producto.0 %}">
+																<i class="fa fa-pencil"></i> Editar
+															</a>
+															{% if tipo_producto.2 %}
+															<a class="btn btn-sm bg-danger-light" href="#" title="Eliminar Tipo de Producto" data-toggle="tooltip"
+																onClick="eliminar({{ tipo_producto.0 }})">
+																<i class="fa fa-trash"></i> Eliminar
+															</a>
+															{% endif %}
+														</div>
+													</td>
+												</tr>
+												{% endfor %}
+											</tbody>
+										</table>
+									</div>
+								</div>								
+							</div>
+						</div>
+					</div>
+					<!-- /General -->
+				</div>
+			</div>
+			<br>
+		</div>
+	</div>
+	<!-- /Page Wrapper -->
+
+	{% block js %}
+	<script>
+		$(document).ready(function () {
+			$('.cb-single').select2();
+		});
+	</script>
+
+{% if messages %}
+<div>
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+	<script>
+		Swal.fire({
+			title: "Error en Validación",
+			text: "{{message}}",
+			icon: "error",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Tipo de Producto",
+			text: "{{message}}",
+			icon: "success",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+	{% endif %}
+	{% endfor %}
+</div>
+{% endif %}
+
+	<script>
+		function eliminar(id) {
+			Swal.fire({
+					"title": "¿Estás seguro de esta acción?",
+					"text": "Esta acción no se puede deshacer",
+					"icon": "question",
+					"showCancelButton": true,
+					"confirmButtonText": "Si, Eliminar",
+					"cancelButtonText": "No, Cancelar",
+					"reverseButtons": true,
+					"confirmButtonColor": "#d44747"
+				})
+				.then(function (result) {
+					if (result.isConfirmed) {
+						window.location.href = "/dashboard/eliminar-tipo-producto/" + id + "/"
+					}
+				})
+		}
+	</script>
+	{% endblock %}
+	{% endblock %}

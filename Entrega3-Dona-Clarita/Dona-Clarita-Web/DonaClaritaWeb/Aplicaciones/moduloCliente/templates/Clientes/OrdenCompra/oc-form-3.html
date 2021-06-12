@@ -1,0 +1,92 @@
+<form class="ms-form-wizard ms-wizard-pill style2-wizard" method="post" id="form2">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-12" >
+            <input type="hidden" name="fdesde" value="{{fdesde}}">
+            <input type="hidden" name="fhasta" value="{{fhasta}}">
+            <input type="hidden" name="nhuesped" value="{{nhuesped}}">
+            <select class="form-control" name="servicio_ad" multiple="multiple" id="servicio_ad" hidden>
+                {% for serv_ad in servicio_ad %}
+                <option value="{{serv_ad}}" selected>{{serv_ad}} </option>
+                {% endfor %}
+            </select>
+            <select class=" form-control  " name="servicio" multiple="multiple" id="servicio" hidden>
+                {% for servicio in servicio_comedor %}
+                <option value="{{servicio}}" selected>{{servicio}} </option>
+                {% endfor %}
+            </select>
+            <select class="form-control " name="chk" multiple="multiple" id="chk" hidden>
+                {% for empleado_chk in empleados_chk %}
+                <option value="{{empleado_chk}}" selected>{{empleado_chk}} </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    
+    <div class="ms-wizard-step">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-7">
+                <strong class="text-center">Seleccione {{nhuesped}} N° de Habitacion(es) para
+                    Continuar</strong>
+                    
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12">
+                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                    <table class="table table-bordered table-striped mb-0">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <h6>#</h6>
+                                </th>
+                                <th class="text-center">
+                                    <h6>Rut</h6>
+                                </th>
+                                <th class="text-center">
+                                    <h6>Nombre Apellido</h6>
+                                </th>
+                                <th class="text-center">
+                                    <h6>Habitación</h6>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for trabajador_s in trabajadores %}
+                                <tr>
+                                <td class="text-center"><a>{{ inicio_index | add:1 }}</a></td>
+                                <td class="text-center"><a>{{ trabajador_s.rut }}-{{ trabajador_s.dv }}</a></td>
+                                <td class="text-center">
+                                    <h2>{{ trabajador_s.nombre }} {{ trabajador_s.apellido_p }} {{ trabajador_s.apellido_m }}</h2>
+                                </td>
+                                <td class="text-center">
+                                    <select name="nrohabitacion" id="nrohabitacion" class="form-control cb-single">
+                                        <option value="" >Seleccionar Habitación...</option>
+                                        {% for nrohabitacion in nrohabitaciones %}
+                                        <option value="{{nrohabitacion.0}}">
+                                            N°: {{nrohabitacion.0}} -
+                                            Tipo: {{nrohabitacion.4}} - Capacidad: {{nrohabitacion.5}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="form-group mb-0">
+                <button class="btn btn2 btn-info btn-block text-center" type="button" onclick="contar2()">Generar <i
+                        class="fa fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    </div>
+</form>

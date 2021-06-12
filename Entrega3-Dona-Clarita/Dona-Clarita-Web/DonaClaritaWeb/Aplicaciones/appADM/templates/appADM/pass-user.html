@@ -1,0 +1,178 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Nuevo Empleado{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-7">
+					<h3 class="page-title"><i class="fa fa-unlock-alt"></i> Cambio de Contraseña</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard-cli' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Cambio de Contraseña</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+			<div class="col-sm-2"></div>
+			<div class="col-8">
+				<!-- General -->
+				<div class="card">
+					<div class="card-header text-center">
+						<hr>
+						<h4 class="card-title">Cambio de Contraseña</h4>
+						<small>Campos requeridos se identifican con (*)</small>
+
+						<hr>
+					</div>
+					<div class="card-body">
+						<form id="myForm" action="#" method="POST">
+
+							{% csrf_token %}
+							{% if  mensaje == 'ok'%}
+							<script>
+								Swal.fire({
+									title: "Contraseña Modificada Correctamente",
+									text: "La Sesión se Cerrará en 5 Segundos...",
+									icon: "success",
+									button: "Aceptar",
+									timer: 5000,
+									timerProgressBar: true
+								});
+								setTimeout(function () {
+									window.location.href = "/";
+								}, 5000)
+							</script>
+							<div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+								<strong>Cambio Correcto:</strong> La Contraseña se ha Cambiado de Manera Correcta
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							{% endif %}
+
+							<div class="row">
+								<div class="col-md-1"></div>
+								<div class="col-md-10">
+									<div class="form-group">
+										<label>Contraseña Actual (*)</label>
+										<input type="password" class="form-control" name="act_pwd"
+											placeholder="Ingrese Contraseña Actual">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-1"></div>
+								<div class="col-md-10">
+									<div class="form-group">
+										<label>Nueva Contraseña (*)</label>
+										<input type="password" class="form-control" name="new_pwd"
+											placeholder="Ingrese Nueva Contraseña">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-1"></div>
+								<div class="col-md-10">
+									<div class="form-group">
+										<label>Confirme Contraseña (*)</label>
+										<input type="password" class="form-control" name="conf_new_pwd"
+											placeholder="Confirme Nueva Contraseña">
+									</div>
+								</div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-md-2"></div>
+								<div class="col-md-4">
+									<div class="form-group mb-0">
+										{% if user.is_cliente %}
+										<a class="btn btn2 btn-danger btn-block text-center"
+											href="{% url 'config-user' %}"><i class="fa fa-reply"></i> Cancelar</a>
+										{% else %}
+										<a class="btn btn2 btn-danger btn-block text-center"
+											href="{% url 'config-emp' %}"><i class="fa fa-reply"></i> Cancelar</a>
+										{% endif %}
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group mb-0">
+										<button class="btn btn2 btn-info btn-block text-center" id="btn-submit"><i
+												class="fa fa-lock"></i> Cambiar Contraseña</button>
+									</div>
+								</div>
+							</div>
+							<br>
+					</div>
+					</form>
+				</div>
+			</div>
+			<!-- /General -->
+		</div>
+	</div>
+	<br>
+</div>
+</div>
+<!-- /Page Wrapper -->
+
+{% block js %}
+<script>
+	$(document).on('click', '#btn-submit', function (e) {
+		e.preventDefault();
+		Swal.fire({
+			"title": "¿Estás seguro de esta acción?",
+			"text": "La Sesión se cerrará Luego del Cambio",
+			"icon": "question",
+			"showCancelButton": true,
+			"confirmButtonText": "Si, Cambiar",
+			"cancelButtonText": "No, Cancelar",
+			"reverseButtons": true,
+			"confirmButtonColor": "#d44747"
+
+		}).then(function (result) {
+			if (result.isConfirmed) {
+				$('#myForm').submit();
+			}
+			return false;
+		});
+	});
+</script>
+{% for message in messages %}
+{% if message.tags  == 'error'%}
+<script>
+	Swal.fire({
+		title: "Error en Validación",
+		text: "{{message}}",
+		icon: "error",
+		timer: 5000,
+		timerProgressBar: true
+	})
+</script>
+{% else %}
+<script>
+	Swal.fire({
+		title: "Contraseña Modificada Correctamente",
+		text: "La Sesión se Cerrará en 5 Segundos...",
+		icon: "success",
+		button: "Aceptar",
+		timer: 5000,
+		timerProgressBar: true
+	});
+	setTimeout(function () {
+		window.location.href = "/";
+	}, 5000)
+</script>
+{% endif %}
+{% endfor %}
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+<script src="{% static 'appADM/assets/js/traslate.js' %}"></script>
+<script src="{% static 'appADM/assets/js/pass-user.js' %}"></script>
+{% endblock %}
+{% endblock %}

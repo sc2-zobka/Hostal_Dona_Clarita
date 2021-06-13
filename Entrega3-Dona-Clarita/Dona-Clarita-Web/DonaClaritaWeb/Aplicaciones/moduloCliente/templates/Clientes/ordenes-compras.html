@@ -1,0 +1,127 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Ordenes de Pedidos{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-7">
+					<h3 class="page-title">Ordenes de Compras</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard-cli' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Ordenes de Compras</li>
+					</ul>
+				</div>
+				<div class="col-sm-5 col">
+					<a href="{% url 'oc-new' %}" class="btn btn2 btn-primary float-right mt-2"><i class="fa fa-plus"></i> Nueva Orden</a>
+				</div>				
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+			<div class="col-md-12">
+				<!-- Recent Orders -->
+				<div class="card">
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="datatable table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>N° Orden</th>
+										<th>N° Huéspedes</th>
+										<th>Total</th>
+										<th class="text-center">Estado</th>
+										<th class="text-right">Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for orden_compra in ordenes_compra %}
+									<tr>
+										<td><a>1</a></td>
+										<td>{{ orden_compra.0 }}</td>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#">{{ orden_compra.1 }}</a>
+											</h2>
+										</td>
+										<td>${% if orden_compra.2 is None %}0{% else  %}{{ orden_compra.2 }}{% endif %}</td>
+										<td class="text-center">
+											{% if orden_compra.3 == 'aceptada' %}
+											<span class="badge badge-pill bg-primary inv-badge">Aceptada</span>
+											{% elif orden_compra.3 == 'rechazada' %}
+											<span class="badge badge-pill bg-danger inv-badge">Rechazada</span>
+											{% elif orden_compra.3 == 'facturada' %}
+											<span class="badge badge-pill bg-info inv-badge">Facturada</span>
+											{% elif orden_compra.3 == 'pendiente' %}
+											<span class="badge badge-pill bg-warning inv-badge">Pendiente</span>
+											{% endif %}
+										</td>
+										<td class="text-right">
+											<div class="actions">
+												<a class="btn btn-sm bg-primary-light" data-toggle="modal"
+													href="#delete_modal"><i class="fa fa-eye"></i></a>
+												<a class="btn btn-sm bg-success-light" data-toggle="modal"
+													href="#delete_modal"><i class="fa fa-print"></i></a>
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- /Recent Orders -->
+
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Page Wrapper -->
+{% block js %}
+{% if messages %}
+<div>
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+	<script>
+		Swal.fire({
+			title: "Error de Validación",
+			text: "{{message}}",
+			icon: "error",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+	{% elif message.tags  == 'warning'%}
+	<script>
+		Swal.fire({
+			title: "Atención",
+			text: "{{message}}",
+			icon: "warning",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Orden de Compra N° {{nroOC.0}} Generada",
+			text: "{{message}} ",
+			icon: "success",
+			timer: 5000,
+			timerProgressBar: true
+		})
+		
+	</script>
+	{% endif %}
+	{% endfor %}
+</div>
+{% endif %}
+{% endblock %}
+{% endblock %}

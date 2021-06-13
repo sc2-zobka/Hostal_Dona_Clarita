@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>{% block title %}{% endblock%} - Hostal Doña Clarita</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    {% load static %}
+    <!-- Favicons -->
+    <link href="{% static 'app/assets/img/favicondc.PNG' %}" rel="icon">
+    <link href="{% static 'app/assets/img/favicondc.PNG' %}" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'app/assets/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'app/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'app/assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'app/assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="{% static 'app/assets/css/style.css' %}" rel="stylesheet">
+</head>
+
+<body>
+
+    {% include 'appADM/help.html' %}
+
+    {% load humanize %}
+    
+    {% block header %}
+    <!-- ======= Header/Navbar ======= -->
+    <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
+        <div class="container">
+            <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'app/assets/img/logodcwhite.png' %}"
+                    alt="Logo"></a>
+
+            <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
+                <ul class="navbar-nav">
+                    {% if request.path == '/' %}
+                    <li class="nav-item active">
+                        {% else %}
+                    <li class="nav-item">
+                        {% endif %}
+                        <a class="nav-link" href="{% url 'index' %}">Inicio</a>
+                    </li>
+
+                    {% if request.path == '/acerca-de/' %}
+                    <li class="nav-item active">
+                        {% else %}
+                    <li class="nav-item">
+                        {% endif %}
+                        <a class="nav-link " href="{% url 'acercade' %}">Acerca de</a>
+                    </li>
+                    {% if request.path == '/habitaciones/' %}
+                    <li class="nav-item dropdown active">
+                        {% elif request.path == '/det-habitacion/' %}
+                    <li class="nav-item dropdown active">
+                        {% else %}
+                    <li class="nav-item dropdown">
+                        {% endif %}
+                    
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Habitaciones</a>
+                        <div class="dropdown-menu">
+                            {% if request.path == '/habitaciones/' %}
+                            <a class="dropdown-item active" href="{% url 'habitaciones' %}">Ver Todas</a>
+                            {% else %}
+                            <a class="dropdown-item" href="{% url 'habitaciones' %}">Ver Todas</a>
+                            {% endif %}
+                            {% if request.path == '/det-habitacion/' %}
+                            <a class="dropdown-item active" href="{% url 'det-habitacion' %}">Habitación 1</a>
+                            {% else %}
+                            <a class="dropdown-item " href="{% url 'det-habitacion' %}">Habitación 1</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% if request.path == '/contacto/' %}
+                    <li class="nav-item active">
+                        {% else %}
+                    <li class="nav-item">
+                        {% endif %}
+                        <a class="nav-link " href="{% url 'contacto' %}">Contacto</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@{{user.username}}</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'dashboard' %}">Mi Panel</a>
+                            <a class="dropdown-item" href="{% url 'logout' %}">Cerrar Sesión</a>
+                        </div>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link " href="{% url 'login_new' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="{% url 'registro' %}">Registro</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse"
+                data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
+                <i class="bi bi-question-circle"></i>
+            </button>
+        </div>
+    </nav><!-- End Header/Navbar -->
+    {% endblock %}
+
+    {% block banner %}
+    {% endblock %}
+
+    <main id="main">
+        {% block contenido %}
+        {% endblock %}
+    </main><!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <section class="section-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-4">
+                    <div class="widget-a">
+                        <div class="w-header-a">
+                            <h3 class="w-title-a text-brand"><img src="{% static 'app/assets/img/logodcwhite.png' %}"
+                                    alt="Logo" width="250">
+                            </h3>
+                        </div>
+                        <div class="w-body-a">
+                            <p class="w-text-a color-text-a">
+                                Enim minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip exea commodo
+                                consequat duis
+                                sed aute irure.
+                            </p>
+                        </div>
+                        <div class="w-footer-a">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-4 section-md-t3">
+                    <div class="widget-a">
+                        <div class="w-header-a">
+                            <h3 class="w-title-a text-brand">Habitaciones</h3>
+                        </div>
+                        <div class="w-body-a">
+                            <div class="w-body-a">
+                                <ul class="list-unstyled">
+                                    <li class="item-list-a">
+                                        <i class="bi bi-chevron-right"></i> <a href="#">Habitación 1</a>
+                                    </li>
+                                    <li class="item-list-a">
+                                        <i class="bi bi-chevron-right"></i> <a href="#">Habitación 2</a>
+                                    </li>
+                                    <li class="item-list-a">
+                                        <i class="bi bi-chevron-right"></i> <a href="#">Habitación 3</a>
+                                    </li>
+                                    <li class="item-list-a">
+                                        <i class="bi bi-chevron-right"></i> <a href="#">Habitación 4</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-4 section-md-t3">
+                    <div class="widget-a">
+                        <div class="w-header-a">
+                            <h3 class="w-title-a text-brand">Redes Sociales</h3>
+                        </div>
+                        <div class="w-body-a">
+                            <ul class="list-unstyled">
+                                <li class="item-list-a">
+                                    <i class="bi bi-facebook" aria-hidden="true"></i><a href="#"> Facebook</a>
+                                </li>
+                                <li class="item-list-a">
+                                    <i class="bi bi-twitter"></i> <a href="#">Twitter</a>
+                                </li>
+                                <li class="item-list-a">
+                                    <i class="bi bi-instagram"></i> <a href="#">Instagram</a>
+                                </li>
+                                <li class="item-list-a">
+                                    <i class="bi bi-whatsapp"></i> <a href="#">WhatsApp</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <nav class="nav-footer">
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <a href="{% url 'index' %}">Inicio</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="{% url 'acercade' %}">Acerca de</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="{% url 'habitaciones' %}">Habitaciones</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="{% url 'contacto' %}">Contacto</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="{% url 'login' %}">Login</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="{% url 'registro' %}">Registro</a>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <div class="copyright-footer">
+                        <p class="copyright color-text-a">
+                            &copy; Copyright
+                            <span class="color-a">hostaldonaclarita.cl</span> Todos los derechos reservados.
+                        </p>
+                    </div>
+                    <div class="credits">
+                        Diseñado por <a href="#!">Grupo 3 XD</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer><!-- End  Footer -->
+
+    <div id="preloader"></div>
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Vendor JS Files -->
+    <script src="{% static 'app/assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'app/assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+    <!-- Template Main JS File -->
+    <script src="{% static 'app/assets/js/main.js' %}"></script>
+    <!-- jquery library  -->
+    <script src="{% static 'app/assets/js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'app/assets/js/popper.min.js' %}"></script>
+    <script src="{% static 'app/assets/js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>

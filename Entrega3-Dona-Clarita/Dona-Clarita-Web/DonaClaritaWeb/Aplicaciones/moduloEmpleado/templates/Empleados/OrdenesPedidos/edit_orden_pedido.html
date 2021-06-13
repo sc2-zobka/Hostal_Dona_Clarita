@@ -1,0 +1,211 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Nuevo Empleado{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title"><i class="fa fa-edit"></i> Edición Orden de Pedido N° 1234</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item"><a href="{% url 'ordenes-pedidos-list' %}">Ordenes de Pedido</a>
+						</li>
+						<li class="breadcrumb-item active">Edición de Orden de Pedido</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+			<div class="col-12">
+				<!-- General -->
+				<div class="card">
+					<div class="row">
+						<div class="col-xl-12 col-md-12 ">
+							<div class="card">
+								<div class="card-header text-center">
+									<hr>
+									<h4 class="card-title">Información de Orden de Pedido</h4>
+									<hr>
+									<h6 class="alert alert-info"><i class="fa fa-info-circle"></i>
+										<strong>ATENCIÓN:</strong> Campos Obligatorios se identifican con <strong
+											class="text-danger">*</strong></h6>
+									<hr>
+								</div>
+								<div class="card-body">
+									<form action="#" method="POST">
+										{% csrf_token %}
+										<div class="row">
+											<div class="col-xl-3 offset-xl-12">
+												<div class="form-group">
+													<label>N° de Pedido <strong class="text-danger">*</strong></label>
+													<input type="text" class="form-control" name="precio" min="1"
+														placeholder="Código de Producto" disabled value="1234">
+												</div>
+											</div>
+											<div class="col-xl-3 offset-xl-12">
+												<div class="form-group">
+													<label>Estado <strong class="text-danger">*</strong></label>
+													<input type="text" class="form-control" name="precio" disabled
+														value="Pendiente">
+												</div>
+											</div>
+											<div class="col-xl-3 offset-xl-12">
+												<div class="form-group">
+													<label>Emitida Por <strong class="text-danger">*</strong></label>
+													<input type="text" class="form-control" name="precio" disabled
+														value="Juanito Perez">
+												</div>
+											</div>
+											<div class="col-xl-3 offset-xl-12">
+												<div class="form-group">
+													<label>Fecha Emisión <strong class="text-danger">*</strong></label>
+													<input type="date" class="form-control" name=""
+														min="{% now 'Y-m-d' %}" value="{% now 'Y-m-d' %}">
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xl-4 offset-lg-12">
+												<div class="form-group">
+													<label>Rut Proveedor <strong class="text-danger">*</strong></label>
+													<input type="number" class="form-control" name="precio" min="1"
+														placeholder="Ingrese Precio Habitación">
+												</div>
+											</div>
+											<div class="col-xl-8 offset-lg-12">
+												<div class="form-group">
+													<label>Nombre de Proveedor <strong
+															class="text-danger">*</strong></label>
+													<input type="text" class="form-control" name="precio"
+														value="Nombre del Proveedor" disabled>
+												</div>
+											</div>
+										</div>
+										<hr>
+										<h6 class="text-center"><strong>DETALLE DE PEDIDO</strong></h6>
+										<div class="ms-wizard-step">
+											<div class="form-row">
+												<div class="col-md-12">
+													<div class="table-wrapper-scroll-y my-custom-scrollbar">
+														<table class="table table-bordered table-striped mb-0">
+															<thead>
+																<tr>
+																	<th class="text-center">
+																		<h6>#</h6>
+																	</th>
+																	<th class="text-center">
+																		<h6>Código</h6>
+																	</th>
+																	<th class="text-center">
+																		<h6>Nombre Producto</h6>
+																	</th>
+																	<th class="text-center">
+																		<h6>En Stock</h6>
+																	</th>
+																	<th class="text-center">
+																		<h6>Stock Crítico</h6>
+																	</th>
+																	<th class="text-center">
+																		<h6>Cant. Solicitar <strong
+																				class="text-danger">*</strong></h6>
+																	</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr>
+																	<td class="text-center"><a>1</a></td>
+																	<td class="text-center"><a>13242332222</a></td>
+																	<td class="text-center">
+																		<h2>Nombre Producto</h2>
+																	</td>
+																	<td class="text-center">
+																		<h2>2</h2>
+																	</td>
+																	<td class="text-center" style="list-style: none;">
+																		<h2>5</h2>
+																	</td>
+																	<td class="text-center">
+																		<h2><input class="form-control text-center"
+																				type="number" name="" id=""
+																				style="width: 100px;"></h2>
+																	</td>
+																</tr>
+																<tr>
+																	<td class="text-center"><a>2</a></td>
+																	<td class="text-center"><a>13242332222</a></td>
+																	<td class="text-center">
+																		<h2>Nombre Producto</h2>
+																	</td>
+																	<td class="text-center">
+																		<h2>2</h2>
+																	</td>
+																	<td class="text-center" style="list-style: none;">
+																		<h2>5</h2>
+																	</td>
+																	<td class="text-center">
+																		<h2><input class="form-control text-center"
+																				type="number" name="" id=""
+																				style="width: 100px;"></h2>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+											<hr>
+											<div class="row">
+												<div class="col-xl-12 offset-lg-12">
+													<div class="form-group">
+														<label>Observación</label>
+														<textarea class="form-control" name="observacion" id=""
+															cols="30" rows="2"></textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+										<hr>
+										<div class="row">
+											<div class="col-md-4"></div>
+											<div class="col-md-2">
+												<div class="form-group mb-0">
+													<a class="btn btn2 btn-danger btn-block text-center"
+														href="{% url 'ordenes-pedidos-list' %}"><i
+															class="fa fa-reply"></i> Volver</a>
+												</div>
+											</div>
+											<div class="col-md-2">
+												<div class="form-group mb-0">
+													<button class="btn btn2 btn-info btn-block text-center"
+														type="submit"><i class="fa fa-save"></i> Modificar</button>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- /General -->
+				</div>
+			</div>
+			<br>
+		</div>
+	</div>
+	<!-- /Page Wrapper -->
+
+	{% block js %}
+	<script>
+		$(document).ready(function () {
+			$('.cb-single').select2();
+		});
+	</script>
+	{% endblock %}
+	{% endblock %}

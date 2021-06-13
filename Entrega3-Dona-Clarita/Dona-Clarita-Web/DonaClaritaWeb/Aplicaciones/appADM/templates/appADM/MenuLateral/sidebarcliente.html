@@ -1,0 +1,108 @@
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-inner slimscroll">
+        <div id="sidebar-menu" class="sidebar-menu">
+            <ul>
+                <li class="menu-title">
+                    <span>Menú</span>
+                </li>
+                {% if request.path == '/dashboard/' %}
+                <script type="text/javascript">
+                    window.location = "http://127.0.0.1:8000/dashboard/Inicio/";
+                </script>
+                {% endif %}
+                {% if request.path == '/dashboard/Inicio/' %}
+                <li class=" active">
+                    {% else %}
+                <li>
+                    {% endif %}
+                    <a href="{% url 'dashboard-cli' %}"><i class="fa fa-home"></i> <span>Inicio</span></a>
+                </li>
+                <li>
+                    {% if request.path == '/dashboard/nueva_orden_compra/' or request.path == '/dashboard/ordenes_compra/' %}
+                    <a href="#" class="subdrop"><i class="fa fa-clipboard"></i> <span>Ordenes Compra</span> <span
+                            class="menu-arrow"></span></a>
+                    <ul style="display: block;">
+                        {% else %}
+                        <a href="#"><i class="fa fa-clipboard"></i> <span>Ordenes Compra</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            {% endif %}
+                            {% if request.path == '/dashboard/nueva_orden_compra/' %}
+                            <li class="active"><a href="{% url 'oc-new' %}"><i class="fa fa-plus-circle"
+                                        style="font-size: 15px;"> </i><span> Nueva OC</span></a></li>
+                            <li><a href="{% url 'oc-list' %}"><i class="fa fa-list-ol"
+                                        style="font-size: 15px;"></i><span> Mis Ordenes</span></a></li>
+                            {% elif request.path == '/dashboard/ordenes_compra/' %}
+                            <li><a href="{% url 'oc-new' %}"><i class="fa fa-plus-circle"
+                                        style="font-size: 15px;"></i><span> Nueva OC</span></a></li>
+                            <li class="active"><a href="{% url 'oc-list' %}"><i class="fa fa-list-ol"
+                                        style="font-size: 15px;"> </i><span> Mis Ordenes</span></a></li>
+                            {% else %}
+                            <li><a href="{% url 'oc-new' %}"><i class="fa fa-plus-circle"
+                                        style="font-size: 15px;"></i><span> Nueva OC</span></a></li>
+                            <li><a href="{% url 'oc-list' %}"><i class="fa fa-list-ol"
+                                        style="font-size: 15px;"></i><span> Mis Ordenes</span></a></li>
+                            {% endif %}
+                        </ul>
+                </li>
+                <li>
+                    {% if request.path == '/dashboard/nuevo_trabajador/' or request.path == '/dashboard/trabajadores/' or  request.path == '/dashboard/carga_trabajadores/' %}
+                    <a href="#" class="subdrop"><i class="fa fa-users"></i> <span>Trabajadores</span> <span
+                            class="menu-arrow"></span></a>
+                    <ul style="display: block;">
+                        {% else %}
+                        <a href="#"><i class="fa fa-users"></i> <span>Trabajadores</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            {% endif %}
+                            {% if request.path == '/dashboard/nuevo_trabajador/' %}
+                            <li class="active"><a href="{% url 'trabajador-new' %}"><i class="fa fa-user-plus"
+                                        style="font-size: 15px;"> </i><span> Nuevo Trabajador</span></a></li>
+                            <li><a href="{% url 'trabajadores-list' %}"><i class="fa fa-list-ol"
+                                        style="font-size: 15px;"></i><span> Mis Trabajadores</span></a></li>
+                            <li><a href="{% url 'trabajadores-carga' %}"><i class="fa fa-upload"
+                                        style="font-size: 15px;"></i><span> Carga Masiva</span></a></li>
+                            {% elif request.path == '/dashboard/trabajadores/' %}
+                            <li><a href="{% url 'trabajador-new' %}"><i class="fa fa-user-plus"
+                                        style="font-size: 15px;"></i><span> Nuevo Trabajador</span></a></li>
+                            <li class="active"><a href="{% url 'trabajadores-list' %}"><i class="fa fa-list-ol"
+                                        style="font-size: 15px;"> </i><span> Mis Trabajadores</span></a></li>
+                            <li><a href="{% url 'trabajadores-carga' %}"><i class="fa fa-upload"
+                                        style="font-size: 15px;"></i><span> Carga Masiva</span></a></li>
+                            {% elif request.path == '/dashboard/carga_trabajadores/' %}
+                            <li><a href="{% url 'trabajador-new' %}"><i class="fa fa-user-plus"
+                                        style="font-size: 15px;"></i><span> Nuevo Trabajador</span></a></li>
+                            <li><a href="{% url 'trabajadores-list' %}"><i class="fa fa-list-ol" style="font-size: 15px;">
+                                    </i><span> Mis Trabajadores</span></a></li>
+                            <li class="active"><a href="{% url 'trabajadores-carga' %}"><i class="fa fa-upload"
+                                        style="font-size: 15px;"></i><span> Carga Masiva</span></a></li>
+                            {% else %}
+                            <li><a href="{% url 'trabajador-new' %}"><i class="fa fa-user-plus"
+                                        style="font-size: 15px;"></i><span> Nuevo Trabajador</span></a></li>
+                            <li><a href="{% url 'trabajadores-list' %}"><i class="fa fa-list-ol"
+                                        style="font-size: 15px;"></i><span> Mis Trabajadores</span></a></li>
+                            <li><a href="{% url 'trabajadores-carga' %}"><i class="fa fa-upload"
+                                        style="font-size: 15px;"></i><span> Carga Masiva</span></a></li>
+                            {% endif %}
+                        </ul>
+                </li>
+                {% if request.path == '/dashboard/facturas/' %}
+                <li class=" active">
+                    {% else %}
+                <li>
+                    {% endif %}
+                    <a href="{% url 'facturas-cli' %}"><i class="fa fa-money"></i> <span>Facturas</span></a>
+                </li>
+                {% if request.path == '/dashboard/config/' %}
+                <li class=" active">
+                    {% else %}
+                <li>
+                    {% endif %}
+                    <a href="{% url 'config-user' %}"><i class="fa fa-cog"></i> <span>Configuración</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /Sidebar -->

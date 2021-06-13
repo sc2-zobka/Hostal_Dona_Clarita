@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<!-- Mirrored from dreamguys.co.in/demo/doccure/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 30 Nov 2019 04:12:46 GMT -->
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+	<title>Inicio de Sesión - Hostal Doña Clarita</title>
+    {% load static %}
+	<!-- Favicon -->
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'appADM/assets/img/favicondc.PNG' %}">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="{% static 'appADM/assets/css/bootstrap.min.css' %}">
+
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="{% static 'appADM/assets/css/font-awesome.min.css' %}">
+
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'appADM/assets/css/style.css' %}">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+</head>
+
+<body>
+
+	<!-- Main Wrapper -->
+	<div class="main-wrapper login-body">
+		<div class="login-wrapper">
+			<div class="container">
+				<div class="loginbox">
+					<div class="login-left">
+						<img src="{% static 'appADM/assets/img/logodcwhite.png' %}" alt="Logo" width="320">
+					</div>
+					<div class="login-right">
+						<div class="login-right-wrap">
+							<h1>Inicio de Sesión</h1>
+							<p class="account-subtitle">Ingrese sus datos para acceder</p>
+							<hr>
+							<h6 class="alert alert-info text-center"><i class="fa fa-info-circle"></i> <strong>ATENCIÓN:</strong><br> Campos Obligatorios se identifican con <strong class="text-danger">*</strong></h6>
+							<!-- Form -->
+							<form  method="POST" autocomplete="off">
+								{% csrf_token %}
+								<div class="form-group">
+									<label>Nombre usuario <strong class="text-danger">*</strong></label>
+									<input class="form-control" name="username" type="text">
+								</div>
+								<div class="form-group">
+									<label>Contraseña <strong class="text-danger">*</strong></label>
+									<input class="form-control" name="password" type="password" placeholder="Ingrese Contraseña">
+									<a href="recovery-pass.html" class="">¿Olvidaste Contraseña?</a>
+								</div>
+								<div class="form-group">
+									<button class="btn btn-primary btn-block text-center" type="submit">Iniciar sesión</button>
+								</div>
+							</form>
+							<!-- /Form -->
+							{% if mensaje == 'vacio' %}
+							<div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+								<strong>Campos Vacios</strong> El campo Usuario y Contraseña Son Obligatorios
+								Completelos para continuar
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							{% elif  mensaje == 'error'%}
+							<div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+								<strong>Usuario o Contraseña Incorrecta</strong> El usuario o contraseña ingresados NO
+								existe en la Base de Datos.
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							{% elif  mensaje == 'errorVal'%}
+							<div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+								<strong>Problemas al Validar</strong> Usuario o Contraseña Incorrectos
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>			
+							{% endif %}
+							<!-- Social Login -->
+							<div class="social-login">
+								<span>Inicia Sesión con:</span>
+								<a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+							</div>
+							<!-- /Social Login -->
+							<div class="login-or">
+								<span class="or-line"></span>
+								<span class="span-or">ó</span>
+							</div>
+
+
+							<div class="text-center dont-have">¿No tienes Cuenta? <a href="{% url 'registro' %}">Registrate
+									Aquí</a></div>
+							<br>
+							<hr>
+							<div class="text-center">
+								<a class="btn btn-danger white-font" href="{% url 'index' %}"><i class="fa fa-reply"></i> Volver a Inicio</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Main Wrapper -->
+
+	<!-- jQuery -->
+	<script src="{% static 'appADM/assets/js/jquery-3.2.1.min.js' %}"></script>
+
+	<!-- Bootstrap Core JS -->
+	<script src="{% static 'appADM/assets/js/popper.min.js' %}"></script>
+	<script src="{% static 'appADM/assets/js/bootstrap.min.js' %}"></script>
+
+	<!-- Custom JS -->
+	<script src="{% static 'appADM/assets/js/script.js' %}"></script>
+	{% if messages %}
+	<div>
+		{% for message in messages %}
+		{% if message.tags  == 'error'%}
+			<script>
+				Swal.fire({
+					title: "Error en Validación",
+					text: "{{message|safe }}",
+					icon: "error",
+					timer: 5000,
+					timerProgressBar: true
+				})
+			</script>
+	{% elif message.tags  == 'warning'%}
+	<script>
+		Swal.fire({
+			title: "Campos Vacios",
+				text: "{{message|safe }}",
+				icon: "warning",
+				timer: 5000,
+				timerProgressBar: true
+		})
+	</script>			
+		{% else%}
+		<script>
+			Swal.fire({
+				title: "Cliente Creado Correctamente",
+					text: "{{message|safe }}",
+					icon: "success",
+					timer: 5000,
+					timerProgressBar: true
+			})
+		</script>
+		{% endif %}
+		{% endfor %}
+	</div>
+	{% endif %}
+</body>
+
+</html>

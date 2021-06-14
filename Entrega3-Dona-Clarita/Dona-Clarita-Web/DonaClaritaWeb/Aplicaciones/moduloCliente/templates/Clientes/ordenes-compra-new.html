@@ -1,0 +1,189 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Ordenes de Pedidos{% endblock%}
+{% block css-adm %}
+<link rel="stylesheet" href="{% static 'appADM/assets/css/oc.css' %}">
+{% include 'Clientes/OrdenCompra/oc-script-val.html' %}
+{% endblock %}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title"><i class="fa fa-file-text-o"></i> Nueva Orden de Compra</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item"><a href="{% url 'oc-list' %}">Ordenes de Compra</a></li>
+						<li class="breadcrumb-item active">Nueva Orden</li>
+
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+		<div class="row">
+			<div class="col-md-12">
+
+				<div class="container mt-5">
+					<div class="row d-flex justify-content-center align-items-center">
+						<div class="col-1"></div>
+						<div class="col-xl-12 col-md-12">
+							<div class="ms-panel ms-panel-fh">
+
+								<div class="ms-panel-header">
+									{% if not bloquearCampos  and not validaInfo %}
+										<h6>Nueva Orden de Compra</h6>
+									<hr>
+										{% if not mensaje == 'sigue' and not mensaje == 'sigue2'  and not mensaje == 'errorCapacidad'%}
+										<h3><strong>PASO 1: </strong>Fechas de Alojamiento</h3>
+										{% elif mensaje == 'sigue' and not mensaje == 'sigue2' %}
+										<h3><strong>PASO 2: </strong>Selección de Huéspedes y Tipo Comedor</h3>
+										{% elif mensaje == 'sigue2' or mensaje == 'errorCapacidad' %}
+										<h3><strong>PASO 3: </strong>Tipo de Camas</h3>
+										{% endif %}
+									{% elif bloquearCampos and not validaInfo %}
+									<h6 class="alert alert-warning text-center"><i class="fa fa-info-circle"></i>
+										<strong>ATENCIÓN:</strong>Usted No Registra Trabajadores en el Sistema <strong
+											class="text-danger">Cree o Cargue para continuar</strong></h6>
+									{% elif validaInfo %}
+									<h6 class="alert alert-warning text-center"><i class="fa fa-info-circle"></i>
+										<strong>ATENCIÓN:</strong> Su Información está Incompleta <strong
+											class="text-danger">Complete Para Continuar</strong></h6>
+
+									{% endif %}
+								</div>
+								
+								{% if  mensaje == 'errorFecha'%}
+								<div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+									<strong>Error en Selección de Fechas:</strong> La "Fecha Desde" <strong>NO
+										puede</strong> Ser Mayor a la "Fecha Hasta"
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								{% elif  mensaje == 'errorCapacidad'%}
+								<div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+									<strong>Error en Capacidad de Habitaciones:</strong> La Capacidad de las Habitaciones Fueron Superadas. Verifique e Intente de Nuevo
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								{% endif %}
+								<div class="ms-panel-body">
+									{% if not bloquearCampos and not validaInfo %}
+									{% if not mensaje == 'sigue' and not mensaje == 'sigue2' and not mensaje == 'ok' and not mensaje == 'errorCapacidad' %}
+									{% include 'Clientes/OrdenCompra/oc-form-1.html' %}
+									{% elif mensaje == 'sigue' and not mensaje == 'sigue2' and not mensaje == 'errorCapacidad' %}
+									{% include 'Clientes/OrdenCompra/oc-form-2.html'%}
+									{% elif mensaje == 'sigue2' or  mensaje == 'errorCapacidad'%}
+									{% include 'Clientes/OrdenCompra/oc-form-3.html' %}
+									{% endif %}
+									{% elif not validaInfo and bloquearCampos %}
+									<div class="row">
+										<div class="col-md-2"></div>
+										<div class="col-md-4">
+											<div class="form-group mb-0">
+												<a class="btn btn2 btn-primary btn-block text-center"
+													href="{% url 'trabajador-new' %}"><i class="fa fa-user-plus"></i>
+													Crear
+													Trabajador</a>
+											</div>
+										</div>
+										&nbsp;
+										<div class="col-md-4">
+											<div class="form-group mb-0">
+												<a class="btn btn2 btn-info btn-block text-center"
+													href="{% url 'trabajadores-carga' %}"><i class="fa fa-upload"></i>
+													Cargar
+													Trabajadores</a>
+											</div>
+										</div>
+									</div>
+									{% elif validaInfo  %}
+									<div class="row">
+										<div class="col-md-4"></div>
+										<div class="col-md-4">
+											<div class="form-group mb-0">
+												<a class="btn btn2 btn-primary btn-block text-center"
+													href="{% url 'config-user' %}"><i class="fa fa-cogs"></i>
+													Completar Configuración</a>
+											</div>
+										</div>
+									</div>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+						<div class="col-1"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Page Wrapper -->
+{% block js %}
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+<script src="{% static 'appADM/assets/js/traslate.js' %}"></script>
+<script src="{% static 'appADM/assets/js/valida-oc.js' %}"></script>
+<script>
+	$(document).ready(function () {
+		$('#dtHorizontalExample').DataTable({
+			"scrollY": "50vh",
+			"scrollCollapse": true,
+		});
+		$('.dataTables_length').addClass('bs-select');
+	});
+</script>
+<script>
+	$(document).ready(function () {
+		$('.cb-multiple').select2();
+		$('.cb-single').select2();
+	});
+</script>
+{% if messages %}
+<div>
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+	<script>
+		Swal.fire({
+			title: "Error de Validación",
+			text: "{{message}}",
+			icon: "error",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+	{% elif message.tags  == 'warning'%}
+	<script>
+		Swal.fire({
+			title: "Atención",
+			text: "{{message}}",
+			icon: "warning",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Orden de Compra N° {{nroOC.0}} Generada",
+			text: "{{message}} ",
+			icon: "success",
+			timer: 5000,
+			timerProgressBar: true
+		})
+		
+	</script>
+	{% endif %}
+	{% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}
+{% endblock %}

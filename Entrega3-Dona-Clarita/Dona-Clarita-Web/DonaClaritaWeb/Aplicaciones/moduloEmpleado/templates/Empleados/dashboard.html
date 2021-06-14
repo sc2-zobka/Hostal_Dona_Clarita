@@ -1,0 +1,406 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Dashboard{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title">¡Bienvenido <strong>@{{user.first_name}} {{user.last_name}}</strong>!</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item active">Panel Administrativo</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+			<div class="col-xl-3 col-sm-6 col-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="dash-widget-header">
+							<span class="dash-widget-icon text-primary border-primary">
+								<i class="fa fa-users"></i>
+							</span>
+							<div class="dash-count">
+								<h3>{{usuarios.0.0}}</h3>
+							</div>
+						</div>
+						<div class="dash-widget-info">
+							<h6 class="text-muted">Usuarios en Sistemas</h6>
+							<div class="progress progress-sm">
+								<div class="progress-bar bg-primary w-50"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-3 col-sm-6 col-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="dash-widget-header">
+							<span class="dash-widget-icon text-success">
+								<i class="fa fa-money"></i>
+
+							</span>
+							<div class="dash-count">
+								<h3>$487.000</h3>
+							</div>
+						</div>
+						<div class="dash-widget-info">
+
+							<h6 class="text-muted">Ingresos Totales <br><strong class="text-danger">SIN PROGRAMAR</strong></h6>
+							<div class="progress progress-sm">
+								<div class="progress-bar bg-success w-50"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-3 col-sm-6 col-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="dash-widget-header">
+							<span class="dash-widget-icon text-danger border-danger">
+								<i class="fa fa-handshake-o"></i>
+							</span>
+							<div class="dash-count">
+								<h3>{{clientes.0.0}}</h3>
+							</div>
+						</div>
+						<div class="dash-widget-info">
+
+							<h6 class="text-muted">Clientes Registrados</h6>
+							<div class="progress progress-sm">
+								<div class="progress-bar bg-danger w-50"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-3 col-sm-6 col-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="dash-widget-header">
+							<span class="dash-widget-icon text-warning border-warning">
+								<i class="fe fe-building"></i>
+							</span>
+							<div class="dash-count">
+								<h3>{{hab_disponible.0.0}} de {{hab_total.0.0}}</h3>
+							</div>
+						</div>
+						<div class="dash-widget-info">
+
+							<h6 class="text-muted">Habitaciones Disponibles</h6>
+							<div class="progress progress-sm">
+								<div class="progress-bar bg-warning w-50"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		
+		<div class="row">
+			<div class="col-md-6 d-flex">
+
+				<!-- Feed Activity -->
+				<div class="card  card-table flex-fill">
+					<div class="card-header">
+						<br>
+						<h4 class="card-title text-center">Últimos Clientes Registrados</h4>
+					</div>
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table table-striped table-bordered table-center mb-0">
+								<thead>
+									<tr>
+										<th>Razón Social</th>
+										<th>Fecha Registro</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for cliente_new in clientes_new %}
+									<tr>
+										<td>
+											<h2 class="table-avatar">
+												<a href="{% url 'edit-cliente' cliente_new.0 %}" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="Imagen Usuario"></a>
+												<a href="{% url 'edit-cliente' cliente_new.0 %}">{{cliente_new.1}}</a>
+											</h2>
+										</td>
+										<td>{{cliente_new.2}}</td>
+									</tr>	
+									{% endfor %}								
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- /Feed Activity -->
+			</div>
+			<div class="col-md-6 d-flex">
+				<!-- Feed Activity -->
+				<div class="card  card-table flex-fill">
+					<div class="card-header">
+						<br>
+						<h4 class="card-title text-center">Últimas conexiones Empleados</h4>
+					</div>
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table table-striped table-bordered table-center mb-0">
+								<thead>
+									<tr>
+										<th>Nombre Empleado</th>
+										<th>Fecha Último Ingreso</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for empleado_new in empleados_new %}
+									<tr>
+										<td>
+											<h2 class="table-avatar">
+												<a href="{% url 'edit-empleado' empleado_new.0 %}" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="Imagen Usuario"></a>
+												<a href="{% url 'edit-empleado' empleado_new.0 %}">{{empleado_new.1}}</a>
+											</h2>
+										</td>
+										<td>{{empleado_new.2}}</td>
+									</tr>	
+									{% endfor %}			
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- /Feed Activity -->
+			</div>			
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-md-12 col-lg-6">
+
+				<!-- Sales Chart -->
+				<div class="card card-chart">
+					<div class="card-header">
+						<h4 class="card-title">Ingresos<strong class="text-danger"> SIN PROGRAMAR</strong></h4>
+					</div>
+					<div class="card-body">
+						<div id="morrisArea"></div>
+					</div>
+				</div>
+				<!-- /Sales Chart -->
+
+			</div>
+			<div class="col-md-12 col-lg-6">
+
+				<!-- Invoice Chart -->
+				<div class="card card-chart">
+					<div class="card-header">
+						<h4 class="card-title">Reserva de Habitaciones<strong class="text-danger"> SIN PROGRAMAR</strong></h4>
+					</div>
+					<div class="card-body">
+						<div id="morrisLine"></div>
+					</div>
+				</div>
+				<!-- /Invoice Chart -->
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-md-12">
+				<!-- Recent Orders -->
+				<div class="card card-table">
+					<div class="card-header">
+						<h4 class="card-title">Listado de Reservas <strong class="text-danger"> SIN PROGRAMAR</strong></h4>
+					</div>
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										<th>Nombre Usuarios</th>
+										<th>Especialidad</th>
+										<th>Nombre Cliente</th>
+										<th>Fecha Atención</th>
+										<th>Estado</th>
+										<th class="text-right">Valor</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#!" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="Imagen Usuario"></a>
+												<a href="#!">Nombre Usuarios</a>
+											</h2>
+										</td>
+										<td>Dental</td>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#!" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="Imagen Usuario"></a>
+												<a href="#!">Nombre Cliente </a>
+											</h2>
+										</td>
+										<td>9 May 2021 <span class="text-primary d-block">11.00 AM - 11.15 AM</span>
+										</td>
+										<td>
+											<span class="badge badge-pill bg-success inv-badge">Finalizada</span>
+										</td>
+										<td class="text-right">
+											$20.000
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#!" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="Imagen Usuario"></a>
+												<a href="#!">Nombre Usuarios</a>
+											</h2>
+										</td>
+										<td>Dental</td>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#!" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="Imagen Usuario"></a>
+												<a href="#!">Nombre Cliente </a>
+											</h2>
+										</td>
+										<td>9 May 2021 <span class="text-primary d-block">11.00 AM - 11.15 AM</span>
+										</td>
+										<td>
+											<span class="badge badge-pill bg-danger inv-badge">Anulada</span>
+										</td>
+										<td class="text-right">
+											$20.000
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#!" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="Imagen Usuario"></a>
+												<a href="#!">Nombre Usuarios</a>
+											</h2>
+										</td>
+										<td>Dental</td>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#!" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="Imagen Usuario"></a>
+												<a href="#!">Nombre Cliente </a>
+											</h2>
+										</td>
+										<td>9 May 2021 <span class="text-primary d-block">11.00 AM - 11.15 AM</span>
+										</td>
+										<td>
+											<span class="badge badge-pill bg-warning inv-badge">Pendiente</span>
+										</td>
+										<td class="text-right">
+											$20.000
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#!" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="Imagen Usuario"></a>
+												<a href="#!">Nombre Usuarios</a>
+											</h2>
+										</td>
+										<td>Dental</td>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#!" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="Imagen Usuario"></a>
+												<a href="#!">Nombre Cliente </a>
+											</h2>
+										</td>
+										<td>9 May 2021 <span class="text-primary d-block">11.00 AM - 11.15 AM</span>
+										</td>
+										<td>
+											<span class="badge badge-pill bg-warning inv-badge">Pendiente</span>
+										</td>
+										<td class="text-right">
+											$20.000
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#!" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="Imagen Usuario"></a>
+												<a href="#!">Nombre Usuarios</a>
+											</h2>
+										</td>
+										<td>Dental</td>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#!" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="Imagen Usuario"></a>
+												<a href="#!">Nombre Cliente </a>
+											</h2>
+										</td>
+										<td>9 May 2021 <span class="text-primary d-block">11.00 AM - 11.15 AM</span>
+										</td>
+										<td>
+											<span class="badge badge-pill bg-warning inv-badge">Pendiente</span>
+										</td>
+										<td class="text-right">
+											$20.000
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- /Recent Orders -->
+
+			</div>
+		</div>
+
+	</div>
+</div>
+<!-- /Page Wrapper -->
+
+{% endblock %}
+{% block js %}
+<script src="{% static 'appADM/assets/plugins/raphael/raphael.min.js' %}"></script>
+<script src="{% static 'appADM/assets/plugins/morris/morris.min.js' %}"></script>
+<script src="{% static 'appADM/assets/js/chart.morris.js' %}"></script>
+
+{% endblock %}

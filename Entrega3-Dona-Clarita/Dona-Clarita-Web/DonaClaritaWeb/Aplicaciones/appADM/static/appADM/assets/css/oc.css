@@ -1,0 +1,359 @@
+.my-custom-scrollbar {
+    position: relative;
+    height: 500px;
+    overflow: auto;
+    width: 100%;
+    }
+    .table-wrapper-scroll-y {
+    display: block;
+    }
+/* Main Panel Module */
+.ms-panel {
+    background: #fff;
+    -webkit-box-shadow: 0 1px 6px 1px rgba(69,65,78, 0.1);
+    -moz-box-shadow: 0 1px 6px 1px rgba(69,65,78,0.1);
+    box-shadow: 0 1px 6px 1px rgba(69,65,78,0.1);
+    margin-bottom: 30px;
+  }
+  .ms-panel.has-border{
+    border: 1px solid rgba(0,0,0,.1);
+  }
+  .ms-panel.ms-panel-hoverable:hover{
+    background-color: #f5f5f5;
+  }
+  .ms-panel.bg-dark{
+    background-color: #34334a;
+  }
+  .ms-panel.ms-panel-fh{
+    height: calc( 100% - 2rem );
+  }
+  .ms-panel-header {
+    position: relative;
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+  }
+  .ms-panel-header.header-mini{
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+  .ms-panel-header p {
+    font-size: 13px;
+    margin: 0.25rem 0 0 0;
+  }
+  .ms-panel-header h6{
+    margin-bottom: 0;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .ms-panel-header .btn{
+    margin-top: 0;
+  }
+  .ms-panel-body,
+  .ms-panel-footer{
+    position: relative;
+    padding: 1.5rem;
+  }
+  .ms-img-small{
+    width: 40px;
+  }
+  .ms-img-medium{
+    width: 65px;
+  }
+  .ms-img-large{
+    width: 100px;
+  }
+  
+/* Form Wizard */
+.ms-form-wizard{
+    background-color: #fff;
+  }
+  .ms-form-wizard .actions ul{
+    margin: 2rem 0;
+  }
+  .ms-form-wizard .actions ul,
+  .ms-form-wizard .actions ul::after,
+  .ms-form-wizard .actions ul::before{
+    list-style: none;
+    content: '';
+    display: block;
+    clear: both;
+  }
+  .ms-form-wizard ul[role="tablist"]{
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+  .ms-form-wizard ul[role="tablist"] li{
+    position: relative;
+    background: #e4e3e8;
+    margin-right: 10px;
+    flex: 1 1 auto;
+    text-align: center;
+  }
+  .ms-form-wizard ul[role="tablist"] li:first-child{
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+  .ms-form-wizard ul[role="tablist"] li::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-top: 20px solid transparent;
+    border-left: 20px solid #fff;
+    border-bottom: 20px solid transparent;
+  }
+  .ms-form-wizard ul[role="tablist"] li::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -20px;
+    z-index: 2;
+    height: 100%;
+    border-top: 20px solid transparent;
+    border-left: 20px solid #e4e3e8;
+    border-bottom: 20px solid transparent;
+  }
+  .ms-form-wizard ul[role="tablist"] li:first-child::before{
+    display: none;
+  }
+  .ms-form-wizard ul[role="tablist"] li a{
+    -webkit-transition: 0s;
+    transition: 0s;
+    padding: 10px 0;
+    display: block;
+  }
+  .ms-form-wizard ul[role="tablist"] li.current::after{
+    border-left-color: #357ffa;
+  }
+  .ms-form-wizard ul[role="tablist"] li.current{
+    background-color: #0646b0;
+  }
+  .ms-form-wizard ul[role="tablist"] li.done::after{
+    border-left-color: #3377e8;
+  }
+  .ms-form-wizard ul[role="tablist"] li.done{
+    background-color: #3377e8;
+  }
+  .ms-form-wizard ul[role="tablist"] li a,
+  .ms-form-wizard ul[role="tablist"] li a:hover{
+    color: #95959e;
+  }
+  .ms-form-wizard ul[role="tablist"] li.current a,
+  .ms-form-wizard ul[role="tablist"] li.done a,
+  .ms-form-wizard ul[role="tablist"] li.current span,
+  .ms-form-wizard ul[role="tablist"] li.done span{
+    color: #fff;
+  }
+  .ms-form-wizard > .content > .title{
+    position: absolute;
+    left: -1000px;
+  }
+  .ms-form-wizard > .content{
+    min-height: 18rem;
+  }
+  .ms-form-wizard .actions ul li:first-child{
+    float: left;
+  }
+  .ms-form-wizard .actions ul li:nth-child(2),
+  .ms-form-wizard .actions ul li:last-child{
+    float: right;
+  }
+  .ms-form-wizard .actions ul li a{
+    font-size: 14px;
+    outline: none;
+    white-space: nowrap;
+    vertical-align: middle;
+    padding: 0.625rem 1rem;
+    min-width: 120px;
+    margin-top: 1rem;
+    border-radius: 5px;
+    color: #fff;
+  }
+  .ms-form-wizard .actions ul li:not(.disabled) a{
+    background-color: #357ffa;
+    border-color: #357ffa;
+  }
+  .ms-form-wizard .actions ul li.disabled a{
+    background-color: #e4e3e8;
+    border-color: #e4e3e8;
+  }
+  .ms-wizard-pill.ms-form-wizard ul[role="tablist"] li,
+  .ms-wizard-round.ms-form-wizard ul[role="tablist"] li,
+  .ms-wizard-vertical.ms-form-wizard ul[role="tablist"] li{
+    margin-right: 0;
+  }
+  .ms-wizard-pill.ms-form-wizard ul[role="tablist"] li a{
+    position: relative;
+  }
+  .ms-wizard-pill.ms-form-wizard ul[role="tablist"] li a .number,
+  .ms-wizard-pill.ms-form-wizard ul[role="tablist"] li:last-child a::after,
+  .ms-wizard-round.ms-form-wizard ul[role="tablist"] li a .number,
+  .ms-wizard-round.ms-form-wizard ul[role="tablist"] li:last-child a::after{
+    position: absolute;
+    top: 0;
+    left: -20px;
+    height: 100%;
+    width: 40px;
+    background-color: #3377e8;
+    border-radius: 50%;
+    -webkit-box-shadow: 0 0 24px rgba(0,0,0,0.1);
+    box-shadow: 0 0 24px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .ms-wizard-pill.ms-form-wizard ul[role="tablist"] li:first-child a .number{
+    left: 0;
+  }
+  .ms-wizard-pill.ms-form-wizard ul[role="tablist"] li:last-child a::after,
+  .ms-wizard-round.ms-form-wizard ul[role="tablist"] li:last-child a::after{
+    content: '\e5ca';
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    right: 0;
+    left: auto;
+    background: #fff;
+    color: #357ffa;
+  }
+  .ms-wizard-pill.ms-form-wizard ul[role="tablist"] li.current:last-child a::after,
+  .ms-wizard-pill.ms-form-wizard ul[role="tablist"] li.done:last-child a::after,
+  .ms-wizard-round.ms-form-wizard ul[role="tablist"] li.current:last-child a::after,
+  .ms-wizard-round.ms-form-wizard ul[role="tablist"] li.done:last-child a::after{
+    background-color: #3377e8;
+    color: #fff;
+  }
+  .ms-wizard-pill.ms-form-wizard ul[role="tablist"] li.disabled a .number{
+    background-color: #fff;
+    color: #357ffa;
+  }
+  .ms-wizard-pill.ms-form-wizard ul[role="tablist"] li:first-child{
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+  }
+  .ms-wizard-pill.ms-form-wizard ul[role="tablist"] li:last-child{
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+  }
+  .ms-wizard-pill.ms-form-wizard ul[role="tablist"] li::before,
+  .ms-wizard-pill.ms-form-wizard ul[role="tablist"] li::after,
+  .ms-wizard-round.ms-form-wizard ul[role="tablist"] li::before,
+  .ms-wizard-round.ms-form-wizard ul[role="tablist"] li::after,
+  .ms-wizard-vertical.ms-form-wizard ul[role="tablist"] li::before,
+  .ms-wizard-vertical.ms-form-wizard ul[role="tablist"] li::after{
+    display: none;
+  }
+  .ms-wizard-round.ms-form-wizard ul[role="tablist"]{
+    margin-top: 1rem;
+  }
+  .ms-wizard-round.ms-form-wizard ul[role="tablist"] li{
+    height: 4px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+  }
+  .ms-wizard-round.ms-form-wizard ul[role="tablist"] li a .number,
+  .ms-wizard-round.ms-form-wizard ul[role="tablist"] li:last-child a::after{
+    top: -20px;
+    left: 0;
+    height: 40px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    background: #fff;
+    border: 4px solid rgba(0,0,0,0.1);
+    color: #95959e;
+  }
+  .ms-wizard-round.ms-form-wizard ul[role="tablist"] li.done:last-child a::after,
+  .ms-wizard-round.ms-form-wizard ul[role="tablist"] li.current:last-child a::after{
+    background-color: #fff;
+    border-color: #357ffa;
+    color: #357ffa;
+  }
+  .ms-wizard-round.ms-form-wizard ul[role="tablist"] li.current a .number,
+  .ms-wizard-round.ms-form-wizard ul[role="tablist"] li.done a .number,
+  .ms-wizard-round.ms-form-wizard ul[role="tablist"] li.done:last-child a::after{
+    border-color: #357ffa;
+    color: #357ffa;
+  }
+  .ms-wizard-round.ms-form-wizard ul[role="tablist"] li:last-child a::after{
+    left:auto;
+    right: 0;
+  }
+  .ms-wizard-round.ms-form-wizard ul[role="tablist"] li.current{
+    background-color: transparent;
+    background-image: linear-gradient(to right, #3377e8, rgba(149, 149, 158, 0));
+  }
+  .ms-wizard-vertical.ms-form-wizard ul[role="tablist"]{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 250px;
+    height: 100%;;
+    background-color: #357ffa;
+    padding: 1rem;
+  }
+  .ms-wizard-vertical.ms-form-wizard ul[role="tablist"] li{
+    position: relative;
+    border-radius: 25px;
+    background-color: transparent;
+    margin-bottom: 2rem;
+    flex: 0 0 auto;
+    width: 100%;
+  }
+  .ms-wizard-vertical.ms-form-wizard ul[role="tablist"] li a::after{
+    content: '';
+    position: absolute;
+    top: 90%;
+    left: 18px;
+    width: 5px;
+    height: 160%;
+    background-color: #fff;
+    z-index: -1;
+  }
+  .ms-wizard-vertical.ms-form-wizard ul[role="tablist"] li:last-child a::after{
+    display: none;
+  }
+  .ms-wizard-vertical.ms-form-wizard ul[role="tablist"] li a{
+    position: relative;
+    z-index: 3;
+  }
+  .ms-wizard-vertical.ms-form-wizard ul[role="tablist"] li a .number{
+    position: absolute;
+    top: 2px;
+    left: 3px;
+    border-radius: 50%;
+    height: 90%;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    color: #357ffa;
+  }
+  .ms-wizard-vertical.ms-form-wizard ul[role="tablist"] li a{
+    color: #fff;
+  }
+  .ms-wizard-vertical.ms-form-wizard ul[role="tablist"] li.current,
+  .ms-wizard-vertical.ms-form-wizard ul[role="tablist"] li.done{
+    background-color: #fff;
+  }
+  .ms-wizard-vertical.ms-form-wizard ul[role="tablist"] li.current a .number,
+  .ms-wizard-vertical.ms-form-wizard ul[role="tablist"] li.done a .number{
+    background-color: #357ffa;
+    color: #fff;
+  }
+  .ms-wizard-vertical.ms-form-wizard ul[role="tablist"] li.current a,
+  .ms-wizard-vertical.ms-form-wizard ul[role="tablist"] li.done a{
+    color: #357ffa;
+  }
+  .ms-wizard-vertical.ms-form-wizard .content,
+  .ms-wizard-vertical.ms-form-wizard .actions{
+    margin-left: 250px;
+  }
+  

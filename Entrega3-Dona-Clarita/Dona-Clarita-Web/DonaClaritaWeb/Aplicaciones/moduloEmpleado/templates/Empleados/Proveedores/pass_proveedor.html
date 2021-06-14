@@ -1,0 +1,145 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Nuevo Empleado{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-7">
+					<h3 class="page-title"><i class="fa fa-unlock-alt"></i> Cambio de Contraseña</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard-cli' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Cambio de Contraseña</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+			<div class="col-sm-2"></div>
+			<div class="col-8">
+				<!-- General -->
+				<div class="card">
+					<div class="card-header text-center">
+						<hr>
+						<h4 class="card-title">Restablecer Contraseña Empleado</h4>
+						<h6 class="alert alert-info"><i class="fa fa-info-circle"></i> <strong>ATENCIÓN:</strong> Campos Obligatorios se identifican con <strong class="text-danger">*</strong> 
+							<br><br><button type="button" class="btn btn2 btn-info " data-toggle="popover" data-placement="top" title="Cambio de Contraseña" data-content="Una vez Realizado el Cambio se cerrará la sesión del Proveedor"><i class="fa fa-info-circle"></i></button>
+					</div>
+					<div class="card-body">
+						<form action="#" method="POST" id="form1">
+							{% csrf_token %}
+							<div class="row">
+								<div class="col-md-1"></div>
+								<div class="col-md-5">
+									<div class="form-group">
+										<label>Rut <strong class="text-danger">*</strong></label>
+										<input type="text" class="form-control" disabled value="{{proveedor.1}}"> 
+									</div>
+								</div>
+								<div class="col-md-5">
+									<div class="form-group">
+										<label>Razón Social <strong class="text-danger">*</strong></label>
+										<input type="text" class="form-control" disabled value="{{proveedor.2}}">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-1"></div>
+								<div class="col-md-10">
+									<div class="form-group">
+										<label>Nueva Contraseña <strong class="text-danger">*</strong></label>
+										<input type="password" class="form-control" name="new_pwd"
+											placeholder="Ingrese Nueva Contraseña" >
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-1"></div>
+								<div class="col-md-10">
+									<div class="form-group">
+										<label>Confirme Contraseña <strong class="text-danger">*</strong></label>
+										<input type="password" class="form-control" name="conf_new_pwd"
+											placeholder="Confirme Nueva Contraseña">
+									</div>
+								</div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-md-2"></div>
+								<div class="col-md-4">
+									<div class="form-group mb-0">
+										<a class="btn btn2 btn-danger btn-block text-center" href="{% url 'proveedores-list' %}"><i class="fa fa-reply"></i> Cancelar</a>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group mb-0">
+										<button class="btn btn2 btn-info btn-block text-center" type="submit"><i class="fa fa-lock"></i> Cambiar Contraseña</button>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								{% if  mensaje == 'ok'%}
+								<div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+									<strong>Usuario Registrado</strong> El usuario se ha Registrado Correctamente, ya puedes
+									iniciar Sesión
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								{% endif %}
+							</div>
+						</form>
+					</div>
+				</div>
+				<!-- /General -->
+			</div>
+		</div>
+		<br>
+	</div>
+</div>
+<!-- /Page Wrapper -->
+
+{% block js %}
+{% if messages %}
+<div>
+    {% for message in messages %}
+	{% if message.tags  == 'error'%}
+        <script>
+            Swal.fire({
+                title: "Error de Validación",
+                text: "{{message}}",
+                icon: "error",
+				timer: 5000,
+                timerProgressBar: true
+            })
+        </script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Contraseña Restablecida Correctamente",
+                text: "{{message}} ",
+                icon: "success",
+				timer: 5000,
+                timerProgressBar: true
+		})
+	</script>
+	{% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+<script src="{% static 'appADM/assets/js/traslate.js' %}"></script>
+<script src="{% static 'appADM/assets/js/pass-empleado.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+</script>
+{% endblock %}
+{% endblock %}

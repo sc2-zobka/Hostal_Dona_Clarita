@@ -1,0 +1,128 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Dashboard{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title">¡Bienvenido <strong>@{{user.first_name}} {{user.last_name}}</strong>!</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item active">Panel Administrativo</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+		<div class="row">
+			<div class="col-md-12 col-lg-12 col-xl-12">
+				<section class="card">
+					<header class="card-heading bg-dark">
+						<div class="card-heading-icon text-center">
+							<i class="fa fa-info-circle btn2"></i>
+						</div>
+					</header>
+					<div class="card-body text-center">
+						<h3 class="text-semibold mt-sm text-center">Bienvenido al Sistema de Gestión de Hostal Doña Clarita</h3>
+						<hr>
+						<p class="text-center">A continuación podrás encontras distintos accesos directos que ofrecemos para ti. <br>
+							Además, al costado izquierdo podrás encontrar nuestro menú con muchas mas opciones</p>
+					</div>
+				</section>
+			</div>
+	</div>
+	<br>
+		<div class="row">
+			<div class="col-xl-3 col-sm-6 col-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="dash-widget-header">
+							<span class="dash-widget-icon text-primary border-primary">
+								<i class="fa fa-users"></i>
+							</span>
+							<div class="dash-count">
+								<h3>{{huespedes.0.0}}</h3>
+							</div>
+						</div>
+						<div class="dash-widget-info">
+							<h6 class="text-muted">Total de Trabajadores</h6>
+							<h6 class="text-muted text-left"><a href="#"><i class="fa fa-arrow-right"></i> Nuevo Trabajador</a></h6>
+							<h6 class="text-muted text-left"><a href="#"><i class="fa fa-arrow-right"></i> Cargar Trabajadores</a></h6>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-3 col-sm-6 col-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="dash-widget-header">
+							<span class="dash-widget-icon text-warning border-warning">
+								<i class="fa fa-file-text"></i>
+							</span>
+							<div class="dash-count">
+								<h3>{{orCompras.0.0}}</h3>
+							</div>
+						</div>
+						<div class="dash-widget-info">
+							<h6 class="text-muted">Total de Ordenes de Compra</h6>
+							<h6 class="text-muted text-left"><a href="#"><i class="fa fa-arrow-right"></i> Nueva Orden de Compra</a></h6>
+							<h6 class="text-muted text-left"><a href="#"><i class="fa fa-arrow-right"></i> Mis Ordenes de Compras</a></h6>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-3 col-sm-6 col-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="dash-widget-header">
+							<span class="dash-widget-icon text-info">
+								<i class="fa fa-money"></i>
+							</span>
+							<div class="dash-count">
+								<h3>15</h3>
+							</div>
+						</div>
+						<div class="dash-widget-info">
+							<h6 class="text-muted">Total de Facturas<strong class="text-danger"> SIN PROGRAMAR</strong></h6>
+							<h6 class="text-muted text-left"><a href="#"><i class="fa fa-arrow-right"></i> Mis Facturas</a></h6>
+							<br>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-3 col-sm-6 col-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="dash-widget-header">
+							<span class="dash-widget-icon text-success">
+								<i class="fa fa-money"></i>
+							</span>
+							<div class="dash-count">
+								<h3>$487.000</h3>
+							</div>
+						</div>
+						<div class="dash-widget-info">
+							<h6 class="text-muted">Total de Gastos<strong class="text-danger"> SIN PROGRAMAR</strong></h6>
+							<br>
+							<br>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+</div>
+<!-- /Page Wrapper -->
+
+{% endblock %}
+{% block js %}
+<script src="{% static 'appADM/assets/plugins/raphael/raphael.min.js' %}"></script>
+<script src="{% static 'appADM/assets/plugins/morris/morris.min.js' %}"></script>
+<script src="{% static 'appADM/assets/js/chart.morris.js' %}"></script>
+
+{% endblock %}

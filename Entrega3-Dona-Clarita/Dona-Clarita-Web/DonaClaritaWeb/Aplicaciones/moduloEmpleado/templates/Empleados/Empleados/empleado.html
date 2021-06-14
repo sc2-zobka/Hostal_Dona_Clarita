@@ -1,0 +1,284 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Nuevo Empleado{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					{% if edit %}
+					<h3 class="page-title"><i class="fa fa-pencil"></i> Editar Empleado</h3>
+					{% else %}
+					<h3 class="page-title"><i class="fa fa-user-plus"></i> Nuevo Empleado</h3>
+					{% endif %}
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item"><a href="{% url 'empleados-list' %}">Empleados</a></li>
+						{% if edit %}
+						<li class="breadcrumb-item active">Editar Empleado</li>
+						{% else %}
+						<li class="breadcrumb-item active">Nuevo Empleado</li>
+						{% endif %}
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+			<div class="col-12">
+				<!-- General -->
+				<div class="card">
+					<div class="card-header text-center">
+						<hr>
+						<h4 class="card-title">Información de Empleado</h4>
+						<hr>
+						<h6 class="alert alert-info"><i class="fa fa-info-circle"></i> <strong>ATENCIÓN:</strong> Campos Obligatorios se identifican con <strong class="text-danger">*</strong> 
+							<br><br><button type="button" class="btn btn2 btn-info " data-toggle="popover" data-placement="top" title="¿Cuál es el Usuario del Empleado?" data-content="El Usuario del empleado Corresponde al Rut sin digito verificador ni guión"><i class="fa fa-info-circle"></i></button>
+						{% if mensaje %}
+						<small style="color: darkgreen;">{{ mensaje }}</small>
+						<hr>
+						{% endif %}
+					</div>
+					<div class="card-body">
+						<form name="form1" id="form1" action="#" method="POST"
+							onSubmit="javascript:return Rut(document.form1.rut.value)">
+							{% csrf_token %}
+							<input type="hidden" name="username">
+							<div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Rut <strong class="text-danger">*</strong></label>
+										<input class="form-control" type="text" placeholder="Ingrese RUT de empleado"
+											value="{{rut}}" name="rut" id="rut">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Correo electrónico <strong class="text-danger">*</strong></label>
+										<input type="text" class="form-control" name="email" value="{{email}}"
+											placeholder="Ingrese Correo electrónico">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Número de Contacto</label>
+										<input type="number" class="form-control" name="fono" value="{{fono}}"
+											placeholder="Ingrese Número de Contacto">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Nombre  <strong class="text-danger">*</strong></label>
+										<input type="text" class="form-control" name="nombre" value="{{nombre}}"
+											placeholder="Ingrese Nombre">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Apellido Paterno <strong class="text-danger">*</strong></label>
+										<input type="text" class="form-control" name="apellido_p" value="{{apellido_p}}"
+											placeholder="Ingrese Apellido Paterno">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Apellido Materno</label>
+										<input type="text" class="form-control" name="apellido_m" value="{{apellido_m}}"
+											placeholder="Ingrese Apellido Materno">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Fecha de Nacimiento</label>
+										<input type="date" class="form-control" name="fec_nac" id="fec_nac"
+											max="{% now 'Y-m-d' %}" value="{{fec_nac}}">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Nacionalidad </label>
+										<input type="text" class="form-control" name="nacionalidad" id="nacionalidad"
+											value="{{nacionalidad}}" placeholder="Ingrese Nacionalidad">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Tipo de empleado <strong class="text-danger">*</strong></label>
+										<select name="tipo_e" id="tipo_e" class="cb-single form-control">
+											<option value="">Seleccione una opción...</option>
+											{% for tipo_empleado in tipo_empleados %}
+											{% if tipo_empleado.1 == 1 %}
+											<option value="{{ tipo_empleado.0 }}">{{ tipo_empleado.2 }}
+											</option>
+											{% endif %}
+											{% endfor %}
+										</select>
+									</div>
+								</div>
+
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Permite Generar Pedidos <strong class="text-danger">*</strong></label>
+										<select name="ge_pedido" id="ge_pedido" class="form-control cb-single">
+											<option value="1">Si</option>
+											<option value="0" selected>No</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Estado <strong class="text-danger">*</strong></label>
+										<select name="estado" id="estado" class="form-control cb-single">
+											<option value="1">Activo</option>
+											<option value="0">Inactivo</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Contraseña <strong class="text-danger">*</strong></label>
+										<input class="form-control" name="password1" id="password1" type="password"
+											placeholder="Ingrese Contraseña">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Confirmar Contraseña <strong class="text-danger">*</strong></label>
+										<input class="form-control" name="password2" id="password2" type="password"
+											placeholder="Confirme Contraseña">
+									</div>
+								</div>
+							</div>
+							<hr>
+							<h5 class="card-title text-center">Información Adicional</h5>
+							<hr>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Región de Residencia <strong class="text-danger">*</strong></label>
+										<select name="reg_sel" id="reg_sel" class="cb-single form-control">
+											<option value="" selecte>Seleccionar Región...</option>
+											{% for region in regiones %}
+											<option value="{{ region.0 }}">{{ region.2 }}</option>
+											{% endfor %}
+										</select>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Comuna de Residencia <strong class="text-danger">*</strong></label>
+										<select name="com_sel" id="com_sel" class="cb-single form-control">
+											<option value="" selecte>Seleccionar Comuna...</option>
+											{% for comuna in comunas %}
+											<option value="{{ comuna.0 }}">{{ comuna.1 }}</option>
+											{% endfor %}
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label>Dirección <strong class="text-danger">*</strong></label>
+										<input type="text" name="direccion" id="direccion" class="form-control"
+											value="{{direccion}}" placeholder="Ingrese Dirección">
+									</div>
+								</div>
+							</div>
+							<hr>
+							{% if edit %}
+							<div class="row">
+								<div class="col-md-4"></div>
+								<div class="col-md-2">
+									<div class="form-group mb-0">
+										<a class="btn btn2 btn-danger btn-block text-center"
+											href="{% url 'empleados-list' %}"><i class="fa fa-reply"></i> Volver</a>
+									</div>
+								</div>
+								&nbsp;
+								<div class="col-md-2">
+									<div class="form-group mb-0">
+										<button class="btn btn2 btn-info btn-block text-center" type="submit"><i
+												class="fa fa-edit"></i> Modificar</button>
+									</div>
+								</div>
+							</div>
+							<br>
+							{% else %}
+							<div class="row">
+								<div class="col-md-4"></div>
+								<div class="col-md-4">
+									<div class="form-group mb-0">
+										<button class="btn btn2 btn-info btn-block text-center" type="submit"><i
+												class="fa fa-save"></i> Registrar</button>
+									</div>
+								</div>
+							</div>
+							{% endif %}
+						</form>
+					</div>
+				</div>
+				<!-- /General -->
+			</div>
+		</div>
+		<br>
+	</div>
+</div>
+<!-- /Page Wrapper -->
+
+{% block js %}
+{% if messages %}
+<div>
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+	<script>
+		Swal.fire({
+			title: "Error en Validación",
+			text: "{{message}}",
+			icon: "error",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Cliente Creado Correctamente",
+			text: "{{message}}",
+			icon: "success",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+	{% endif %}
+	{% endfor %}
+</div>
+{% endif %}
+<script>
+	$(document).ready(function () {
+		$('.cb-single').select2();
+	});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+<script src="{% static 'appADM/assets/js/traslate.js' %}"></script>
+<script src="{% static 'appADM/assets/js/valida-empleado.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+</script>
+{% endblock %}
+{% endblock %}

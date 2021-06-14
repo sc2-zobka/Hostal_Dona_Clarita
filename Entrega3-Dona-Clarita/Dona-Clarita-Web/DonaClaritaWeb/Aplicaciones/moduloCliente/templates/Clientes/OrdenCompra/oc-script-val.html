@@ -1,0 +1,145 @@
+<script>
+    function contar() {
+        //CUENTA TRABAJADORES FORM 2 (OC-FORM-2.HTML)
+        var checkboxes = document.getElementById("form1"); //Array que contiene los checkbox
+        var cont = 0; //Variable que lleva la cuenta de los checkbox pulsados
+        for (var x = 0; x < checkboxes.length; x++) {
+            if (checkboxes[x].checked) {
+                cont = cont + 1;
+            }
+        }
+       //CUENTA SERVICIOS FORM1 (OC-FORM-2.HTML)
+        var servicios = document.getElementById("form1").servicio; //Array que contiene los checkbox
+        var cont2 = 0; //Variable que lleva la cuenta de los checkbox pulsados
+        for (var y = 0; y < servicios.length; y++) {
+            if (servicios[y].value != "") {
+                cont2 = cont2 + 1;
+            }
+        }
+        //CUENTA HUESPEDES ELEGIDOS POR CLIENTE FORM (OC-FORM-1.HTML)
+        var huesped = {{nhuesped}}
+        
+        if (cont == 0 && cont2 == 0) {
+            Swal.fire({
+                title: "Campos Sin Seleccionar",
+                text: "Debe Seleccionar la cantidad de: " + huesped +
+                    " Servicios y Trabajadores para Continuar",
+                icon: "error",
+                timer: 5000,
+                timerProgressBar: true
+            })
+            return;
+        } else if (cont > huesped || cont2 > huesped) {
+            Swal.fire({
+                title: "Supera el Máximo Permitido",
+                text: "La Cantidad Máxima es de: " + huesped +
+                    " Servicios y Trabajadores. Corrija e intente de Nuevo",
+                icon: "error",
+                timer: 5000,
+                timerProgressBar: true
+            })
+        } else if (cont == huesped && cont2 == 0) {
+            Swal.fire({
+                title: "Servicio de Comedor Sin Seleccionar",
+                text: "Debe Seleccionar la cantidad de: " + huesped + " Servicio(s)",
+                icon: "error",
+                timer: 5000,
+                timerProgressBar: true
+            })
+            return;
+        } else if (cont2 == huesped && cont == 0) {
+            Swal.fire({
+                title: "Trabajadores Sin Seleccionar",
+                text: "Debe Seleccionar la cantidad de: " + huesped + " Trabajador(es)",
+                icon: "error",
+                timer: 5000,
+                timerProgressBar: true
+            })
+            return;
+        } else if (cont2 < huesped) {
+            Swal.fire({
+                title: "Cantidad de Servicio Comedor Incompleta",
+                text: "A Seleccionado solo " + cont2 + " Servicio(s) de " + huesped + "",
+                icon: "error",
+                timer: 5000,
+                timerProgressBar: true
+            })
+            return;
+        } else if (cont < huesped) {
+            Swal.fire({
+                title: "Cantidad de Trabajadores Incompleta",
+                text: "A Seleccionado solo " + cont + " Trabajador(es) de " + huesped + "",
+                icon: "error",
+                timer: 5000,
+                timerProgressBar: true
+            })
+            return;
+
+        } else {
+            $("#form1").submit();
+
+        }
+
+    }
+</script>
+<script>
+   function contar2() {
+        //Servicios cuenta
+        var nrohabitaciones = document.getElementById("form2").nrohabitacion; //Array que contiene los checkbox
+        var cont = 0; //Variable que lleva la cuenta de los checkbox pulsados
+        for (var y = 0; y < nrohabitacion.length; y++) {
+            if (nrohabitaciones[y].value != "") {
+                cont = cont + 1;
+            }
+        }
+        var huesped = {{nhuesped}}
+        var unico = false;
+
+        if ( huesped == 1 ) {
+            for (var y = 0; y < nrohabitacion.length; y++) {
+                if (nrohabitaciones[y].value != "") {
+                    unico = true;
+                }
+            }
+
+            if ( unico ) {
+                $("#form2").submit();
+            }
+        }
+
+        if (!unico && cont == 0) {
+            Swal.fire({
+                title: "Campos Sin Seleccionar",
+                text: "Debe Seleccionar las Habitaciones de: " + huesped + " Trabajadores para Continuar",
+                icon: "error",
+                timer: 5000,
+                timerProgressBar: true
+            })
+            return;
+        } else if (!unico && cont > huesped) {
+            Swal.fire({
+                title: "Supera el Máximo Permitido",
+                text: "La Cantidad Máxima es de: " + huesped +
+                    "  Habitaciones. Corrija e intente de Nuevo",
+                icon: "error",
+                timer: 5000,
+                timerProgressBar: true
+            })
+
+        } else if (!unico && cont < huesped) {
+            Swal.fire({
+                title: "Cantidad de Trabajadores Incompleta",
+                text: "A Seleccionado solo " + cont + " Habitaciones para " + huesped + "",
+                icon: "error",
+                timer: 5000,
+                timerProgressBar: true
+            })
+            return;
+
+        } else {
+            $("#form2").submit();
+
+        }
+    }
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>

@@ -1,0 +1,76 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Ventas{% endblock%}
+{% block contenido-panel %}
+			<!-- Page Wrapper -->
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+				
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row">
+							<div class="col-sm-12">
+								<h3 class="page-title"><i class="fa fa-money"></i> Facturas<strong class="text-danger"> SIN PROGRAMAR</strong></h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="{% url 'dashboard-cli' %}">Inicio</a></li>
+									<li class="breadcrumb-item active">Facturas</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+					<div class="row">
+						<div class="col-md-12">
+						
+							<!-- Recent Orders -->
+							<div class="card">
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="datatable table table-hover table-center mb-0">
+											<thead>
+												<tr>
+													<th>#</th>
+													<th>N° Factura</th>													
+													<th>Valor Un.</th>
+													<th>Total</th>
+													<th class="text-center">Estado</th>
+													<th class="text-right">Acciones</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td><a>2</a></td>
+													<td>#002</td>
+													<td>$12.000</td>
+													<td>$60.000</td>
+													<td class="text-center">
+														<span class="badge badge-pill bg-warning inv-badge">Pendiente</span>
+													</td>
+													<td class="text-right">
+														<div class="actions">
+															<a class="btn btn-sm bg-danger-light"
+																href="#" title="Anular Factura" data-toggle="tooltip"><i class="fa fa-ban"></i> Anular</a>
+																<a class="btn btn-sm bg-primary-light" title="Ver Factura" data-toggle="tooltip"
+																href="{% url 'factura-view'%}"><i class="fa fa-eye"></i> Ver</a>
+															<a class="btn btn-sm bg-success-light" title="Imprimir Factura" data-toggle="tooltip"
+															href="{% url 'factura-print' %}" target="_blank" ><i class="fa fa-print"></i> Imprimir</a>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<!-- /Recent Orders -->
+							
+						</div>
+					</div>
+				</div>			
+			</div>
+			<!-- /Page Wrapper -->
+		
+{% block js %}
+
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,171 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Servicios{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-7 col-auto">
+					<h3 class="page-title"><i class="fa fa-list-ol"></i> Listado Productos</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active"> Listado Productos</li>
+					</ul>
+				</div>
+				<div class="col-sm-5 col">
+					<a href="{% url 'producto-new' %}"
+						class="btn btn2 btn-primary float-right mt-2"><i class="fa fa-plus"></i> Agregar Producto</a>
+				</div>
+			</div>
+		</div>
+		{% if mensaje  %}
+		<div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+			<strong>ATENCIÓN:</strong> {{mensaje}}
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		{% endif %}
+		<!-- /Page Header -->
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="datatable table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										<th>Código</th>
+										<th>Categoria</th>
+										<th>Tipo Producto</th>
+										<th>Nombre</th>	
+										<th class="text-center">Precio</th>	
+										<th class="text-center">Stk. Actual</th>			
+										<th class="text-center">Stk. Crítico</th>	
+										<th class="text-center">Vencimiento</th>									
+										<th class="text-center">Estado</th>
+										<th class="text-center">Acciones</th>
+										
+									</tr>
+								</thead>
+								<tbody>
+									{% for producto in productos %}
+									<tr>
+										<td>{{producto.1}}</td>										
+										<td class="text-center">{{producto.2}}</td>
+										<td class="text-center">{{producto.3}}</td>
+										<td class="text-center">{{producto.4}}</td>
+										<td class="text-center">${{producto.5}}</td>
+										<td class="text-center">{{producto.6}}</td>
+										<td class="text-center">{{producto.7}}</td>
+										{% if producto.8 %}
+											{% if producto.8|date:"d-m-Y" < now %}
+											<td class="text-center text-danger"><strong>VENCIDO</strong></td>
+											{% elif producto.8|date:"d-m-Y" == now %}
+											<td class="text-center text-danger"><strong>VENCE HOY</strong></td>											
+											{% else%}
+											<td class="text-center">{{producto.8|date:"d-m-Y"}}</td>
+											{% endif %}
+										{% else %}
+										<td class="text-center">-</td>
+										{% endif %}
+										{% if producto.9%}
+										<td class="text-center">
+											<span class="badge badge-pill bg-success inv-badge">Activo</span>
+										</td>
+										{% else %}
+										<td class="text-center">
+											<span class="badge badge-pill bg-danger inv-badge">Inactivo</span>
+										</td>										
+										{% endif %}										
+										<td class="text-center">
+											<div class="actions">
+												<a class="btn btn-sm bg-success-light" title="Editar Producto" data-toggle="tooltip"
+													href="{% url 'producto-edit' producto.0 %}">
+													<i class="fa fa-pencil"></i> Editar
+												</a>
+												{% if producto.9%}
+												<a class="btn btn-sm bg-danger-light" href="#" title="Eliminar Producto" data-toggle="tooltip"
+													onClick="eliminar({{ producto.0 }})">
+													<i class="fa fa-trash"></i> Eliminar
+												</a>
+												{% endif %}
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Page Wrapper -->
+
+{% block js %}
+{% if messages %}
+<div>
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+	<script>
+		Swal.fire({
+			title: "Error en Validación",
+			text: "{{message}}",
+			icon: "error",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+	{% elif message.tags  == 'warning'%}
+	<script>
+		Swal.fire({
+			title: "¡Atención!",
+			text: "{{message}}",
+			icon: "warning",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>	
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Gestión de Productos",
+			text: "{{message}}",
+			icon: "success",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+	{% endif %}
+	{% endfor %}
+</div>
+{% endif %}
+
+<script>
+	function eliminar(id) {
+		Swal.fire({
+				"title": "¿Estás seguro de esta acción?",
+				"text": "Esta acción no se puede deshacer",
+				"icon": "question",
+				"showCancelButton": true,
+				"confirmButtonText": "Si, Eliminar",
+				"cancelButtonText": "No, Cancelar",
+				"reverseButtons": true,
+				"confirmButtonColor": "#d44747"
+			})
+			.then(function (result) {
+				if (result.isConfirmed) {
+					window.location.href = "/dashboard/eliminar-producto/" + id + "/"
+				}
+			})
+	}
+</script>
+{% endblock %}
+{% endblock %}

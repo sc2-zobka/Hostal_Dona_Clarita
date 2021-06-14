@@ -1,0 +1,314 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Nombre Habitación{% endblock%}
+{% block contenido %}
+     <!-- ======= Intro Single ======= -->
+     <section class="intro-single">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 col-lg-5">
+            <div class="title-single-box">
+              <h1 class="title-single">Nombre de Habitación</h1>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-5">
+            <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="{% url 'index' %}">Inicio</a>
+                </li>
+                <li class="breadcrumb-item">
+                  <a href="{% url 'habitaciones' %}">Habitaciones</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  Detalle 
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section><!-- End Intro Single-->
+    <!-- ======= Property Single ======= -->
+    <section class="property-single nav-arrow-b">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <div id="property-single-carousel" class="swiper-container">
+              <div class="swiper-wrapper">
+                <div class="carousel-item-b swiper-slide">
+                  <img src="{% static 'app/assets/img/banner2.jpg' %}" alt="Nombre habitacion" class="imgdet">
+                </div>
+                <div class="carousel-item-b swiper-slide">
+                  <img src="{% static 'app/assets/img/banner1.jpg' %}" alt="Nombre habitacion" class="imgdet">
+                </div>
+              </div>
+            </div>
+            <div class="property-single-carousel-pagination carousel-pagination"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-12">
+
+            <div class="row justify-content-between">
+              <div class="col-md-5 col-lg-4">
+                <div class="property-price d-flex justify-content-center foo">
+                  <div class="card-header-c d-flex">
+                    <div class="card-box-ico">
+                      <span class="bi bi-cash">$</span>
+                    </div>
+                    <div class="card-title-c align-self-center">
+                      <h5 class="title-c">15000</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-7 col-lg-7 section-md-t3">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="title-box-d">
+                      <h3 class="title-d">Descripción Habitación 1</h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="property-description">
+                  <p class="description color-text-b">
+                    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit
+                    neque, auctor sit amet
+                    aliquam vel, ullamcorper sit amet ligula. Cras ultricies ligula sed magna dictum porta.
+                    Curabitur aliquet quam id dui posuere blandit. Mauris blandit aliquet elit, eget tincidunt
+                    nibh pulvinar quam id dui posuere blandit.
+                  </p>
+                  <p class="description color-text-b no-margin">
+                    Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget
+                    malesuada. Quisque velit nisi,
+                    pretium ut lacinia in, elementum id enim. Donec sollicitudin molestie malesuada.
+                  </p>
+                </div>                
+                </div>
+                <div class="col-md-2">
+                    
+                </div>
+                <div class="col-md-10">
+                    <div class="row section-t3">
+                  <div class="col-sm-12">
+                    <div class="title-box-d">
+                      <h3 class="title-d">Caracteristicas</h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="amenities-list color-text-a">
+                  <ul class="list-a no-margin">
+                    <li>Balcón</li>
+                    <li>Cocina</li>
+                    <li>Tv Cable </li>
+                    <li>Aire Acondicionado</li>
+                    <li>Internet</li>
+                    <li>Servicio a la Habitación</li>
+                    <li>Otro</li>
+                    <li>Otro</li>
+                    <li>Otro</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section><!-- End Property Single-->
+ <!-- ======= Latest Properties Section ======= -->
+    <section class="section-property section-t8">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="title-wrap d-flex justify-content-between">
+              <div class="title-box">
+                <h2 class="title-a">Habitaciones Recomendadas</h2>
+              </div>
+              <div class="title-link">
+                <a href="{% url 'habitaciones' %}">Ver Todas
+                  <span class="bi bi-chevron-right"></span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="property-carousel" class="swiper-container">
+          <div class="swiper-wrapper">
+
+            <div class="carousel-item-b swiper-slide">
+              <div class="card-box-a card-shadow">
+                <div class="img-box-a">
+                  <img src="{% static 'app/assets/img/banner2.jpg' %}" alt="Nombre habitacion" class="img-a img-fluid">
+                </div>
+                <div class="card-overlay">
+                  <div class="card-overlay-a-content">
+                    <div class="card-header-a">
+                      <h2 class="card-title-a">
+                        <a href="{% url 'det-habitacion' %}">Nombre
+                          <br> Habitación</a>
+                      </h2>
+                    </div>
+                    <div class="card-body-a">
+                      <div class="price-box d-flex">
+                        <span class="price-a">Valor Noche  | $ 99.999</span>
+                      </div>
+                      <a href="#" class="link-a">Reservar
+                        <span class="bi bi-chevron-right"></span>
+                      </a>
+                    </div>
+                    <div class="card-footer-a">
+                      <ul class="card-info d-flex justify-content-around">
+                        <li>
+                          <h4 class="card-info-title">Camas</h4>
+                          <span>2</span>
+                        </li>
+                        <li>
+                          <h4 class="card-info-title">Baños</h4>
+                          <span>1</span>
+                        </li>
+                        <li>
+                          <h4 class="card-info-title">Comida</h4>
+                          <span>Si</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End carousel item -->
+
+            <div class="carousel-item-b swiper-slide">
+                            <div class="card-box-a card-shadow">
+                <div class="img-box-a">
+                  <img src="{% static 'app/assets/img/banner1.jpg' %}" alt="Nombre habitacion" class="img-a img-fluid">
+                </div>
+                <div class="card-overlay">
+                  <div class="card-overlay-a-content">
+                    <div class="card-header-a">
+                      <h2 class="card-title-a">
+                        <a href="{% url 'det-habitacion' %}">Nombre
+                          <br> Habitación</a>
+                      </h2>
+                    </div>
+                    <div class="card-body-a">
+                      <div class="price-box d-flex">
+                        <span class="price-a">Valor Noche  | $ 99.999</span>
+                      </div>
+                      <a href="#" class="link-a">Reservar
+                        <span class="bi bi-chevron-right"></span>
+                      </a>
+                    </div>
+                    <div class="card-footer-a">
+                      <ul class="card-info d-flex justify-content-around">
+                        <li>
+                          <h4 class="card-info-title">Camas</h4>
+                          <span>2</span>
+                        </li>
+                        <li>
+                          <h4 class="card-info-title">Baños</h4>
+                          <span>1</span>
+                        </li>
+                        <li>
+                          <h4 class="card-info-title">Comida</h4>
+                          <span>Si</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End carousel item -->
+
+            <div class="carousel-item-b swiper-slide">
+                            <div class="card-box-a card-shadow">
+                <div class="img-box-a">
+                  <img src="{% static 'app/assets/img/banner2.jpg' %}" alt="Nombre habitacion" class="img-a img-fluid">
+                </div>
+                <div class="card-overlay">
+                  <div class="card-overlay-a-content">
+                    <div class="card-header-a">
+                      <h2 class="card-title-a">
+                        <a href="{% url 'det-habitacion' %}">Nombre
+                          <br> Habitación</a>
+                      </h2>
+                    </div>
+                    <div class="card-body-a">
+                      <div class="price-box d-flex">
+                        <span class="price-a">Valor Noche  | $ 99.999</span>
+                      </div>
+                      <a href="#" class="link-a">Reservar
+                        <span class="bi bi-chevron-right"></span>
+                      </a>
+                    </div>
+                    <div class="card-footer-a">
+                      <ul class="card-info d-flex justify-content-around">
+                        <li>
+                          <h4 class="card-info-title">Camas</h4>
+                          <span>2</span>
+                        </li>
+                        <li>
+                          <h4 class="card-info-title">Baños</h4>
+                          <span>1</span>
+                        </li>
+                        <li>
+                          <h4 class="card-info-title">Comida</h4>
+                          <span>Si</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End carousel item -->
+
+            <div class="carousel-item-b swiper-slide">
+                            <div class="card-box-a card-shadow">
+                <div class="img-box-a">
+                  <img src="{% static 'app/assets/img/banner1.jpg' %}" alt="Nombre habitacion" class="img-a img-fluid">
+                </div>
+                <div class="card-overlay">
+                  <div class="card-overlay-a-content">
+                    <div class="card-header-a">
+                      <h2 class="card-title-a">
+                        <a href="{% url 'det-habitacion' %}">Nombre
+                          <br> Habitación</a>
+                      </h2>
+                    </div>
+                    <div class="card-body-a">
+                      <div class="price-box d-flex">
+                        <span class="price-a">Valor Noche  | $ 99.999</span>
+                      </div>
+                      <a href="#" class="link-a">Reservar
+                        <span class="bi bi-chevron-right"></span>
+                      </a>
+                    </div>
+                    <div class="card-footer-a">
+                      <ul class="card-info d-flex justify-content-around">
+                        <li>
+                          <h4 class="card-info-title">Camas</h4>
+                          <span>2</span>
+                        </li>
+                        <li>
+                          <h4 class="card-info-title">Baños</h4>
+                          <span>1</span>
+                        </li>
+                        <li>
+                          <h4 class="card-info-title">Comida</h4>
+                          <span>Si</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End carousel item -->
+          </div>
+        </div>
+        <div class="propery-carousel-pagination carousel-pagination"></div>
+
+      </div>
+    </section><!-- End Latest Properties Section -->
+{% endblock %}

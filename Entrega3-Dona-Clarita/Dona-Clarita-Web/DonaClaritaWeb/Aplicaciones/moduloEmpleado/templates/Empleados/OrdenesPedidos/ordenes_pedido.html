@@ -1,0 +1,231 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Ordenes de Pedidos{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title">Ordenes de Pedidos</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
+						<li class="breadcrumb-item active">Ordenes de Pedidos</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+		<div class="row">
+			<div class="col-md-12">
+
+				<!-- Recent Orders -->
+				<div class="card">
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="datatable table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										<th>N° Pedido</th>										
+										<th>Nombre Proveedor</th>
+										<th>Fec. Recepción</th>
+										<th>Total Prod.</th>
+										<th class="text-center">Estado</th>
+										<th class="text-center">Obs. Recepción</th>
+										<th class="text-center">Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><a href="#">IN0001</a></td>										
+										<td>
+											<h2 class="table-avatar">
+												<a href="#" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="User Image"></a>
+												<a href="#">Nombre Proveedor </a>
+											</h2>
+										</td>
+										<td>-</td>
+										<td>5</td>
+										<td class="text-center">
+											<span class="badge badge-pill bg-danger inv-badge">Anulada</span>
+										</td>
+										<td class="text-center">-</td>
+										<td class="text-center">
+											<div class="actions">
+												<a title="Imprimir Pedido" data-toggle="tooltip"
+													class="btn btn2 btn-sm bg-primary" href="#">
+													<i class="fa fa-print"></i> Imprimir
+												</a>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td><a href="#">IN0001</a></td>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="User Image"></a>
+												<a href="#">Nombre Proveedor </a>
+											</h2>
+										</td>
+										<td>-</td>
+										<td>5</td>
+										<td class="text-center">
+											<span class="badge badge-pill bg-warning inv-badge">Pendiente
+												Confirmación</span>
+										</td>
+										<td class="text-center">-</td>
+										<td class="text-center">
+											<div class="actions">
+												<a title="Anular Pedido" data-toggle="tooltip"
+													class="btn btn-sm bg-danger-light" href="#">
+													<i class="fa fa-ban"></i> Anular
+												<a/>
+												<a title="Editar Pedido" data-toggle="tooltip"
+													class="btn btn-sm bg-primary-light"
+													href="{% url 'edit-orden-pedido'%}">
+													<i class="fa fa-edit"></i> Editar
+												</a>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td><a href="#">IN0001</a></td>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="User Image"></a>
+												<a href="#">Nombre Proveedor </a>
+											</h2>
+										</td>
+										<td>-</td>
+										<td>5</td>
+										<td class="text-center">
+											<span class="badge badge-pill bg-warning inv-badge">Pendiente
+												Recepción</span>
+										</td>
+										<td class="text-center">-</td>
+										<td class="text-center">
+											<div class="actions">
+												<a title="Editar Pedido" data-toggle="tooltip"
+													class="btn btn-sm bg-primary-light"
+													href="{% url 'edit-orden-pedido'%}">
+													<i class="fa fa-edit"></i> Editar
+												</a>
+												<a title="Recepcionar Pedido" data-toggle="tooltip"
+													class="btn btn2 btn-sm bg-success-light"
+													href="{% url 'check-orden-pedido'%}">
+													<i class="fa fa-clipboard"></i> Recepcionar
+												</a>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td><a href="#">IN0001</a></td>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="User Image"></a>
+												<a href="#">Nombre Proveedor </a>
+											</h2>
+										</td>
+										<td>09-06-2021 19:34</td>
+										<td>5</td>
+										<td class="text-center">
+											<span class="badge badge-pill bg-success inv-badge">Recepcionada</span>
+										</td>
+										<td class="text-center">Si</td>
+										<td class="text-center">
+											<div class="actions">
+												<a title="Imprimir Pedido" data-toggle="tooltip"
+													class="btn btn2 btn-sm bg-primary" href="#">
+													<i class="fa fa-print"></i> Imprimir
+												</a>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td><a href="#">IN0001</a></td>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="User Image"></a>
+												<a href="#">Nombre Proveedor </a>
+											</h2>
+										</td>
+										<td>09-06-2021 19:34</td>
+										<td>5</td>
+										<td class="text-center">
+											<span class="badge badge-pill bg-danger inv-badge">Rechazada</span>
+										</td>
+										<td class="text-center">Si</td>
+										<td class="text-center">
+											<div class="actions">
+												<a title="Imprimir Pedido" data-toggle="tooltip"
+													class="btn btn2 btn-sm bg-primary" href="#">
+													<i class="fa fa-print"></i> Imprimir
+												</a>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td><a href="#">IN0001</a></td>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="User Image"></a>
+												<a href="#">Nombre Proveedor </a>
+											</h2>
+										</td>
+										<td>09-06-2021 19:34</td>
+										<td>5</td>
+										<td class="text-center">
+											<span class="badge badge-pill bg-success inv-badge">Recepcionada</span>
+										</td>
+										<td class="text-center">No</td>
+										<td class="text-center">
+											<div class="actions">
+												<a title="Imprimir Pedido" data-toggle="tooltip"
+													class="btn btn2 btn-sm bg-primary" href="#">
+													<i class="fa fa-print"></i> Imprimir
+												</a>
+											</div>
+										</td>
+									</tr>
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- /Recent Orders -->
+
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Page Wrapper -->
+{% block js %}
+
+
+
+
+
+{% endblock %}
+{% endblock %}

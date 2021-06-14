@@ -1,0 +1,147 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Servicios{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-7 col-auto">
+					<h3 class="page-title"><i class="fa fa-list-ol"></i> Listado Platos</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active"> Listado Platos</li>
+					</ul>
+				</div>
+				<div class="col-sm-5 col">
+					<a href="{% url 'plato-new' %}"
+						class="btn btn2 btn-primary float-right mt-2"><i class="fa fa-plus"></i> Agregar Plato</a>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="datatable table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										<th>Tipo Comedor</th>
+										<th class="text-center">Nombre</th>							
+										<th class="text-center">Fecha Desde </th>			
+										<th class="text-center">Fecha Hasta</th>
+										<th class="text-center">Estado</th>
+										<th class="text-center">Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for plato in platos %}
+									<tr>
+										<td>{{plato.6}}</td>
+										<td>
+											<h2 class="table-avatar">
+												{% if plato.4 %}
+												<a class="avatar avatar-sm mr-2">
+													<img class="avatar-img"
+														src="../../media/imgPlatos/{{plato.4}}"
+														alt="Imagen Plato">
+												</a>
+												{% else %}
+												<a class="avatar avatar-sm mr-2">
+													<img class="avatar-img"
+														src="{% static 'appADM/assets/img/noimagen.png' %}"
+														alt="Imagen Plato">
+												</a>												
+												{% endif %}
+												<a>{{plato.1}}</a>
+											</h2>
+										</td>
+										<td class="text-center">{{plato.2}}</td>
+										<td class="text-center">{{plato.3}}</td>
+										{% if plato.5 %}
+										<td class="text-center">
+											<span class="badge badge-pill bg-success inv-badge">Activo</span>
+										</td>	
+										{% else %}
+										<td class="text-center">
+											<span class="badge badge-pill bg-danger inv-badge">Inactivo</span>
+										</td>	
+										{% endif %}									
+										<td class="text-center">
+											<div class="actions">
+												<a class="btn btn-sm bg-success-light" 
+													href="{% url 'edit-plato'   plato.0%}">
+													<i class="fa fa-pencil"></i> Editar
+												</a>
+												{% if plato.5 %}
+												<a   href="#"  onClick="eliminar({{ plato.0 }})" 
+													class="btn btn-sm bg-danger-light">
+													<i class="fa fa-trash"></i> Eliminar
+												</a>
+												{% endif %}
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Page Wrapper -->
+
+
+{% block js %}
+{% for message in messages %}
+{% if message.tags  == 'error'%}
+	<script>
+		Swal.fire({
+			title: "Error en Validación",
+			text: "{{message}}",
+			icon: "error",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+{% else %}
+<script>
+	Swal.fire({
+		title: "Gestión de Platos",
+			text: "{{message}}",
+			icon: "success",
+			timer: 5000,
+			timerProgressBar: true
+	})
+</script>
+{% endif %}
+{% endfor %}
+<script>
+	function eliminar(id) {
+		Swal.fire({
+			"title": "¿Estás seguro de esta acción?",
+            "text": "Esta acción no se puede deshacer",
+            "icon": "question",
+            "showCancelButton":true,
+            "confirmButtonText": "Si, Eliminar",
+            "cancelButtonText": "No, Cancelar",
+            "reverseButtons": true,
+            "confirmButtonColor":"#d44747"
+			})
+			.then(function(result) {
+				if (result.isConfirmed) {
+					window.location.href = "/dashboard/eliminar-plato/"+id+"/"
+				}
+			})
+	}
+</script>
+{% endblock %}
+{% endblock %}

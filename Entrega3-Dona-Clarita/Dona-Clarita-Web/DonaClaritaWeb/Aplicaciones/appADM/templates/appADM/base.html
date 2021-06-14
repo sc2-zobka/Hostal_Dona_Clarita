@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>{% block title %}{% endblock%} - Hostal Doña Clarita </title>
+    {% load static %}
+    <!-- Favicon -->
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'appADM/assets/img/favicondc.PNG' %}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'appADM/assets/css/bootstrap.min.css' %}">
+    <!-- Feathericon CSS -->
+    <link rel="stylesheet" href="{% static 'appADM/assets/css/feathericon.min.css' %}">
+    <link rel="stylesheet" href="{% static 'appADM/assets/css/font-awesome.min.css' %}">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static 'appADM/assets/css/style.css' %}">
+
+    <link rel="stylesheet" href="{% static 'app/assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'appADM/assets/css/select2.css' %}">
+    <script src="{% static 'appADM/assets/js/validarut.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+    {% block css-adm %}
+
+    {% endblock %}
+</head>
+
+<body>
+    {% include 'appADM/help.html' %}
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <!-- Header -->
+        <div class="header">
+            <!-- Logo -->
+            <div class="header-left">
+                <a href="{% url 'index' %}" class="logo">
+                    <img src="{% static 'appADM/assets/img/logodcwhite.png' %}" alt="Logo">
+                </a>
+                <a href="{% url 'dashboard' %}" class="logo logo-small">
+                    <img src="{% static 'appADM/assets/img/favicondc.PNG' %}" alt="Logo" width="30" height="30">
+                </a>
+            </div>
+            <!-- /Logo -->
+            <a href="javascript:void(0);" id="toggle_btn">
+                <i class="fe fe-text-align-left" style="color: #fff;"></i>
+            </a>
+
+            <!-- Mobile Menu Toggle -->
+            <a class="mobile_btn" id="mobile_btn">
+                <i class="fa fa-bars" style="color: #fff;"></i>
+            </a>
+            <!-- /Mobile Menu Toggle -->
+
+            <!-- Header Right Menu -->
+            <ul class="nav user-menu">
+                <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse"
+                    data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" style="    height: 35px;
+                    margin-top: 12px;">
+                    <i class="fe fe-question"></i>
+                </button>
+
+                <!-- User Menu -->
+                <li class="nav-item dropdown has-arrow">
+                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                        <span class="user-img"><img class="rounded-circle"
+                                src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}" width="31"
+                                alt="avatar"></span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="user-header">
+                            <div class="avatar avatar-sm">
+                                <img src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}" alt="avatar"
+                                    class="avatar-img rounded-circle">
+                            </div>
+                            <div class="user-text">
+                                <h6>@{{user.username}}</h6>
+                               
+                                {% if user.is_cliente %}
+                                <p class="text-muted mb-0">Cliente</p>
+                                {% elif user.is_empleado %}
+                                <p class="text-muted mb-0">Empleado(a)</p>          
+                                {% elif user.is_proveedor %}
+                                <p class="text-muted mb-0">Proveedor</p>   
+                                {% elif user.is_superuser %}
+                                <p class="text-muted mb-0">Administrador</p>  
+                                {% endif %}                                                                                       
+                            </div>
+                        </div>
+                        {% if user.is_cliente or user.is_proveedor %}
+                        <a class="dropdown-item" href="{% url 'config-user' %}">Configuración</a>
+                        {% else %}
+                        <a class="dropdown-item" href="{% url 'config-emp' %}">Configuración</a>
+                        {% endif %}
+                        <a class="dropdown-item" href="{% url 'logout' %}">Cerrar Sesión</a>
+                        
+                    </div>
+                </li>
+                <!-- /User Menu -->
+
+            </ul>
+            <!-- /Header Right Menu -->
+
+        </div>
+        <!-- /Header -->
+        {% if user.is_superuser or user.is_empleado%}
+        {% include 'appADM/MenuLateral/sidebar-v3.html' %}
+        {% elif user.is_cliente %}
+        {% include 'appADM/MenuLateral/sidebarcliente.html' %}
+        {% elif user.is_proveedor %}
+        {% include 'appADM/MenuLateral/sidebarproveedor.html' %}
+        {% endif %}
+        {% block contenido-panel %}
+
+        {% endblock %}
+
+    </div>
+    <!-- /Main Wrapper -->
+
+    <!-- jQuery -->
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="{% static 'app/assets/js/main.js' %}"></script>
+    <!-- Bootstrap Core JS -->
+    <script src="{% static 'appADM/assets/js/popper.min.js' %}"></script>
+    <script src="{% static 'appADM/assets/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'appADM/assets/js/select2.js' %}"></script>
+
+    <!-- Slimscroll JS -->
+    <script src="{% static 'appADM/assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+    <!-- Datatables JS -->
+    <script src="{% static 'appADM/assets/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'appADM/assets/plugins/datatables/datatables.min.js' %}"></script>
+    <!-- Custom JS -->
+    <script src="{% static 'appADM/assets/js/script.js' %}"></script>
+    <!-- Template Main JS File -->
+
+    {% block js %}
+
+    {% endblock %}
+</body>
+
+</html>

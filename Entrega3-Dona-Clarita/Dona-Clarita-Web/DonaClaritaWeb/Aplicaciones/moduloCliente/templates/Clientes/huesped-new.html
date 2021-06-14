@@ -1,0 +1,242 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Nuevo Trabajador{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					{% if user.is_cliente and not edit%}
+					<h3 class="page-title"><i class="fa fa-user-plus"></i> Nuevo Trabajador</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Nuevo Trabajador</li>
+					</ul>
+					{% elif user.is_cliente and edit %}
+					<h3 class="page-title"><i class="fa fa-pencil"></i> Editar Trabajador</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Editar Trabajador</li>
+					</ul>		
+					{% elif user.is_cliente == 0 and edit %}		
+					<h3 class="page-title"><i class="fa fa-pencil"></i> Editar Huésped</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Editar Huésped</li>
+					</ul>						
+					{% else %}
+					<h3 class="page-title"><i class="fa fa-user-plus"></i> Nuevo Huésped</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Nuevo Huésped</li>
+					</ul>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+			<div class="col-12">
+				<!-- General -->
+				<div class="card">
+					<div class="card-header text-center">
+						<hr>
+						{% if user.is_cliente %}
+						<h4 class="card-title">Información de Trabajador</h4>
+						{% else %}
+						<h4 class="card-title">Información de Huésped</h4>
+						{% endif %}					
+						<hr>
+						<h6 class="alert alert-info"><i class="fa fa-info-circle"></i> <strong>ATENCIÓN:</strong> Campos Obligatorios se identifican con <strong class="text-danger">*</strong></h6>
+					</div>
+					<div class="card-body">
+						<form name="form1" id="form1" action="#" method="POST" onSubmit="javascript:return Rut(document.form1.rut.value)">
+							{% csrf_token %}
+							<div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Rut Empresa <strong class="text-danger">*</strong></label>
+										{% if user.is_cliente %}
+										<input type="text" class="form-control" name="rut_emp"
+											placeholder="Ingrese Rut de Empresa" value="{{ cliente_m.rut_empresa }}-{{ cliente_m.dv }}" disabled>
+										{% else %}
+										<select name="rut_emp" id="" class="cb-single form-control">
+											<option value="">Seleccionar Rut...</option>
+											{% for cliente in clientes %}
+											<option value="{{ cliente.rut_empresa }}{{ cliente.dv }}">{{ cliente.rut_empresa }}-{{ cliente.dv }}</option>
+											{% endfor %}
+										</select>
+										{% endif %}
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										{% if user.is_cliente %}
+										<label>Rut Trabajador <strong class="text-danger">*</strong></label>
+										<input type="text" class="form-control" name="rut"
+											placeholder="Ingrese Rut  de Trabajador(a)">
+										{% else %}
+										<label>Rut Huésped <strong class="text-danger">*</strong></label>
+										<input type="text" class="form-control" name="rut"
+											placeholder="Ingrese Rut de Huésped">
+										{% endif %}
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Nombres <strong class="text-danger">*</strong></label>
+										<input type="text" class="form-control" name="nombres"
+											placeholder="Ingrese Nombres">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Apellido Paterno <strong class="text-danger">*</strong></label>
+										<input type="text" class="form-control" name="apellido_p"
+											placeholder="Ingrese Apellido Paterno">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Apellido Materno <strong class="text-danger">*</strong></label>
+										<input type="text" class="form-control" name="apellido_m"
+											placeholder="Ingrese Apellido Materno">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Estado <strong class="text-danger">*</strong></label>
+										<select name="estado" id="estado" class="form-control cb-single">
+											<option value="1" selected>Activo</option>
+											<option value="0">Inactivo</option>
+										</select>
+									</div>
+								</div>								
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Correo electrónico <strong class="text-danger">*</strong></label>
+										<input type="text" class="form-control" name="email"
+											placeholder="Ingrese Correo electrónico">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Número de Contacto</label>
+										<input type="number" class="form-control" name="telefono"
+											placeholder="Ingrese Número de Contacto">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Fecha de Nacimiento</label>
+										<input type="date" class="form-control" name="fec-nac" max="{% now 'Y-m-d' %}">
+									</div>
+								</div>
+							</div>
+							<hr>
+							{% if user.is_cliente and edit %}
+							<div class="row">
+								<div class="col-md-4"></div>
+								<div class="col-md-2">
+									<div class="form-group mb-0">
+										<a class="btn btn2 btn-danger btn-block text-center"
+											href="{% url 'trabajadores-list' %}"><i class="fa fa-reply"></i> Volver</a>
+									</div>
+								</div>
+								&nbsp;
+								<div class="col-md-2">
+									<div class="form-group mb-0">
+										<button class="btn btn2 btn-info btn-block text-center"
+											type="submit"><i class="fa fa-edit"></i> Modificar</button>
+									</div>
+								</div>
+							</div>
+							<br>
+							{% elif user.is_cliente == 0 and edit %}
+							<div class="row">
+								<div class="col-md-4"></div>
+								<div class="col-md-2">
+									<div class="form-group mb-0">
+										<a class="btn btn2 btn-danger btn-block text-center"
+											href="{% url 'huespedes-list' %}"><i class="fa fa-reply"></i> Volver</a>
+									</div>
+								</div>
+								&nbsp;
+								<div class="col-md-2">
+									<div class="form-group mb-0">
+										<button class="btn btn2 btn-info btn-block text-center"
+											type="submit"><i class="fa fa-edit"></i> Modificar</button>
+									</div>
+								</div>
+							</div>
+							<br>							
+							{% else %}
+							<div class="row">
+								<div class="col-md-4"></div>
+								<div class="col-md-4">
+									<div class="form-group mb-0">
+										<button class="btn btn2 btn-info btn-block text-center" type="submit"><i
+												class="fa fa-save"></i> Registrar</button>
+									</div>
+								</div>
+							</div>
+							{% endif %}
+						</form>
+					</div>
+				</div>
+				<!-- /General -->
+			</div>
+		</div>
+		<br>
+	</div>
+</div>
+<!-- /Page Wrapper -->
+
+{% block js %}
+<script>
+	$(document).ready(function () {
+		$('.cb-single').select2();
+	});
+</script>
+
+{% if messages %}
+<div>
+    {% for message in messages %}
+	{% if message.tags  == 'error'%}
+        <script>
+            Swal.fire({
+                title: "Error de Validación",
+                text: "{{message}}",
+                icon: "error",
+				timer: 5000,
+                timerProgressBar: true
+            })
+        </script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Gestión de Huéspedes",
+                text: "{{message}} ",
+                icon: "success",
+				timer: 5000,
+                timerProgressBar: true
+		})
+	</script>
+	{% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+<script src="{% static 'appADM/assets/js/traslate.js' %}"></script>
+<script src="{% static 'appADM/assets/js/valida-huesped.js' %}"></script>
+{% endblock %}
+{% endblock %}

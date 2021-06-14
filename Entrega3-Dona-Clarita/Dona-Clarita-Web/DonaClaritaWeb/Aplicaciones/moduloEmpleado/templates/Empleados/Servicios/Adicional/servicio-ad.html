@@ -1,0 +1,155 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Nuevo Empleado{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title"><i class="fa fa-hotel"></i> Nuevo Servicio Adicional</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Nuevo Servicio Adicional</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+			<div class="col-12">
+				<!-- General -->
+				<div class="card">
+					<div class="row">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-8">
+							<div class="card">
+								<div class="card-header text-center">
+									<hr>
+									<h4 class="card-title">Información de Servicio Adicional</h4>
+									<hr>
+									<h6 class="alert alert-info"><i class="fa fa-info-circle"></i>
+										<strong>ATENCIÓN:</strong> Campos Obligatorios se identifican con <strong
+											class="text-danger">*</strong></h6>
+								</div>
+								<div class="card-body">
+									<form action="#" method="POST" id="form1" enctype="multipart/form-data">
+										{% csrf_token %}
+										<div class="row">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label>Nombre Servicio <strong class="text-danger">*</strong></label>
+													<input type="text" class="form-control" name="nombre"  value="{{nombre}}"
+														placeholder="Ingrese Nombre de Servicio">
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-4">
+												<div class="form-group">
+													<label>Precio <strong class="text-danger">*</strong></label>
+													<input type="number" class="form-control" name="precio" min="0" value="{{precio}}"
+														placeholder="Ingrese Precio Servicio">
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="form-group">
+													<label>¿Muestra Menú? <strong class="text-danger">*</strong></label>
+													<select name="muestra" id="" class="cb-single form-control">
+														<option value="1">Sí</option>
+														<option value="0">No</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="form-group">
+													<label>Estado <strong class="text-danger">*</strong></label>
+													<select name="estado" id="" class="cb-single form-control">
+														<option value="1">Activo</option>
+														<option value="0">Inactivo</option>
+													</select>
+												</div>
+											</div>											
+										</div>
+										<div class="row">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label>Descripción <strong class="text-danger">*</strong></label>
+													<textarea class="form-control" name="descripcion" cols="30" rows="5"
+														placeholder="Ingrese Descripción de Servicio...">{{descripcion}}</textarea>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label>Imagen</label>
+													<input class="form-control" type="file" name="imagen">
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-4"></div>
+											<div class="col-md-4">
+												<div class="form-group mb-0">
+													<button class="btn btn2 btn-info btn-block text-center"
+														type="submit"><i class="fa fa-save"></i> Guardar</button>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- /General -->
+				</div>
+			</div>
+			<br>
+		</div>
+	</div>
+	<!-- /Page Wrapper -->
+
+	{% block js %}
+	{% if messages %}
+	<div>
+		{% for message in messages %}
+		{% if message.tags  == 'error'%}
+		<script>
+			Swal.fire({
+				title: "Error en Validación",
+				text: "{{message}}",
+				icon: "error",
+				timer: 5000,
+				timerProgressBar: true
+			})
+		</script>
+		{% else %}
+		<script>
+			Swal.fire({
+				title: "Gestión de Servicios Adicionales",
+				text: "{{message}}",
+				icon: "success",
+				timer: 5000,
+				timerProgressBar: true
+			})
+		</script>
+		{% endif %}
+		{% endfor %}
+	</div>
+	{% endif %}	
+	<script>
+		$(document).ready(function() {
+		$('.cb-single').select2();
+	});
+	</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+<script src="{% static 'appADM/assets/js/traslate.js' %}"></script>
+<script src="{% static 'appADM/assets/js/valida-ser-ad.js' %}"></script>
+	{% endblock %}
+	{% endblock %}

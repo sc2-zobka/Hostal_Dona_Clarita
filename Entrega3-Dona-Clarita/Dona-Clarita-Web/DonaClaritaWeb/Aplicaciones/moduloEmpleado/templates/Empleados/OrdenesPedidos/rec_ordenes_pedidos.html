@@ -1,0 +1,141 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Ordenes de Pedidos{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+	
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title">Ordenes de Pedidos</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
+						<li class="breadcrumb-item active">Ordenes de Pedidos</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+		<div class="row">
+			<div class="col-md-12">
+			
+				<!-- Recent Orders -->
+				<div class="card">
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="datatable table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										<th>N° Pedido</th>
+										<th>ID Empleado</th>
+										<th>Nombre Proveedor</th>
+										<th>Total</th>
+										<th class="text-center">Estado</th>
+										<th class="text-right">Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><a href="#">#IN0001</a></td>
+										<td>#21212</td>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}" alt="User Image"></a>
+												<a href="#">Nombre Cliente </a>
+											</h2>
+										</td>
+										<td>$12.000</td>
+										<td class="text-center">
+											<span class="badge badge-pill bg-warning inv-badge">Pendiente</span>
+										</td>
+										<td class="text-right">
+											<div class="actions">
+												<a class="btn btn-sm bg-danger-light" data-toggle="modal" href="#delete_modal">
+													<i class="fa fa-ban"></i> Anular
+												</a>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td><a href="#">#IN0001</a></td>
+										<td>#21212</td>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}" alt="User Image"></a>
+												<a href="#">Nombre Cliente </a>
+											</h2>
+										</td>
+										<td>$12.000</td>
+										<td class="text-center">
+											<span class="badge badge-pill bg-warning inv-badge">Pendiente</span>
+										</td>
+										<td class="text-right">
+											<div class="actions">
+												<a class="btn btn-sm bg-danger-light" data-toggle="modal" href="#delete_modal">
+													<i class="fa fa-ban"></i> Anular
+												</a>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td><a href="#">#IN0001</a></td>
+										<td>#21212</td>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}" alt="User Image"></a>
+												<a href="#">Nombre Cliente </a>
+											</h2>
+										</td>
+										<td>$12.000</td>
+										<td class="text-center">
+											<span class="badge badge-pill bg-warning inv-badge">Pendiente</span>
+										</td>
+										<td class="text-right">
+											<div class="actions">
+												<a class="btn btn-sm bg-danger-light" data-toggle="modal" href="#delete_modal">
+													<i class="fa fa-ban"></i> Anular
+												</a>
+											</div>
+										</td>
+									</tr>
+<tr>
+										<td><a href="#">#IN0001</a></td>
+										<td>#21212</td>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}" alt="User Image"></a>
+												<a href="#">Nombre Cliente </a>
+											</h2>
+										</td>
+										<td>$12.000</td>
+										<td class="text-center">
+											<span class="badge badge-pill bg-success inv-badge">Entregado</span>
+										</td>
+										<td class="text-right">
+											<div class="actions">
+												<a class="btn btn-sm bg-primary-light" data-toggle="modal" href="#delete_modal">
+													<i class="fa fa-eye"></i> Ver
+												</a>
+											</div>
+										</td>
+									</tr>
+									
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- /Recent Orders -->
+				
+			</div>
+		</div>
+	</div>			
+</div>
+<!-- /Page Wrapper -->
+{% block js %}
+
+{% endblock %}
+{% endblock %}

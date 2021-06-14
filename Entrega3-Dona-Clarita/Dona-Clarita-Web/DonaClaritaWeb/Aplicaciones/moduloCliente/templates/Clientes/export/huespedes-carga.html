@@ -1,0 +1,176 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Nuevo Empleado{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					{% if user.is_cliente %}
+					<h3 class="page-title"><i class="fa fa-upload"></i> Carga Masiva Trabajadores</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="/dashboard/">Inicio</a></li>
+						<li class="breadcrumb-item"><a href="/dashboard/trabajadores/">Mis Trabajadores</a></li>
+						<li class="breadcrumb-item active">Carga Masiva</li>
+					</ul>
+					{% else %}
+					<h3 class="page-title"><i class="fa fa-upload"></i> Carga Masiva Huéspedes</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="/dashboard/">Inicio</a></li>
+						<li class="breadcrumb-item"><a href="/dashboard/huespedes/">Listado Huespedes</a></li>
+						<li class="breadcrumb-item active">Carga Masiva</li>
+					</ul>	
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+			<div class="col-12">
+				<!-- General -->
+				<div class="card">
+					<div class="card-header text-center">
+						{% if user.is_cliente %}
+						<h3 class="text-semibold mt-sm text-left">Carga Masiva de Trabajadores</h3>
+						<hr>
+						<p class="text-left">Realiza carga de Trabajadores en 3 simples pasos</p>
+						<p class="text-left">&#10148; <strong>PASO 1:</strong> Descarga el Formato de carga y rellena
+							los campos con los Datos de los trabajadores.</p>
+						{% else %}
+						<h3 class="text-semibold mt-sm text-left">Carga Masiva de Huéspedes</h3>
+						<hr>
+						<p class="text-left">Realiza carga de Huéspedes en 3 simples pasos</p>
+						<p class="text-left">&#10148; <strong>PASO 1:</strong> Descarga el Formato de carga y rellena
+							los campos con los Datos de los Huéspedes.</p>						
+						{% endif %}
+						<p class="text-left">&#10148; <strong>PASO 2:</strong> Seleccionar el archivo con formato .XLS o
+							.XLSX a subir.</p>
+						<p class="text-left">&#10148; <strong>PASO 3:</strong> Seleccionar botón <strong>Realizar Carga</strong> y Confirmar la carga.</p>
+						<p class="text-left">&#10148; El archivo debe venir con encabezado.</p>
+						<hr>
+						<p class="text-center"><a href="{% static 'appADM/assets/formato-carga.xlsx' %}"
+								download="Formato Carga Pedido" class="btn btn2 btn-primary"><i
+									class="fa fa-file-excel-o"></i> Descargar Formato</a></p>
+					</div>
+
+					<div class="card-body">
+						<form action="#" method="POST" enctype="multipart/form-data">
+							{% csrf_token %}
+							<input type="hidden" name="csrfmiddlewaretoken"
+								value="KbAHvnsY2F8yEE2r2ubA9tIhgvUl8Dwy4EkWGN9eKKXZbfODYA7Puud2TWkylC4u">
+								<div class="row">
+									<div class="col-md-2">
+									</div>
+									{% if not user.is_cliente %}
+									<div class="col-md-8">
+										<div class="form-group">
+											<label>Seleccione Empresa a Cargar <strong class="text-danger">*</strong></label>
+											<select name="clienteid" id="" class="cb-single form-control" required>
+												<option value="">Seleccionar Cliente...</option>
+												{% for cliente in clientes %}
+												<option value="{{ cliente.0 }}">{{ cliente.2 }} - {{ cliente.1 }}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									{% endif %}
+								</div>
+							<div class="row">
+								<div class="col-md-2">
+								</div>
+								<div class="col-md-8">
+									<div class="form-group">
+										<label>Archivo Excel a Cargar <strong class="text-danger">*</strong></label>
+										<input type="file" name="xlsfile" id="xlsfile" accept=".xls,.xlsx"
+											class="form-control">
+											<small>Formatos permitidos .XLS y .XLSX</small>
+									</div>
+								</div>
+							</div>
+							<hr>
+							{% if mensaje == 'nofile' %}
+							<div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+								<strong>No se ha detectado Archivo: </strong> No se ha seleccionado archivo, Este posee
+								un Formato Inválido o Viene Vacio
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							{% elif  mensaje == 'errorfile'%}
+							<div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+								<strong>Error al Leer Archivo: </strong> El archivo posee datos NO válidos o Espacios
+								entre las Filas, corrija e intente de Nuevo
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							{% elif  mensaje == 'ok'%}
+							<div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+								<strong>Carga Exitosa: </strong> Se ha realizado el Registro de Datos de Manera
+								Correcta
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							{% endif %}
+							<div class="row">
+								<div class="col-md-4"></div>
+								<div class="col-md-4">
+									<div class="form-group mb-0">
+										<button class="btn btn2 btn-info btn-block text-center" type="submit"><i class="fa fa-save"></i> Realizar Carga</button>										
+									</div>
+								</div>
+								<div class="col-md-4"></div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<!-- /General -->
+			</div>
+		</div>
+		<br>
+	</div>
+</div>
+<!-- /Page Wrapper -->
+
+
+{% block js %}
+<script>
+	$(document).ready(function () {
+		$('.cb-single').select2();
+	});
+</script>
+{% if messages %}
+<div>
+    {% for message in messages %}
+	{% if message.tags  == 'error'%}
+        <script>
+            Swal.fire({
+                title: "Archivo No Reconocido",
+                text: "{{message}}",
+                icon: "error",
+				timer: 5000,
+                timerProgressBar: true
+            })
+        </script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Carga Realizada Correctamente",
+                text: "{{message}} ",
+                icon: "success",
+				timer: 5000,
+                timerProgressBar: true
+		})
+	</script>
+	{% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
+{% endblock %}

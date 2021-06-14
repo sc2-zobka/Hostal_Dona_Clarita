@@ -1,0 +1,149 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Listado de Empleados{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				{% if user.is_cliente %}
+				<div class="col-sm-7">
+					<h3 class="page-title"><i class="fa fa-users"></i> Mis Trabajadores</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Mis Trabajadores</li>
+					</ul>
+				</div>
+				<div class="col-sm-5 ">
+					<a href="{% url 'trabajador-new' %}" class="btn btn2 btn-primary float-right mt-2"><i class="fa fa-user-plus"></i> Nuevo Trabajador</a>
+				</div>
+				{% else %}	
+				<div class="col-sm-7">
+					<h3 class="page-title"><i class="fa fa-users"></i> Listado Huéspedes</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Listado Huéspedes</li>
+					</ul>
+				</div>
+				<div class="col-sm-5 ">
+					<a href="{% url 'huesped-new' %}" class="btn btn2 btn-primary float-right mt-2"><i class="fa fa-user-plus"></i> Nuevo Huésped</a>
+				</div>
+				{% endif %}							
+			</div>
+		</div>
+		<!-- /Page Header -->
+		<div class="row">
+			<div class="col-md-12">
+
+				<!-- Recent Orders -->
+				<div class="card">
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="datatable table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										{% if not user.is_cliente%}
+										<th>Rut Empresa</th>
+										{% endif %}
+										<th>Rut</th>
+										<th>Nombre Completo</th>
+										
+										<th class="text-center">Estado</th>
+										<th class="text-center">Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for huesped in huespedes %}
+									<tr>
+										{% if not user.is_cliente%}
+										<td>{{ huesped.1 }}</td>
+										{% endif %}
+										<td>{{ huesped.2 }}</td>
+										<td>{{ huesped.3 }} {{ huesped.4 }} {{ huesped.5 }}</td>
+										<td class="text-center">
+											{% if huesped.6 %}
+											<span class="badge badge-pill bg-success inv-badge">Activo</span>
+											{% else %}
+											<span class="badge badge-pill bg-danger inv-badge">Inactivo</span>
+											{% endif %}
+										</td>
+										<td class="text-center">
+											<div class="actions">
+												{% if user.is_cliente%}
+												<a class="btn btn-sm bg-success-light" href="{% url 'edit-trabajador' huesped.0 %}" title="Editar Trabajador" data-toggle="tooltip"><i class="fa fa-pencil"></i> Editar</a>
+												{% else %}
+												<a class="btn btn-sm bg-success-light" href="{% url 'edit-huesped' huesped.0 %}"  title="Editar Huésped" data-toggle="tooltip"><i class="fa fa-pencil"></i> Editar</a>
+												{% endif %}
+												{% if huesped.6 %}
+												<a href="#" class="btn btn-sm bg-danger-light" onClick="eliminar({{ huesped.0 }})" title="Eliminar Huésped" data-toggle="tooltip"><i class="fa fa-trash"></i> Eliminar</a>
+												{% endif %}
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- /Recent Orders -->
+
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Page Wrapper -->
+{% block js %}
+
+{% if messages %}
+<div>
+    {% for message in messages %}
+	{% if message.tags  == 'error'%}
+        <script>
+            Swal.fire({
+                title: "Error de Validación",
+                text: "{{message}}",
+                icon: "error",
+				timer: 5000,
+                timerProgressBar: true
+            })
+        </script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Gestión de Huéspedes",
+                text: "{{message}} ",
+                icon: "success",
+				timer: 5000,
+                timerProgressBar: true
+		})
+	</script>
+	{% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+
+<script>
+    function eliminar(id) {
+        Swal.fire({
+			"title": "¿Estás seguro de esta acción?",
+            "text": "Esta acción no se puede deshacer",
+            "icon": "question",
+            "showCancelButton":true,
+            "confirmButtonText": "Si, Eliminar",
+            "cancelButtonText": "No, Cancelar",
+            "reverseButtons": true,
+            "confirmButtonColor":"#d44747"
+            })
+            .then(function(result) {
+                if (result.isConfirmed) {
+                    window.location.href = "/dashboard/eliminar-huesped/"+id+"/"
+                }
+            })
+    }
+</script>
+
+{% endblock %}
+{% endblock %}

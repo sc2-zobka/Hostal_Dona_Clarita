@@ -1,0 +1,177 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Ordenes de Pedidos{% endblock%}
+{% block css-adm %}
+<link rel="stylesheet" href="{% static 'appADM/assets/css/oc.css' %}">
+{% endblock %}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title"><i class="fa fa-file-text-o"></i> Nueva Orden de Pedido</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item"><a href="{% url 'oc-list' %}">Ordenes de Pedido</a></li>
+						<li class="breadcrumb-item active">Nueva Pedido</li>
+
+					</ul>
+				</div>				
+			</div>
+		</div>
+		<!-- /Page Header -->
+		<div class="row">
+			<div class="col-md-12">
+
+				<div class="container mt-5">
+					<div class="row d-flex justify-content-center align-items-center">
+						<div class="col-1"></div>
+						<div class="col-xl-12 col-md-12">
+							<div class="ms-panel ms-panel-fh">
+								<div class="ms-panel-header">
+									<h6>Nueva Orden de Pedido</h6>
+								</div>
+								<div class="ms-panel-body">
+									<form class="ms-form-wizard ms-wizard-pill style2-wizard" method="GET" id="form">
+										<!--{% csrf_token %}-->
+										<h3>Cabecera</h3>
+										<div class="ms-wizard-step">
+											<div class="form-row">
+												<div class="col-md-4 mb-4">
+													<label>N° de Pedido</label>
+													<div class="form-group">
+														<input type="number" class="form-control" name="fdesde" disabled placeholder="Automático">
+													</div>
+												</div>
+												<div class="col-md-4 mb-4">
+													<label>Rut Proveedor (*)</label>
+													<div class="form-group">
+														<input type="text" class="form-control" name="fhasta" placeholder="Ingrese Rut de Proveedor">
+													</div>
+												</div>
+												<div class="col-md-4 mb-4">
+													<label>Fecha Emisión (*)</label>
+													<div class="form-group">
+														<input type="date" class="form-control" name="fhasta" min="{% now 'Y-m-d' %}" value="{% now 'Y-m-d' %}">
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-12 ">
+													<label>Observación</label>
+													<div class="form-group">
+														<textarea name="message" class="form-control" name="message" cols="45" rows="3" placeholder="Ingrese Observación (Opcional)" ></textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+										<h3>Detalle</h3>
+										<div class="ms-wizard-step">
+											<div class="form-row">
+												<div class="col-md-12">
+													<div class="table-responsive">
+														<table class="datatable table table-hover table-center mb-0">
+															<thead>
+																<tr>
+																	<th class="text-center">
+																		<h6>#</h6>
+																	</th>
+																	<th class="text-center">
+																		<h6>Código</h6>
+																	</th>																	
+																	<th class="text-center">
+																		<h6>Nombre Producto</h6>
+																	</th>
+																	<th class="text-center">
+																		<h6>En Stock</h6>
+																	</th>
+																	<th class="text-center">
+																		<h6>Stock Crítico</h6>
+																	</th>																	
+																	<th class="text-center">
+																		<h6>Cant. Solicitar</h6>
+																	</th>
+																	<th class="text-center">
+																		<h6>Seleccionar</h6>
+																	</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr>
+																	<td class="text-center"><a>1</a></td>
+																	<td class="text-center"><a>13242332222</a></td>
+																	<td class="text-center">
+																		<h2>Nombre Producto</h2>
+																	</td>
+																	<td class="text-center">
+																		<h2>2</h2>
+																	</td>
+																	<td class="text-center" style="list-style: none;">
+																		<h2>5</h2>
+																	</td>
+																	<td class="text-center">
+																		<h2><input class="form-control text-center" type="number" name="" id="" style="width: 100px;"></h2>
+																	</td>
+																	<td class="text-center">
+																		<input class="" type="checkbox" name="prod_1" >
+																	</td>
+																</tr>
+																<tr>
+																	<td class="text-center"><a>2</a></td>
+																	<td class="text-center"><a>13242332222</a></td>
+																	<td class="text-center">
+																		<h2>Nombre Producto</h2>
+																	</td>
+																	<td class="text-center">
+																		<h2>2</h2>
+																	</td>
+																	<td class="text-center" style="list-style: none;">
+																		<h2>5</h2>
+																	</td>
+																	<td class="text-center">
+																		<h2><input class="form-control text-center" type="number" name="" id="" style="width: 100px;"></h2>
+																	</td>
+																	<td class="text-center">
+																		<input class="" type="checkbox" name="prod_1" >
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+
+										</div>
+
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="col-1"></div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Page Wrapper -->
+{% block js %}
+<script src="{% static 'appADM/assets/js/jquery.steps.min.js' %}"></script>
+<script src="{% static 'appADM/assets/js/form-wizard.js' %}"></script>
+<script>
+	$(document).ready(function () {
+		$('#dtHorizontalExample').DataTable({
+			"scrollY": "50vh",
+			"scrollCollapse": true,
+		});
+		$('.dataTables_length').addClass('bs-select');
+	});
+</script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,198 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Nuevo Empleado{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title"><i class="fa fa-user-plus"></i> Nuevo Proveedor</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Nuevo Proveedor</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+			<div class="col-12">
+				<!-- General -->
+				<div class="card">
+					<div class="card-header text-center">
+						<hr>
+						<h4 class="card-title">Información de Proveedor</h4>
+						<small>Campos requeridos se identifican con (*)</small>
+						
+					</div>
+					<div class="card-body">
+						<form name="form1" id="form1" action="#" method="POST" onSubmit="javascript:return Rut(document.form1.rut.value)">
+
+							{% csrf_token %}
+
+							<div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Rut Empresa (*)</label>
+										<input type="text" class="form-control" name="rut" placeholder="Ingrese Rut de Proveedor">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Razón Social (*)</label>
+										<input type="text" class="form-control" name="r_social" placeholder="Ingrese Razón Social Proveedor">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Nombre Fantasia</label>
+										<input type="text" class="form-control" name="nom_fantasia" placeholder="Ingrese Nombre Fantasía Proveedor">
+									</div>
+								</div>								
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Usuario (*)</label>
+										<input type="text" class="form-control"
+											name="username" placeholder="Ingrese Usuario de Proveedor" >
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Contraseña (*)</label>
+										<input type="password" class="form-control"
+											name="password1" placeholder="Ingrese Contraseña">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Confirmar Contraseña (*)</label>
+										<input type="password" class="form-control"
+											name="password2" placeholder="Confirme Contraseña">
+									</div>
+								</div>								
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Email Contacto</label>
+										<input type="email" class="form-control" name="email" placeholder="Ingrese Correo electrónico">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Teléfono Contacto </label>
+										<input type="text" class="form-control" name="fono" placeholder="Ingrese Número Contacto">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Estado (*) </label>
+										<select name="estado" id="" class="form-control cb-single">
+											<option value="1">Activo</option>
+											<option value="0">Inactivo</option>
+										</select>
+									</div>
+								</div>							
+							</div>
+							
+							<hr>
+							<h5 class="card-title text-center">Información Adicional</h5>
+							<hr>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Región de Residencia</label>
+										<select name="reg_sel" id="reg_sel" class="cb-single form-control">
+											<option value="" selecte>Seleccionar Región...</option>
+											{% for region in regiones %}
+											<option value="{{ region.0 }}">{{ region.2 }}</option>
+											{% endfor %}
+										</select>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Comuna de Residencia </label>
+										<select name="com_sel" id="com_sel" class="cb-single form-control">
+											<option value="" selecte>Seleccionar Comuna...</option>
+											{% for comuna in comunas %}
+											<option value="{{ comuna.0 }}">{{ comuna.1 }}</option>
+											{% endfor %}
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label>Dirección (*)</label>
+										<input type="text" name="direccion" class="form-control" placeholder="Ingrese Dirección">
+									</div>
+								</div>
+								
+							</div>
+							<div class="row">
+								<div class="col-md-4"></div>
+								<div class="col-md-4">
+									<div class="form-group mb-0">
+										<button class="btn btn2 btn-info btn-block text-center" type="submit"><i class="fa fa-save"></i> Registrar</button>
+									</div>
+								</div>
+							</div>
+
+						</form>
+					</div>
+				</div>
+				<!-- /General -->
+			</div>
+		</div>
+		<br>
+	</div>
+</div>
+<!-- /Page Wrapper -->
+
+{% block js %}
+<script>
+	$(document).ready(function () {
+		$('.cb-single').select2();
+	});
+</script>
+{% if messages %}
+<div>
+    {% for message in messages %}
+	{% if message.tags  == 'error'%}
+        <script>
+            Swal.fire({
+                title: "Error en Validación",
+                text: "{{message}}",
+                icon: "error",
+				timer: 5000,
+                timerProgressBar: true
+            })
+        </script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Cliente Creado Correctamente",
+                text: "{{message}}",
+                icon: "success",
+				timer: 5000,
+                timerProgressBar: true
+		})
+	</script>
+	{% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+<script src="{% static 'appADM/assets/js/traslate.js' %}"></script>
+<script src="{% static 'appADM/assets/js/valida-cliente.js' %}"></script>
+{% endblock %}
+{% endblock %}

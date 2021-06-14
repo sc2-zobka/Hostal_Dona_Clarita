@@ -1,0 +1,136 @@
+label,  table{
+	font-family: 'Arial';
+	font-size: 9pt;
+}
+p{
+    font-size: 12px;
+    color: #585858;
+    font-variant: normal;
+    margin-top: 15px;
+    text-transform: none;
+    line-height:2px;
+}
+.h2{
+	font-family: 'Arial';
+	font-size: 16pt;
+}
+h5{
+	font-size: 15px;
+}
+h6{
+	font-size: 13px;
+}
+.text-center{
+	text-align: center;
+}
+
+.h3{
+	font-family: 'Arial';
+	font-size: 15px;
+	display: block;
+	background: #0a4661;
+	color: #FFF;
+	text-align: center;
+	padding: 5px;
+	margin-bottom: 5px;
+}
+#page_pdf{
+	width: 95%;
+	margin: 15px auto 10px auto;
+}
+
+#factura_head, #factura_cliente, #factura_detalle{
+	width: 100%;
+	margin-bottom: 10px;
+}
+.logo_factura{
+	width: 25%;
+}
+.logoimg {
+     width:200px;
+}
+.info_empresa{
+	width: 50%;
+	text-align: center;
+}
+.info_factura{
+	width: 25%;
+}
+.info_cliente{
+	width: 100%;
+}
+.datos_cliente{
+	width: 100%;
+}
+.datos_cliente tr td{
+	width: 50%;
+    line-height: 20px;
+    padding: 0px 0px 0px 20px;
+}
+.datos_cliente{
+	padding: 10px 10px 0 10px;
+}
+.datos_cliente label{
+	width: 75px;
+	display: inline-block;
+}
+.datos_cliente p{
+	display: inline-block;
+}
+
+.textright{
+	text-align: right;
+}
+.textleft{
+	text-align: left;
+}
+.textcenter{
+	text-align: center;
+}
+.round{
+	border-radius: 10px;
+	border: 1px solid #0a4661;
+	overflow: hidden;
+	padding-bottom: 15px;
+}
+.round p{
+	padding: 0 15px;
+}
+
+#factura_detalle{
+	border-collapse: collapse;
+}
+#factura_detalle thead th{
+	background: #0a4661;
+	color: #FFF;
+	padding: 5px;
+}
+#factura_detalle td{
+    padding: 5px;
+}
+#detalle_productos tr:nth-child(even) {
+    background: #ededed;
+}
+
+#detalle_totales span{
+	font-family: 'Arial';
+
+}
+.nota{
+	font-size: 8pt;
+}
+
+.anulada{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translateX(-50%) translateY(-50%);
+}
+
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+}

@@ -1,0 +1,227 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Configuración Empresa{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title">Configuración de Empresa</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Configuración de Empresa</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+
+			<div class="col-12">
+
+				<!-- General -->
+
+				<div class="card">
+					<div class="card-header text-center">
+						<hr>
+						<h4 class="card-title">Información de Empresa</h4>
+						<hr>
+						<h6 class="alert alert-info"><i class="fa fa-info-circle"></i>
+							<strong>ATENCIÓN:</strong> Campos Obligatorios se identifican con <strong
+								class="text-danger">*</strong></h6>
+						<hr>
+					</div>
+					<div class="card-body">
+						<form action="#" method="POST" enctype="multipart/form-data">
+							{% csrf_token %}
+							<div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Rut Empresa <strong class="text-danger">*</strong></label>
+										<input type="text" class="form-control" disabled value="{{empresa.1}}">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Razón Social <strong class="text-danger">*</strong></label>
+										<input type="text" class="form-control" name="r_social" 
+											value="{{empresa.2}}">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Nombre de Fantasia</label>
+										<input type="text" class="form-control" name="nom_fantasia"
+											value="{{empresa.3}}">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Región <strong class="text-danger">*</strong></label>
+										<select name="reg_ssel" id="" class="cb-single form-control">
+											<option value="" selected>Seleccionar Región...</option>
+											{% for r in regiones %}
+											{% if region is not None and region.2 == r.2 %}
+											<option value="{{ r.0 }}" selected>{{ r.2 }}</option>
+											{% else %}
+											<option value="{{ r.0 }}">{{ r.2 }}</option>
+											{% endif %}
+											{% endfor %}
+										</select>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Comuna <strong class="text-danger">*</strong></label>
+										<select name="com_sel" id="" class="cb-single form-control">
+											<option value="" selected>Seleccionar Comuna...</option>
+											{% for c in comunas %}
+											{% if comuna is not None and comuna.1 == c.1 %}
+											<option value="{{ c.0 }}" selected>{{ c.1 }}</option>
+											{% else %}
+											<option value="{{ c.0 }}">{{ c.1 }}</option>
+											{% endif %}
+											{% endfor %}
+										</select>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Dirección <strong class="text-danger">*</strong></label>
+										<input type="text" class="form-control" value="{{empresa.5}}"
+											name="direccion">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Tipo de Divisa Principal <strong class="text-danger">*</strong></label>
+										<select name="div_primera" id="" class="cb-single form-control" >
+											{% for divisa in divisas %}
+											{% if divisa_primaria is not None and divisa_primaria.0 == divisa.0 %}
+											<option value="{{ divisa.0 }}" selected>{{ divisa.1 }} ({{divisa.0}})</option>
+											{% else %}
+											<option value="{{ divisa.0 }}">{{ divisa.1 }} ({{divisa.0}})</option>
+											{% endif %}
+											{% endfor %}
+										</select>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Tipo de Divisa Secundaria</label>
+										<select name="div_segunda" id="" class="cb-single form-control">
+											<option value="" selected>Seleccionar Divisa...</option>
+											{% for divisa in divisas %}
+											{% if divisa_secundaria is not None and divisa_secundaria.0 == divisa.0 %}
+											<option value="{{ divisa.0 }}" selected>{{ divisa.1 }} ({{divisa.0}})</option>
+											{% else %}
+											<option value="{{ divisa.0 }}">{{ divisa.1 }} ({{divisa.0}})</option>
+											{% endif %}
+											{% endfor %}
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Logo Empresa</label>
+										<input type="file" class="form-control" name="image" accept=".PNG,.png">										
+										{% if empresa.8 %}
+										<small class="text-left">Imagen Actual <a class="link text-info"
+												href="../../../media/Logos/{{empresa.8}}"
+												target="_blank">{{ empresa.8 }}</a></small>												
+										{% else %}
+										<small class="text-left">Imagen Actual: <strong class="text-danger"> No Posee
+												Imagen</strong></small>
+										{% endif %}
+										<br>
+										<small class="text-muted">Tamaño Recomendado en Pixeles <b>150px x
+											150px</b></small><br>
+											<small class="text-muted">Solo Acepta Formatos : PNG</small>										
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group mb-0">
+										<label>Favicon</label>
+										<input type="file" class="form-control" name="imagen" accept=".PNG,.png, .ico">
+										{% if empresa.9 %}
+										<small class="text-left">Imagen Actual <a class="link text-info"
+												href="../../../media/Favicon/{{empresa.9}}"
+												target="_blank">{{ empresa.9 }}</a></small>												
+										{% else %}
+										<small class="text-left">Imagen Actual: <strong class="text-danger"> No Posee
+												Imagen</strong></small>
+										{% endif %}
+										<br>										
+										<small class="text-muted">Tamaño Recomendado en Pixeles <b>16px x 16px</b> o
+											<b>32px x 32px</b></small><br>
+										<small class="text-muted">Acepta Formatos : PNG y ICO</small>
+									</div>
+								</div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-md-4"></div>
+								<div class="col-md-4">
+									<div class="form-group mb-0">
+										<button class="btn btn2 btn-info btn-block text-center" type="submit"><i
+												class="fa fa-save"></i> Modificar</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<!-- /General -->
+			</div>
+		</div>
+
+	</div>
+</div>
+<!-- /Page Wrapper -->
+
+{% block js %}
+<script>
+	$(document).ready(function () {
+		$('.cb-single').select2();
+	});
+</script>
+{% if messages %}
+<div>
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+	<script>
+		Swal.fire({
+			title: "Error en Validación",
+			text: "{{message}}",
+			icon: "error",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Modificado Correctamente",
+			text: "{{message}}",
+			icon: "success",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+	{% endif %}
+	{% endfor %}
+</div>
+{% endif %}
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,222 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Ventas{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title">Ventas</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
+						<li class="breadcrumb-item active">Ventas</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+		<div class="row">
+			<div class="col-md-12">
+
+				<!-- Recent Orders -->
+				<div class="card">
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="datatable table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										<th>N° Boleta</th>
+										<th>ID Empleado</th>
+										<th>Nombre Cliente</th>
+										<th>Total</th>
+										<th class="text-center">Estado</th>
+										<th class="text-right">Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><a href="#">#IN0001</a></td>
+										<td>#21212</td>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="User Image"></a>
+												<a href="#">Nombre Cliente </a>
+											</h2>
+										</td>
+										<td>$12.000</td>
+										<td class="text-center">
+											<span class="badge badge-pill bg-success inv-badge">Pagado</span>
+										</td>
+										<td class="text-right">
+											<div class="actions">
+												<a class="btn btn-sm bg-danger-light" data-toggle="modal"
+													href="#delete_modal">
+													<i class="fa fa-ban"></i> Anular
+												</a>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td><a href="#">#IN0001</a></td>
+										<td>#21212</td>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="User Image"></a>
+												<a href="#">Nombre Cliente </a>
+											</h2>
+										</td>
+										<td>$12.000</td>
+										<td class="text-center">
+											<span class="badge badge-pill bg-success inv-badge">Pendiente</span>
+										</td>
+										<td class="text-right">
+											<div class="actions">
+												<a class="btn btn-sm bg-success-light" data-toggle="modal"
+													href="#delete_modal">
+													<i class="fa fa-check"></i> Pagar
+												</a>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td><a href="#">#IN0001</a></td>
+										<td>#21212</td>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="User Image"></a>
+												<a href="#">Nombre Cliente </a>
+											</h2>
+										</td>
+										<td>$12.000</td>
+										<td class="text-center">
+											<span class="badge badge-pill bg-success inv-badge">Pagado</span>
+										</td>
+										<td class="text-right">
+											<div class="actions">
+												<a class="btn btn-sm bg-danger-light" data-toggle="modal"
+													href="#delete_modal">
+													<i class="fa fa-ban"></i> Anular
+												</a>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td><a href="#">#IN0001</a></td>
+										<td>#21212</td>
+										<td>
+											<h2 class="table-avatar">
+												<a href="#" class="avatar avatar-sm mr-2"><img
+														class="avatar-img rounded-circle"
+														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
+														alt="User Image"></a>
+												<a href="#">Nombre Cliente </a>
+											</h2>
+										</td>
+										<td>$12.000</td>
+										<td class="text-center">
+											<span class="badge badge-pill bg-success inv-badge">Pagado</span>
+										</td>
+										<td class="text-right">
+											<div class="actions">
+												<a class="btn btn-sm bg-danger-light" data-toggle="modal"
+													href="#Add_Specialities_details">
+													<i class="fa fa-ban"></i> Anular
+												</a>
+											</div>
+										</td>
+									</tr>
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- /Recent Orders -->
+
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Page Wrapper -->
+
+<!-- Add Modal -->
+<div class="modal fade" id="Add_Specialities_details" aria-hidden="true" role="dialog">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Orden de Compra N° 1234 - Pendiente</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="row form-row">
+						<div class="col-12 col-sm-4">
+							<div class="form-group">
+								<label>Rut Cliente</label>
+								<input type="text" class="form-control" placeholder="Rut Cliente" disabled>
+							</div>
+						</div>
+						<div class="col-12 col-sm-8">
+							<div class="form-group">
+								<label>Razón Social</label>
+								<input type="text" class="form-control" placeholder="Razón social" disabled>
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label>Fecha desde</label>
+								<input type="date" class="form-control"disabled>
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label>Fecha Hasta</label>
+								<input type="date" class="form-control" disabled>
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label>N° de Huéspedes</label>
+								<input type="number" class="form-control" placeholder="Cantidad de Huespedes" disabled>
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label>Monto Total</label>
+								<input type="number" class="form-control" placeholder="Monto Total" disabled>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<label>Habitaciones</label>
+							<select class="cb-multiple form-control" name="accesorios_sel" disabled
+								multiple="multiple">
+								<option value="{{ accesorio.id }}">
+								</option>
+							</select>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /ADD Modal -->
+{% block js %}
+
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Contacto{% endblock%}
+{% block contenido %}
+<!-- ======= Intro Single ======= -->
+<section class="intro-single">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-lg-8">
+        <div class="title-single-box">
+          <h1 class="title-single">Contáctenos</h1>
+          <span class="color-text-b">Aut voluptas consequatur unde sed omnis ex placeat quis eos. Aut natus officia corrupti qui autem fugit consectetur quo. Et ipsum eveniet laboriosam voluptas beatae possimus qui ducimus. Et voluptatem deleniti. Voluptatum voluptatibus amet. Et esse sed omnis inventore hic culpa.</span>
+        </div>
+      </div>
+      <div class="col-md-12 col-lg-4">
+        <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="{% url 'index' %}">Inicio</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Contacto
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</section><!-- End Intro Single-->
+<!-- ======= Contact Single ======= -->
+<section class="contact">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 ">
+        <div class="row">
+          <div class="col-md-7">
+            <form method="POST" role="form" class="php-email-form">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <div class="form-group">
+                    <input type="text" name="name" class="form-control form-control-lg form-control-a" placeholder="Nombre de Contacto" >
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div class="form-group">
+                    <input name="number" type="number" class="form-control form-control-lg form-control-a" placeholder="Telefóno de Contacto" >
+                  </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                  <div class="form-group">
+                    <input name="email" type="email" class="form-control form-control-lg form-control-a" placeholder="Correo electrónico" >
+                  </div>
+                </div>                    
+                <div class="col-md-12 mb-3">
+                  <div class="form-group">
+                    <input type="text" name="subject" class="form-control form-control-lg form-control-a" placeholder="Asunto" >
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <textarea name="message" class="form-control" name="message" cols="45" rows="8" placeholder="Ingrese su Mensaje..." ></textarea>
+                  </div>
+                </div>
+                <div class="col-md-12 my-3">
+                  <div class="mb-3">
+                    <div class="loading">Cargando....</div>
+                    <div class="error-message"></div>
+                    <div class="sent-message">Mensaje enviado Correctamente</div>
+                  </div>
+                </div>
+
+                <div class="col-md-12 text-center">
+                  <button type="submit" class="btn btn-a">Enviar Mensaje</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-md-5 section-md-t3">
+            <div class="icon-box section-b2">
+              <div class="icon-box-icon">
+                <span class="bi bi-info-circle"></span>
+              </div>
+              <div class="icon-box-content table-cell">
+                <div class="icon-box-title">
+                  <h4 class="icon-title">Info de Contacto</h4>
+                </div>
+                <div class="icon-box-content">
+                  <p class="mb-1">Email.
+                    <span class="color-a">contacto@hostaldonaclarita.cl</span>
+                  </p>
+                  <p class="mb-1">Phone.
+                    <span class="color-a">+562 2221 443</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="icon-box section-b2">
+              <div class="icon-box-icon">
+                <span class="bi bi-geo-alt"></span>
+              </div>
+              <div class="icon-box-content table-cell">
+                <div class="icon-box-title">
+                  <h4 class="icon-title">Ubicación</h4>
+                </div>
+                <div class="icon-box-content">
+                  <p class="mb-1">
+                    Avda. Concha y toro 1320,
+                    <br>Puente Alto - Santiago, Chile
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="icon-box">
+              <div class="icon-box-icon">
+                <span class="bi bi-share"></span>
+              </div>
+              <div class="icon-box-content table-cell">
+                <div class="icon-box-title">
+                  <h4 class="icon-title">Redes Sociales</h4>
+                </div>
+                <div class="icon-box-content">
+                  <div class="socials-footer">
+                    <ul class="list-inline">
+                      <li class="list-inline-item">
+                        <a href="#" class="link-one">
+                          <i class="bi bi-facebook" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                      <li class="list-inline-item">
+                        <a href="#" class="link-one">
+                          <i class="bi bi-twitter" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                      <li class="list-inline-item">
+                        <a href="#" class="link-one">
+                          <i class="bi bi-instagram" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                      <li class="list-inline-item">
+                        <a href="#" class="link-one">
+                          <i class="bi bi-linkedin" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <br>
+      </div>
+      <hr>
+      
+      <div class="col-sm-12 section-t8">
+       <h1 class="title-single">Encuéntranos en</h1> 
+       <br>
+        <div class="contact-map box">
+          <div id="map" class="contact-map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.2690299730334!2d-70.58050538546914!3d-33.59832348073192!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662d703a6cae9b7%3A0xc70483a91472b029!2sAv.%20Concha%20Y%20Toro%201320%2C%20Puente%20Alto%2C%20Regi%C3%B3n%20Metropolitana!5e0!3m2!1ses-419!2scl!4v1618976842301!5m2!1ses-419!2scl" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>          
+    </div>
+  </div>
+</section><!-- End Contact Single-->
+{% endblock %}

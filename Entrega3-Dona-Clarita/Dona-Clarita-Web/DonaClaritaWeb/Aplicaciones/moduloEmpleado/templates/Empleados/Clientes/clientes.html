@@ -1,0 +1,149 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Clientes{% endblock%}
+
+{% block contenido-panel %}
+{% if user.is_authenticated %}
+
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title"><i class="fa fa-list-ol"></i> Clientes</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Clientes</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+		<div class="row">
+			<div class="col-md-12">
+
+				<!-- Recent Orders -->
+				<div class="card">
+					<div class="card-body">
+						<div class="table-responsive">
+							<table id="example" class="datatable table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										<th>Rut</th>
+										<th>Nombre Empresa</th>
+										<th>Fecha Creación</th>
+										<th class="text-center">Estado</th>
+										<th class="text-center">Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for cliente in clientes %}
+									<tr>
+										<td>{{ cliente.1 }}-{{ cliente.2 }}</td>
+										<td>{{ cliente.3 }}</td>
+										<td>{{ cliente.4 }}</td>
+										<td class="text-center">
+											{% if cliente.5 == 1 %}
+											<span class="badge badge-pill bg-success inv-badge">Activo</span>
+											{% else %}
+											<span class="badge badge-pill bg-danger inv-badge">Inactivo</span>
+											{% endif %}
+										</td>
+										<td class="text-center">
+											<div class="actions">
+												<a class="btn btn2 btn-sm bg-danger" title="Restablecer Contraseña"
+													data-toggle="tooltip" href="{% url 'pass-cliente' cliente.0 %}">
+													<i class="fa fa-lock"></i> Pass
+												</a>
+												<a class="btn btn-sm bg-success-light" title="Editar Cliente"
+													data-toggle="tooltip" href="{% url 'edit-cliente' cliente.0 %}">
+													<i class="fa fa-pencil"></i> Editar
+												</a>
+												{% if cliente.5 == 1 %}
+												<a href="#" title="Eliminar Cliente" data-toggle="tooltip"
+													onClick="eliminar({{ cliente.0 }})"
+													class="btn btn-sm bg-danger-light">
+													<i class="fa fa-trash"></i> Eliminar
+													{% endif %}
+												</a>
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- /Recent Orders -->
+
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Page Wrapper -->
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+{% if messages %}
+<div>
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+	<script>
+		Swal.fire({
+			title: "No se encontró Cliente",
+			text: "{{message}}",
+			icon: "error",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Cliente Modificado",
+			text: "{{message}} ",
+			icon: "success",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+	{% endif %}
+	{% endfor %}
+</div>
+{% endif %}
+
+<script>
+	function eliminar(id) {
+		Swal.fire({
+				"title": "¿Estás seguro de esta acción?",
+				"text": "Esta acción no se puede deshacer",
+				"icon": "question",
+				"showCancelButton": true,
+				"confirmButtonText": "Si, Eliminar",
+				"cancelButtonText": "No, Cancelar",
+				"reverseButtons": true,
+				"confirmButtonColor": "#d44747"
+			})
+			.then(function (result) {
+				if (result.isConfirmed) {
+					window.location.href = "/dashboard/eliminar_cliente/" + id + "/"
+				}
+			})
+	}
+</script>
+
+{% endblock %}
+{% else %}
+<script type="text/javascript">
+	window.location = "http://127.0.0.1:8000/";
+</script>
+{% endif %}
+<script>
+	$(document).ready(function () {
+		$('#example').DataTable();
+	});
+</script>
+{% endblock %}

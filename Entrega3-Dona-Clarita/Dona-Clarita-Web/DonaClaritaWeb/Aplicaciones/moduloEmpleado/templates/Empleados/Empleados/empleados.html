@@ -1,0 +1,148 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Listado de Empleados{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-7">
+					<h3 class="page-title"><i class="fa fa-list-ol"></i> Empleados</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Empleados</li>
+					</ul>
+				</div>
+				<div class="col-sm-5 col">
+					<a href="{% url 'empleado-new' %}" class="btn btn2 btn-primary float-right mt-2"><i class="fa fa-plus"></i> Agregar Empleado</a>
+				</div>				
+			</div>
+		</div>
+		<!-- /Page Header -->
+		<div class="row">
+			<div class="col-md-12">
+				<!-- Recent Orders -->
+				<div class="card">
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="datatable table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										<th>Rut</th>
+										<th>Nombre Emplado</th>
+										<th>Cargo</th>
+										<th>Fecha Creación</th>
+										<th class="text-center">Estado</th>
+										<th class="text-center">¿Realiza Pedido?</th>
+										<th class="text-center">Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for trabajador in trabajadores %}
+									<tr>
+										<td>{{trabajador.1}}</td>
+										<td>
+											{{trabajador.2}}
+										</td>
+										<td>{{trabajador.3 }}</td>
+										<td>
+											{{trabajador.4|date:'d/m/Y H:i:s'}}
+										</td>
+										{% if  trabajador.5 == 1 %}
+										<td class="text-center">
+											<span class="badge badge-pill bg-success inv-badge">Activo</span>
+										</td>
+										{% else %}
+										<td class="text-center">
+											<span class="badge badge-pill bg-danger inv-badge">Inactivo</span>
+										</td>
+										{% endif %}
+										{% if  trabajador.6 == 1 %}
+										<td class="text-center">Sí</td>
+										{% else %}
+										<td class="text-center">No</td>
+										{% endif %}										
+										<td class="text-center">
+											<div class="actions">
+												<a class="btn btn2 btn-sm bg-danger" title="Restablecer Contraseña" data-toggle="tooltip" href="{% url 'pass-empleado' trabajador.0 %}">
+													<i class="fa fa-lock" ></i> Pass
+												</a>												
+												<a class="btn btn-sm bg-success-light" title="Editar Empleado" data-toggle="tooltip" href="{% url 'edit-empleado' trabajador.0 %}">
+													<i class="fa fa-pencil"></i> Editar
+												</a>
+												{% if  trabajador.5  %}
+												<a class="btn btn-sm bg-danger-light" title="Eliminar Empleado" data-toggle="tooltip" href="#" onClick="eliminar({{ trabajador.0 }})">
+													<i class="fa fa-trash"></i> Eliminar
+												</a>
+												{% endif %}
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+									
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- /Recent Orders -->
+
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Page Wrapper -->
+{% block js %}
+
+{% if messages %}
+<div>
+    {% for message in messages %}
+	{% if message.tags  == 'error'%}
+        <script>
+            Swal.fire({
+                title: "No se encontró Empleado",
+                text: "{{message}}",
+                icon: "error",
+				timer: 5000,
+                timerProgressBar: true
+            })
+        </script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Gestión de Empleados",
+                text: "{{message}} ",
+                icon: "success",
+				timer: 5000,
+                timerProgressBar: true
+		})
+	</script>
+	{% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+
+<script>
+    function eliminar(id) {
+        Swal.fire({
+			"title": "¿Estás seguro de esta acción?",
+            "text": "Esta acción no se puede deshacer",
+            "icon": "question",
+            "showCancelButton":true,
+            "confirmButtonText": "Si, Eliminar",
+            "cancelButtonText": "No, Cancelar",
+            "reverseButtons": true,
+            "confirmButtonColor":"#d44747"
+            })
+            .then(function(result) {
+                if (result.isConfirmed) {
+                    window.location.href = "/dashboard/eliminar-empleado/"+id+"/"
+                }
+            })
+    }
+</script>
+
+{% endblock %}
+{% endblock %}

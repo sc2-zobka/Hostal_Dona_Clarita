@@ -1,0 +1,86 @@
+<form class="ms-form-wizard ms-wizard-pill style2-wizard" method="POST" id="form1">
+    {% csrf_token %}
+    <input type="hidden" name="fdesde" value="{{fdesde}}">
+    <input type="hidden" name="fhasta" value="{{fhasta}}">
+    <input type="hidden" name="nhuesped" value="{{nhuesped}}">
+    <!--oculta-select-->
+    <select class="form-control " name="servicio_ad" multiple="multiple" id="servicio_ad" hidden>
+        {% for serv_ad in servicio_ad %}
+        <option value="{{serv_ad}}" selected>{{serv_ad}} </option>
+        {% endfor %}
+    </select><br>
+    <div class="ms-wizard-step">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-7">
+                <strong class="text-center">Seleccione {{nhuesped}} Huésped(es) para
+                    Continuar</strong>
+            </div>
+        </div>
+        <br>
+        <div class="form-row">
+            <div class="col-md-12">
+                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                    <table class="table table-bordered table-striped mb-0">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <h6>#</h6>
+                                </th>
+                                <th class="text-center">
+                                    <h6>Rut</h6>
+                                </th>
+                                <th class="text-center">
+                                    <h6>Nombre</h6>
+                                </th>
+                                <th class="text-center">
+                                    <h6>Apellido</h6>
+                                </th>
+                                <th class="text-center">
+                                    <h6>Servicio Comedor</h6>
+                                </th>
+                                <th class="text-center">
+                                    <h6>Seleccionar</h6>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for trabajador in trabajadores %}
+                            <tr>
+                                <td class="text-center"><a>{{ inicio_index | add:1 }}</a></td>
+                                <td class="text-center"><a>{{ trabajador.rut }}-{{ trabajador.dv }}</a></td>
+                                <td class="text-center">
+                                    <h2>{{ trabajador.nombre }}</h2>
+                                </td>
+                                <td class="text-center">
+                                    <h2>{{ trabajador.apellido_p }} {{ trabajador.apellido_m }}</h2>
+                                </td>
+                                <td class="text-center">
+                                    <select name="servicio" id="servicio" class="form-control cb-single">
+                                        <option value="">Seleccionar...</option>
+                                        {% for comedor in comedores %}
+                                        <option value="{{ comedor.id }}">{{ comedor.descripcion }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td class="text-center">
+                                    <input class="" type="checkbox" value="{{ trabajador.rut }}" name="chk" id="chk">
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <div class="form-group mb-0">
+                    <button class="btn btn2 btn-info btn-block text-center" type="button" onclick="contar()">Continuar
+                        <i class="fa fa-arrow-right"></i> </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

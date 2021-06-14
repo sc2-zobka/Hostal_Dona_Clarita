@@ -1,0 +1,122 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Nuevo Empleado{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title"><i class="fa fa-edit"></i> Edición Tipo de Empleado</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Edición Tipo de Empleado</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+			<div class="col-12">
+				<!-- General -->
+				<div class="card">
+					<div class="row">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-8">
+							<div class="card">
+								<div class="card-header text-center">
+									<hr>
+									<h4 class="card-title">Información de Tipo de Empleado</h4>
+									<hr>
+									<h6 class="alert alert-info"><i class="fa fa-info-circle"></i> <strong>ATENCIÓN:</strong> Campos Obligatorios se identifican con <strong class="text-danger">*</strong></h6>
+								</div>
+								<div class="card-body">
+									<form action="#" method="POST">
+										{% csrf_token %}
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Cargo <strong class="text-danger">*</strong></label>
+													<input type="text" class="form-control" name="cargo"
+														placeholder="Ingrese Cargo de Empleado" value="{{tipo_e.2}}">
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Estado <strong class="text-danger">*</strong></label>
+													<select name="estado" id="" class="cb-single form-control">
+														{% if tipo_e.1 %}
+														<option value="1" selected>Activo</option>
+														<option value="0">Inactivo</option>
+														{% else %}
+														<option value="1" >Activo</option>
+														<option value="0" selected>Inactivo</option>
+														{% endif %}
+													</select>
+												</div>
+											</div>											
+										</div>
+										<div class="row">
+											<div class="col-md-2"></div>
+											<div class="col-md-4">
+												<div class="form-group mb-0">
+													<a class="btn btn2 btn-danger btn-block text-center"
+														href="{% url 'tipo-empleado' %}"><i class="fa fa-reply"></i> Volver</a>
+												</div>
+											</div>
+											&nbsp;
+											<div class="col-md-4">
+												<div class="form-group mb-0">
+													<button class="btn btn2 btn-info btn-block text-center"
+														type="submit"><i class="fa fa-edit"></i> Modificar</button>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- /General -->
+				</div>
+			</div>
+			<br>
+		</div>
+	</div>
+	<!-- /Page Wrapper -->
+
+	{% block js %}
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+        <script>
+            Swal.fire({
+                title: "Error en Validación",
+                text: "{{message}}",
+                icon: "error",
+				timer: 5000,
+                timerProgressBar: true
+            })
+        </script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Tipo de Empleado",
+                text: "{{message}}",
+                icon: "success",
+				timer: 5000,
+                timerProgressBar: true
+		})
+	</script>
+	{% endif %}
+    {% endfor %}
+	<script>
+		$(document).ready(function () {
+			$('.cb-single').select2();
+		});
+	</script>
+	{% endblock %}
+	{% endblock %}

@@ -1,0 +1,50 @@
+<form class="ms-form-wizard ms-wizard-pill style2-wizard" method="POST" id="form">
+    {% csrf_token %}
+    <div class="ms-wizard-step">
+        <div class="form-row">
+            <div class="col-md-4 mb-4">
+                <label>Fecha Desde</label>
+                <div class="form-group">
+                    <input type="date" class="form-control" name="fdesde" id="fdesde" min="{% now 'Y-m-d' %}">
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <label>Fecha Hasta</label>
+                <div class="form-group">
+                    <input type="date" class="form-control" name="fhasta" id="fhasta" min="{% now 'Y-m-d' %}">
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <label>N° Huéspedes</label>
+                <div class="form-group">
+                    <input type="number" class="form-control" placeholder="Ingrese N° de Huéspedes" name="nhuesped"
+                        min="1" id="nhuesped">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label>Servicios Adicionales (*)</label>
+                <select class="cb-multiple form-control" name="servicio_ad" multiple="multiple" id="servicio_ad">
+                    {% for servicio in servicios_list %}
+                        <option value="{{ servicio.id }}">{{ servicio.nombre }} | {% if servicio.precio == 0 %}Gratis{% else %}${{ servicio.precio }}{% endif %} </option>
+                    {% endfor %}
+                </select><br>
+                <small><i class="fa fa-info-circle"></i> <strong>Tenga en
+                        Consideración:</strong> Servicios Adicionales se asignan a
+                    todos los Huéspedes y su valor se multiplica por la cantidad de
+                    estos</small>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <div class="form-group mb-0">
+                    <button class="btn btn2 btn-info btn-block text-center" type="submit"><i class="fa fa-save"></i>
+                        Registrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

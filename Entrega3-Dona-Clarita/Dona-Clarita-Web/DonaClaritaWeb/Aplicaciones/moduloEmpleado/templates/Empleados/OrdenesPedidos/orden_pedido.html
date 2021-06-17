@@ -20,7 +20,7 @@
 						<li class="breadcrumb-item active">Nueva Pedido</li>
 
 					</ul>
-				</div>				
+				</div>
 			</div>
 		</div>
 		<!-- /Page Header -->
@@ -36,45 +36,68 @@
 									<h6>Nueva Orden de Pedido</h6>
 								</div>
 								<div class="ms-panel-body">
-									<form class="ms-form-wizard ms-wizard-pill style2-wizard" method="GET" id="form">
-										<!--{% csrf_token %}-->
-										<h3>Cabecera</h3>
+									{% if mensaje != 'sigue'%}
+									<form class="ms-form-wizard ms-wizard-pill style2-wizard" method="POST" id="form1">
+										{% csrf_token%}
 										<div class="ms-wizard-step">
+											<br>
 											<div class="form-row">
-												<div class="col-md-4 mb-4">
-													<label>N° de Pedido</label>
+												<div class="col-md-4">
 													<div class="form-group">
-														<input type="number" class="form-control" name="fdesde" disabled placeholder="Automático">
+														<label>N° de Pedido <strong
+																class="text-danger">*</strong></label>
+														<input type="text" class="form-control" placeholder="Automático"
+															disabled>
 													</div>
 												</div>
-												<div class="col-md-4 mb-4">
-													<label>Rut Proveedor (*)</label>
+												<div class="col-md-4">
 													<div class="form-group">
-														<input type="text" class="form-control" name="fhasta" placeholder="Ingrese Rut de Proveedor">
+														<label>Proveedor <strong
+																class="text-danger">*</strong></label>
+														<select name="proveedor" id="proveedor"
+															class="cb-single form-control">
+															<option value="" selecte>Seleccionar Proveedor...</option>
+															{% for proveedor in proveedores %}
+															<option value="{{ proveedor.0 }}">{{ proveedor.1 }} - {{proveedor.2}}</option>
+															{% endfor %}
+														</select>
 													</div>
 												</div>
-												<div class="col-md-4 mb-4">
-													<label>Fecha Emisión (*)</label>
+												<div class="col-md-4">
 													<div class="form-group">
-														<input type="date" class="form-control" name="fhasta" min="{% now 'Y-m-d' %}" value="{% now 'Y-m-d' %}">
+														<label>Fecha Emisión <strong class="text-danger">*</strong></label>
+														<input type="date" class="form-control" name="fecha"  min="{% now 'Y-m-d'%}">
 													</div>
 												</div>
 											</div>
 											<div class="row">
-												<div class="col-md-12 ">
-													<label>Observación</label>
-													<div class="form-group">
-														<textarea name="message" class="form-control" name="message" cols="45" rows="3" placeholder="Ingrese Observación (Opcional)" ></textarea>
+												<div class="col-md-12">
+													<label for="">Observación</label>
+													<textarea class="form-control" name="observacion" id="" cols="3" rows="3"></textarea>
+												</div>
+											</div>
+											<hr>
+											<div class="row">
+												<div class="col-md-4"></div>
+												<div class="col-md-4">
+													<div class="form-group mb-0">
+														<button class="btn btn2 btn-info btn-block text-center"
+															type="submit"> Continuar <i class="fa fa-arrow-right"></i> 											
+														</button>
 													</div>
 												</div>
 											</div>
 										</div>
-										<h3>Detalle</h3>
+									</form>
+									{% elif mensaje == 'sigue'%}
+									<form class="ms-form-wizard ms-wizard-pill style2-wizard" method="POST" id="form1">
+										{% csrf_token%}
 										<div class="ms-wizard-step">
+											<br>
 											<div class="form-row">
 												<div class="col-md-12">
-													<div class="table-responsive">
-														<table class="datatable table table-hover table-center mb-0">
+													<div class="table-wrapper-scroll-y my-custom-scrollbar">
+														<table class="table table-bordered table-striped mb-0">
 															<thead>
 																<tr>
 																	<th class="text-center">
@@ -82,9 +105,9 @@
 																	</th>
 																	<th class="text-center">
 																		<h6>Código</h6>
-																	</th>																	
+																	</th>
 																	<th class="text-center">
-																		<h6>Nombre Producto</h6>
+																		<h6>Nombre producto</h6>
 																	</th>
 																	<th class="text-center">
 																		<h6>En Stock</h6>
@@ -93,75 +116,100 @@
 																		<h6>Stock Crítico</h6>
 																	</th>																	
 																	<th class="text-center">
-																		<h6>Cant. Solicitar</h6>
+																		<h6>Cant. Solicitar <strong class="text-danger">*</strong></h6>
 																	</th>
 																	<th class="text-center">
-																		<h6>Seleccionar</h6>
+																		<h6>Seleccionar <strong class="text-danger">*</strong></h6>
 																	</th>
 																</tr>
 															</thead>
 															<tbody>
+																{% for producto in productos %}
 																<tr>
-																	<td class="text-center"><a>1</a></td>
-																	<td class="text-center"><a>13242332222</a></td>
+																	<td class="text-center"><a>{{ inicio_index | add:1 }}</a></td>
+																	<td class="text-center"><a>{{ producto.1 }}</a></td>
+																	<td class="text-center"><a>{{ producto.2 }}</a></td>
 																	<td class="text-center">
-																		<h2>Nombre Producto</h2>
+																		<h2>{{ producto.3 }}</h2>
 																	</td>
 																	<td class="text-center">
-																		<h2>2</h2>
-																	</td>
-																	<td class="text-center" style="list-style: none;">
-																		<h2>5</h2>
+																		<h2>{{ producto.4 }}</h2>
 																	</td>
 																	<td class="text-center">
-																		<h2><input class="form-control text-center" type="number" name="" id="" style="width: 100px;"></h2>
+																		<h2><input class="form-control text-center" type="number" name="" id="" style="width: 100px;" min="0"></h2>
 																	</td>
 																	<td class="text-center">
-																		<input class="" type="checkbox" name="prod_1" >
+																		<input class="" type="checkbox" value="{{ trabajador.rut }}" name="chk" id="chk">
 																	</td>
 																</tr>
-																<tr>
-																	<td class="text-center"><a>2</a></td>
-																	<td class="text-center"><a>13242332222</a></td>
-																	<td class="text-center">
-																		<h2>Nombre Producto</h2>
-																	</td>
-																	<td class="text-center">
-																		<h2>2</h2>
-																	</td>
-																	<td class="text-center" style="list-style: none;">
-																		<h2>5</h2>
-																	</td>
-																	<td class="text-center">
-																		<h2><input class="form-control text-center" type="number" name="" id="" style="width: 100px;"></h2>
-																	</td>
-																	<td class="text-center">
-																		<input class="" type="checkbox" name="prod_1" >
-																	</td>
-																</tr>
+																{% endfor %}
 															</tbody>
 														</table>
 													</div>
 												</div>
 											</div>
-
+											<hr>
+											<div class="row">
+												<div class="col-md-4"></div>
+												<div class="col-md-4">
+													<div class="form-group mb-0">
+														<button class="btn btn2 btn-info btn-block text-center"
+															type="submit"> Generar Orden Pedido <i class="fa fa-save"></i> 											
+														</button>
+													</div>
+												</div>
+											</div>
 										</div>
-
 									</form>
+									{% endif %}
 								</div>
 							</div>
 						</div>
 						<div class="col-1"></div>
 					</div>
 				</div>
-
-
 			</div>
 		</div>
 	</div>
 </div>
 <!-- /Page Wrapper -->
 {% block js %}
+{% if messages %}
+<div>
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+	<script>
+		Swal.fire({
+			title: "Error en Validación",
+			text: "{{message}}",
+			icon: "error"
+		})
+	</script>
+	{% elif message.tags  == 'warning'%}
+	<script>
+		Swal.fire({
+			title: "¡Atención!",
+			text: "{{message}}",
+			icon: "warning"
+		})
+	</script>	
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Gestión de Ordenes de Compra",
+			text: "{{message}}",
+			icon: "success"
+		})
+	</script>
+	{% endif %}
+	{% endfor %}
+</div>
+{% endif %}
+<script>
+	$(document).ready(function () {
+		$('.cb-single').select2();
+	});
+</script>
 <script src="{% static 'appADM/assets/js/jquery.steps.min.js' %}"></script>
 <script src="{% static 'appADM/assets/js/form-wizard.js' %}"></script>
 <script>

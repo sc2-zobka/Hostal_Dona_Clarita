@@ -2,6 +2,7 @@
 {% load static %}
 {% block title %}Ventas{% endblock%}
 {% block contenido-panel %}
+{% load humanize %}
 <!-- Page Wrapper -->
 <div class="page-wrapper">
 	<div class="content container-fluid">
@@ -10,10 +11,10 @@
 		<div class="page-header">
 			<div class="row">
 				<div class="col-sm-12">
-					<h3 class="page-title">Ventas</h3>
+					<h3 class="page-title">Documentos Tributarios</h3>
 					<ul class="breadcrumb">
-						<li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
-						<li class="breadcrumb-item active">Ventas</li>
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Documentos Tributarios</li>
 					</ul>
 				</div>
 			</div>
@@ -29,116 +30,72 @@
 							<table class="datatable table table-hover table-center mb-0">
 								<thead>
 									<tr>
-										<th>N° Boleta</th>
-										<th>ID Empleado</th>
-										<th>Nombre Cliente</th>
-										<th>Total</th>
+										<th>N° Doc.</th>
+										<th>Tipo Doc.</th>
+										<th>Doc. Ref.</th>
+										<th>Rut Cliente</th>
+										<th>Razón Social</th>
+										<th>Fecha Emisión</th>
+										<th class="text-center">Total</th>
 										<th class="text-center">Estado</th>
-										<th class="text-right">Acciones</th>
+										<th class="text-center">Acciones</th>
 									</tr>
 								</thead>
 								<tbody>
+									{% for doc in docs %}
 									<tr>
-										<td><a href="#">#IN0001</a></td>
-										<td>#21212</td>
+										<td>{{doc.0}}</td>
+										{% if doc.1 == 'FE'%}
+										<td data-toggle="tooltip" title="Factura Electrónica">{{doc.1}}</td>
+										{% elif doc.1 == 'NC'%}
+										<td data-toggle="tooltip" title="Nota de Crédito">{{doc.1}}</td>
+										{% endif %}
+										{% if doc.2 != '0'%}
 										<td>
-											<h2 class="table-avatar">
-												<a href="#" class="avatar avatar-sm mr-2"><img
-														class="avatar-img rounded-circle"
-														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
-														alt="User Image"></a>
-												<a href="#">Nombre Cliente </a>
+											<h2 class="table-avatar" data-toggle="tooltip" title="Orden de Compra">
+												{{doc.2}} (OC)
 											</h2>
 										</td>
-										<td>$12.000</td>
-										<td class="text-center">
-											<span class="badge badge-pill bg-success inv-badge">Pagado</span>
+										{% elif doc.9 != '0'%}
+										<td>
+											<h2 class="table-avatar" data-toggle="tooltip" title="Orden de Pedido">
+												{{doc.9}} (OP)
+											</h2>
 										</td>
-										<td class="text-right">
+										{% endif %}
+										<td>{{doc.3}}</td>
+										<td>{{doc.4 }}</td>
+										<td>{{doc.5 }}</td>
+										{% if doc.6 == None %}
+										<td class="text-center">-</td>
+										{% else %}
+										<td class="text-center">${{doc.6|intcomma}}</td>
+										{% endif %}
+										{% if doc.7 == 1 %}
+										<td class="text-center">
+											<span class="badge badge-pill bg-success inv-badge">{{doc.8}}</span>
+										</td>
+										{% elif doc.7 == 2%}
+										<td class="text-center">
+											<span class="badge badge-pill bg-danger inv-badge">{{doc.8}}</span>
+										</td>
+										{% endif %}
+										<td class="text-center">
 											<div class="actions">
-												<a class="btn btn-sm bg-danger-light" data-toggle="modal"
-													href="#delete_modal">
+												<a class="btn btn2 btn-sm bg-info" data-toggle="modal"
+													href="#{{doc.0}}">
+													<i class="fa fa-print"></i> imprimir
+												</a>
+												{% if doc.7 == 1 and doc.1 == 'FE'%}
+												<a class="btn btn2 btn-sm bg-danger" data-toggle="tooltip" href="#"
+													title="Anular Factura" onClick="facturar({{ doc.0 }})">
 													<i class="fa fa-ban"></i> Anular
 												</a>
+												{% endif %}
 											</div>
 										</td>
 									</tr>
-									<tr>
-										<td><a href="#">#IN0001</a></td>
-										<td>#21212</td>
-										<td>
-											<h2 class="table-avatar">
-												<a href="#" class="avatar avatar-sm mr-2"><img
-														class="avatar-img rounded-circle"
-														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
-														alt="User Image"></a>
-												<a href="#">Nombre Cliente </a>
-											</h2>
-										</td>
-										<td>$12.000</td>
-										<td class="text-center">
-											<span class="badge badge-pill bg-success inv-badge">Pendiente</span>
-										</td>
-										<td class="text-right">
-											<div class="actions">
-												<a class="btn btn-sm bg-success-light" data-toggle="modal"
-													href="#delete_modal">
-													<i class="fa fa-check"></i> Pagar
-												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td><a href="#">#IN0001</a></td>
-										<td>#21212</td>
-										<td>
-											<h2 class="table-avatar">
-												<a href="#" class="avatar avatar-sm mr-2"><img
-														class="avatar-img rounded-circle"
-														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
-														alt="User Image"></a>
-												<a href="#">Nombre Cliente </a>
-											</h2>
-										</td>
-										<td>$12.000</td>
-										<td class="text-center">
-											<span class="badge badge-pill bg-success inv-badge">Pagado</span>
-										</td>
-										<td class="text-right">
-											<div class="actions">
-												<a class="btn btn-sm bg-danger-light" data-toggle="modal"
-													href="#delete_modal">
-													<i class="fa fa-ban"></i> Anular
-												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td><a href="#">#IN0001</a></td>
-										<td>#21212</td>
-										<td>
-											<h2 class="table-avatar">
-												<a href="#" class="avatar avatar-sm mr-2"><img
-														class="avatar-img rounded-circle"
-														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
-														alt="User Image"></a>
-												<a href="#">Nombre Cliente </a>
-											</h2>
-										</td>
-										<td>$12.000</td>
-										<td class="text-center">
-											<span class="badge badge-pill bg-success inv-badge">Pagado</span>
-										</td>
-										<td class="text-right">
-											<div class="actions">
-												<a class="btn btn-sm bg-danger-light" data-toggle="modal"
-													href="#Add_Specialities_details">
-													<i class="fa fa-ban"></i> Anular
-												</a>
-											</div>
-										</td>
-									</tr>
-
+									{% endfor %}
 								</tbody>
 							</table>
 						</div>
@@ -152,71 +109,57 @@
 </div>
 <!-- /Page Wrapper -->
 
-<!-- Add Modal -->
-<div class="modal fade" id="Add_Specialities_details" aria-hidden="true" role="dialog">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Orden de Compra N° 1234 - Pendiente</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<form>
-					<div class="row form-row">
-						<div class="col-12 col-sm-4">
-							<div class="form-group">
-								<label>Rut Cliente</label>
-								<input type="text" class="form-control" placeholder="Rut Cliente" disabled>
-							</div>
-						</div>
-						<div class="col-12 col-sm-8">
-							<div class="form-group">
-								<label>Razón Social</label>
-								<input type="text" class="form-control" placeholder="Razón social" disabled>
-							</div>
-						</div>
-						<div class="col-12 col-sm-6">
-							<div class="form-group">
-								<label>Fecha desde</label>
-								<input type="date" class="form-control"disabled>
-							</div>
-						</div>
-						<div class="col-12 col-sm-6">
-							<div class="form-group">
-								<label>Fecha Hasta</label>
-								<input type="date" class="form-control" disabled>
-							</div>
-						</div>
-						<div class="col-12 col-sm-6">
-							<div class="form-group">
-								<label>N° de Huéspedes</label>
-								<input type="number" class="form-control" placeholder="Cantidad de Huespedes" disabled>
-							</div>
-						</div>
-						<div class="col-12 col-sm-6">
-							<div class="form-group">
-								<label>Monto Total</label>
-								<input type="number" class="form-control" placeholder="Monto Total" disabled>
-							</div>
-						</div>
-						<div class="col-md-12">
-							<label>Habitaciones</label>
-							<select class="cb-multiple form-control" name="accesorios_sel" disabled
-								multiple="multiple">
-								<option value="{{ accesorio.id }}">
-								</option>
-							</select>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- /ADD Modal -->
 {% block js %}
+{% if messages %}
+<div>
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+	<script>
+		Swal.fire({
+			title: "Error en Validación",
+			text: "{{message}}",
+			icon: "error"
+		})
+	</script>
+	{% elif message.tags  == 'warning'%}
+	<script>
+		Swal.fire({
+			title: "¡Atención!",
+			text: "{{message}}",
+			icon: "warning"
+		})
+	</script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Gestión de Productos",
+			text: "{{message}}",
+			icon: "success"
+		})
+	</script>
+	{% endif %}
+	{% endfor %}
+</div>
+{% endif %}
+<script>
+	function facturar(id) {
+		Swal.fire({
+				"title": "¿Estás seguro de querer Anular esta Factura?",
+				"text": "Esta acción No se puede Revertir",
+				"icon": "question",
+				"showCancelButton": true,
+				"confirmButtonText": "Si, Anular",
+				"cancelButtonText": "No, Cancelar",
+				"reverseButtons": true,
+				"confirmButtonColor": "#d44747"
 
+			})
+			.then(function (result) {
+				if (result.isConfirmed) {
+					window.location.href = "/dashboard/notacredito/" + id + "/"
+				}
+			})
+	}
+</script>
 {% endblock %}
 {% endblock %}

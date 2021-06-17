@@ -836,7 +836,7 @@ def edit_proveedor(request, id):
 
             cursor.execute("SELECT * FROM APP_REGION")
             regiones = cursor.fetchall()
-
+            print('imprimo region',proveedor[8])
             if proveedor[8] is not None:
                 cursor.execute(
                     "SELECT * FROM APP_COMUNA WHERE ID = %s", [proveedor[8]])
@@ -889,7 +889,7 @@ def edit_proveedor(request, id):
 
                     cursor.execute(f"""UPDATE APP_CLIENTE SET ESTATUS = {estado}, RAZON_SOCIAL = '{r_social}',
                                         RUT_EMPRESA = {vrutSinDv}, DV = '{dv}', DIRECCION = '{direccion}', CELULAR = '{fono}',
-                                        COMUNA_ID = '{com_sel}'
+                                        COMUNA_ID = '{com_sel}', nombre_comercial = '{nom_fantasia}'
                                         WHERE USUARIO_ID = {id}
                                     """)
                     messages.success(
@@ -902,6 +902,7 @@ def edit_proveedor(request, id):
         'proveedor': proveedor,
         'comunas': comunas,
         'regiones': regiones,
+        'region':region,
         'comuna': comuna,
     }
     return render(request, 'Empleados/Proveedores/edit_proveedor.html', data)
@@ -2884,7 +2885,70 @@ def eliminar_categoria(request, id):
 
 
 def nueva_ordenPedido(request):
-    return render(request, 'Empleados/OrdenesPedidos/orden_pedido.html')
+    mensaje = ''
+    idProveedor = ''
+    inicio_index =  0
+    productos = ''
+    with connection.cursor() as cursor:
+        try:
+            cursor.execute("SELECT ID FROM APP_TIPOCLIENTE WHERE DESCRIPCION LIKE 'PROVEEDOR'")
+            idProveedor = cursor.fetchone()
+            idProveedor = idProveedor[0]
+            cursor.execute(
+                f"""SELECT ID AS '0' ,(RUT_EMPRESA ||'-'|| DV) AS '1', RAZON_SOCIAL AS '2' 
+                FROM APP_CLIENTE 
+                WHERE TIPO_CLIENTE_ID = {idProveedor} AND ESTATUS=1""")
+
+            proveedores = cursor.fetchall()
+        except Exception as e:
+            print(e)
+            pass
+    
+    if request.method == "POST":
+        proveedor = request.POST['proveedor']
+        fecha = request.POST['fecha']
+        try:
+            observacion = request.POST['observacion']
+        except:
+            pass
+        if len(proveedor) <1 or len(fecha) <1:
+            messages.warning(request, 'Campo Proveedor y Fecha Emisión son Obligatorios. Completos para Continuar.')
+        else:
+            if len(proveedor) ==1:
+                codprovedor = '00'+proveedor
+            elif len(proveedor) ==2:
+                codprovedor = '0'+proveedor
+            else:
+                codprovedor = proveedor 
+
+            print(codprovedor)              
+            with connection.cursor() as cursor:
+                try:
+                    cursor.execute(f"SELECT COUNT(*) AS TT FROM APP_PRODUCTO  WHERE substr(ESPECIFICACION, 1, 3) = '{codprovedor}'")
+                    validaProdProveedor = cursor.fetchone()
+                    validaProdProveedor = validaProdProveedor[0]
+                    if validaProdProveedor >0:
+                        mensaje = 'sigue'
+                        print('Tiene Productos')
+                        cursor.execute(f"""SELECT ID AS '0', ESPECIFICACION AS '1', DESCRIPCION  AS '2', STOCK AS '3', STOCK_CRITICO AS '4'
+                          FROM APP_PRODUCTO WHERE substr(ESPECIFICACION, 1, 3) = '{codprovedor}' """)
+                        productos = cursor.fetchall()
+                        
+
+                    else:
+                        messages.error(request, 'Lo sentimos. No se encontraron Productos Asociados al Proveedor. Cree Productos o Elija otro Proveedor para Continuar.')
+                    
+                except Exception as e:
+                    print(e)
+                    pass        
+    data = {
+        'proveedores':proveedores,
+        'mensaje': mensaje,
+        'inicio_index': inicio_index,
+        'productos':productos
+    }
+
+    return render(request, 'Empleados/OrdenesPedidos/orden_pedido.html', data)
 
 
 def ordenes_pedido(request):
@@ -2898,22 +2962,140 @@ def edit_ordenPedido(request):
 def check_ordenPedido(request):
     return render(request, 'Empleados/OrdenesPedidos/check_rec_pedidos.html')
 
+#CAMBIAR FORMATO DE FECHA AL PASAR A PRODUCTIVO (ORACLE)
+def documentos(request):
+    docs = ''
+    
+    with connection.cursor() as cursor:
+        try:
+            
+            cursor.execute("""
+                SELECT D.ID AS '0', TD.ABREVIADO AS '1',IFNULL(OC.ID,0) AS '2', (CL.RUT_EMPRESA ||'-'|| CL.DV) AS '3', CL.RAZON_SOCIAL AS '4',
+                    STRFTIME('%d/%m/%Y %H:%M',  D.FECHA_EMISION) AS '5', D.MONTO_TOTAL AS '6' , ED.ID AS '7', ED.DESCRIPCION AS '8', IFNULL(OP.ID,0) AS '9'
+                FROM APP_DOCUMENTO D
+                JOIN APP_TIPODOCUMENTO TD ON D.TIPO_DOC_ID = TD.CODIGO_SII
+                LEFT JOIN APP_ORDENCOMPRA OC ON D.NRO_OCOMPRA_ID = OC.ID
+                LEFT JOIN APP_ORDENPEDIDO OP ON D.NRO_OPEDIDO_ID = OP.ID
+                JOIN APP_CLIENTE CL ON OC.CLIENTE_ID = CL.ID
+                JOIN APP_ESTATUSDOCUMENTO ED ON D.ESTADO_DOCUMENTO_ID = ED.ID
+                          """)
+            docs = cursor.fetchall()
 
-def ventas(request):
-    return render(request, 'Empleados/Ventas/ventas.html')
+        except Exception as e:
+            print(e)
+            messages.error(request, f'{e}')
+            pass
+
+    data = {
+        'docs': docs,
+     
+    }
+
+    return render(request, 'Empleados/Ventas/ventas.html',data)
+
+def facturarOC(request, id):
+    fechaEmision = ''
+    with connection.cursor() as cursor:
+        try:
+            fechaEmision = datetime.now()
+            print(fechaEmision)
+            cursor.execute(f"SELECT ID AS '0', MONTO_NETO AS '1', IVA AS '2', MONTO_TOTAL AS '3' FROM APP_ORDENCOMPRA WHERE ID = {id}")
+            oc = cursor.fetchone()
+            nroOC = oc[0]
+            montoNeto = oc[1]
+            iva = oc[2]
+            montoTotal = oc[3]
+            if not oc:
+                messages.error(request, 'No se encontró detalle de la Orden de Compra')
+            else:
+                if montoNeto == None or iva == None or montoTotal == None:
+                    messages.error(request, 'Lo sentimos, la orden de Compra No se puede facturar ya que no posee valores')
+                else:
+                    cursor.execute(f"""
+                                    INSERT INTO APP_DOCUMENTO (fecha_emision, monto_neto, iva, monto_total, estado_documento_id, nro_ocompra_id, tipo_doc_id)
+                                    VALUES ('{fechaEmision}', '{montoNeto}', '{iva}', '{montoTotal}','1' , '{nroOC}', '33' )
+                                    """) 
+                    cursor.execute(f"SELECT ID FROM APP_DOCUMENTO WHERE nro_ocompra_id = {id}")
+                    nroFactura = cursor.fetchone()
+                    nroFactura = nroFactura[0]
+                    messages.success(request, f"Orden de Compra Facturada Correctamente con N° de Factura #{nroFactura}")
+                    cursor.execute(f"UPDATE APP_ORDENCOMPRA SET estatus_orden_compra_id = 2 WHERE id = {id}")
+
+        except Exception as e:
+            print(e)
+            pass
+    
+    return redirect('oc-list-views') 
+#Anular Factura
+def notaCredito(request, id):
+    fechaEmision = ''
+    with connection.cursor() as cursor:
+        try:
+            fechaEmision = datetime.now()
+            print(fechaEmision)
+            cursor.execute(f"select id AS '0', monto_neto AS '1', iva AS '2', monto_total AS '3', IFNULL(nro_ocompra_id,0) AS '4', IFNULL(nro_opedido_id,0) AS '5' from app_documento where id = {id}")
+            fac = cursor.fetchone()
+            nroFac = fac[0]
+            montoNeto = fac[1]
+            iva = fac[2]
+            montoTotal = fac[3]
+            nroOC = fac[4]
+            nroOP = fac[5]
+            if not fac:
+                messages.error(request, 'No se encontró detalle de la Factura')
+            else:
+                if montoNeto == None or iva == None or montoTotal == None:
+                    messages.error(request, 'Lo sentimos, la Factura No se Puede Anular ya que no posee valores')
+                else:
+                    if int(nroOC) > 0:
+                        
+                        #GENERA NOTA DE CRÉDITO PARA ORDEN DE COMPRA
+                        cursor.execute(f"""
+                                        INSERT INTO APP_DOCUMENTO (fecha_emision, monto_neto, iva, monto_total, estado_documento_id, nro_ocompra_id, tipo_doc_id, doc_anulado)
+                                        VALUES ('{fechaEmision}', '{montoNeto}', '{iva}', '{montoTotal}','1' , '{nroOC}', '61', '{id}' )
+                                        """) 
+                        cursor.execute(f"SELECT ID FROM APP_DOCUMENTO WHERE doc_anulado = {id}")
+                        nroNotaCredito = cursor.fetchone()
+                        nroNotaCredito = nroNotaCredito[0]
+                        messages.success(request, f"Nota de Crédito Generada Correctamente. N° de Nota de Crédito #{nroNotaCredito}")
+                        #ACTUALIZA FACTURA
+                        cursor.execute(f"UPDATE APP_DOCUMENTO SET estado_documento_id = 2 , fecha_anulacion = '{fechaEmision}' WHERE id = {id}")
+                    elif int(nroOP) > 0:
+                        #GENERA NOTA DE CRÉDITO PARA ORDEN DE PEDIDO
+                        cursor.execute(f"""
+                                        INSERT INTO APP_DOCUMENTO (fecha_emision, monto_neto, iva, monto_total, estado_documento_id, nro_opedido_id, tipo_doc_id, doc_anulado)
+                                        VALUES ('{fechaEmision}', '{montoNeto}', '{iva}', '{montoTotal}','1' , '{nroOP}', '61', '{id}' )
+                                        """) 
+                        cursor.execute(f"SELECT ID FROM APP_DOCUMENTO WHERE doc_anulado = {id}")
+                        nroNotaCredito = cursor.fetchone()
+                        nroNotaCredito = nroNotaCredito[0]
+                        messages.success(request, f"Nota de Crédito Generada Correctamente. N° de Nota de Crédito #{nroNotaCredito}")
+                        #ACTUALIZA FACTURA
+                        cursor.execute(f"UPDATE APP_DOCUMENTO SET estado_documento_id = 2 , fecha_anulacion = '{fechaEmision}' WHERE id = {id}")
+                    else:
+                        messages.error(request, 'Lo sentimos. Ocurrió un Problema al Generar Nota de Crédito (No se encontró Doc. Ref!)') 
+
+        except Exception as e:
+            print(e)
+            messages.error(request, f'Lo sentimos. Ocurrió un Problema en: {e}') 
+            pass
+    
+    return redirect('ventas') 
+
+    
 def orden_compra_views(request):
     ordenes_compras = ''
     ids = ''
     with connection.cursor() as cursor:
         try:
             cursor.execute("""
-                            SELECT DISTINCT OC.ID AS '0', (CL.RUT_EMPRESA ||'-'|| CL.DV ) AS '1', CL.RAZON_SOCIAL AS '2',
-                                    OC.CANTIDAD_HUESPED AS '3', OC.MONTO_TOTAL AS '4', lower(DOC.DESCRIPCION) AS '5', 
-                                            OC.ESTATUS_ORDEN_COMPRA_ID as '6', DTC.INICIO_ESTADIA AS '7' , DTC.FINAL_ESTADIA AS '8', DTC.ID  AS '9'
-                             FROM APP_ORDENCOMPRA OC 
-                             JOIN APP_DETALLEORDENCOMPRA DTC ON OC.ID = DTC.ORDEN_COMPRA_ID
-                             JOIN APP_CLIENTE CL ON OC.CLIENTE_ID = CL.ID
-                             JOIN APP_ESTATUSORDENCOMPRA DOC ON OC.ESTATUS_ORDEN_COMPRA_ID = DOC.ID 
+                                SELECT DISTINCT OC.ID AS '0', (CL.RUT_EMPRESA ||'-'|| CL.DV ) AS '1', CL.RAZON_SOCIAL AS '2',
+                                        OC.CANTIDAD_HUESPED AS '3', OC.MONTO_TOTAL AS '4', upper(DOC.DESCRIPCION) AS '5', 
+                                                OC.ESTATUS_ORDEN_COMPRA_ID as '6', DTC.INICIO_ESTADIA AS '7' , DTC.FINAL_ESTADIA AS '8', DTC.ID  AS '9'
+                                FROM APP_ORDENCOMPRA OC 
+                                JOIN APP_DETALLEORDENCOMPRA DTC ON OC.ID = DTC.ORDEN_COMPRA_ID
+                                JOIN APP_CLIENTE CL ON OC.CLIENTE_ID = CL.ID
+                                JOIN APP_ESTATUSORDENCOMPRA DOC ON OC.ESTATUS_ORDEN_COMPRA_ID = DOC.ID 
                           """)
             ordenes_compras = cursor.fetchall()
             if ordenes_compras[4] != '':
@@ -2931,8 +3113,124 @@ def orden_compra_views(request):
 
     return render(request, 'Empleados/Ventas/oc-views.html', data)
 
+def reservas(request):
+    fdesde = ''
+    fhasta = ''
+    reservas = ''
+    if request.method == "POST":
+        fdesde = request.POST['fdesde']
+        fhasta = request.POST['fhasta']
+        if len(fdesde) <1  or len(fhasta) < 1:
+            messages.warning(request, 'Los Campos de Fechas Son Obligatorios. Completelos para Continuar')
+        else:
+            if fdesde > fhasta:
+                messages.error(request, 'La Fecha Desde No puede ser Mayor a la Fecha Hasta')
 
+            else:
+                with connection.cursor() as cursor:
+                    try:
+                        cursor.execute(f"""
+                            SELECT R.ID AS '0', DOC.orden_compra_id AS '1', CL.razon_social AS '2', (H.rut ||'-'|| H.dv) AS '3 RUT',
+                            (H.nombre ||' '|| H.apellido_p) AS '4 NOMBRE',TC.descripcion AS '5',HA.numero_habitacion AS '6',
+                            THA.descripcion AS '7',  DOC.inicio_estadia AS '8 INI. ESTADIA', DOC.final_estadia AS '9 FIN. ESTADIA', R.check_in AS '10', IFNULL(P.DESCRIPCION, 'No Asignado') AS '11'
+                            FROM APP_RESERVA R
+                            JOIN APP_DETALLEORDENCOMPRA DOC ON R.detalle_orden_compra_id = DOC.id
+                            JOIN APP_ORDENCOMPRA OC ON DOC.orden_compra_id = OC.id
+                            JOIN APP_HUESPED H ON R.huesped_id = H.id
+                            JOIN APP_CLIENTE CL ON OC.cliente_id = CL.ID
+                            JOIN APP_TIPOCOMEDOR TC ON R.tipo_comedor_id = TC.id
+                            JOIN APP_HABITACION HA ON R.habitacion_id = HA.id
+                            JOIN APP_TIPOHABITACION THA ON HA.tipo_habitacion_id = THA.id
+                            LEFT JOIN APP_PLATOSEMANAL P ON R.PLATO = P.ID
+                            WHERE DOC.inicio_estadia >= '{fdesde}' AND  DOC.final_estadia <='{fhasta}'
+                        """)
+                        reservas = cursor.fetchall()
+                        if not reservas:
+                            messages.error(request, 'No existen Resultados para las Fechas Indicadas')
+                    except Exception as e:                        
+                        print(e)
+                        pass         
+    data = {
+        'reservas':reservas,
+        'fdesde':fdesde,
+        'fhasta':fhasta
+    }       
 
+    return render(request, 'Empleados/Ventas/reservas.html', data)
+
+def check_in(request,id):
+    huesped = ''
+    platos = ''
+    inicio_index =  0
+    fdesde = ''
+    fhasta = ''
+    with connection.cursor() as cursor:     
+        try:
+            cursor.execute(f"""
+                SELECT R.ID AS '0', (H.rut ||'-'|| H.dv) AS '1 RUT',
+                (H.nombre ||' '|| H.apellido_p) AS '2 NOMBRE', HA.numero_habitacion AS '3',
+                THA.descripcion AS '4',TC.descripcion AS '5',  DOC.inicio_estadia AS '6 INI. ESTADIA', DOC.final_estadia AS '7 FIN. ESTADIA', R.check_in AS '8'
+                FROM APP_RESERVA R
+                JOIN APP_DETALLEORDENCOMPRA DOC ON R.detalle_orden_compra_id = DOC.id
+                JOIN APP_ORDENCOMPRA OC ON DOC.orden_compra_id = OC.id
+                JOIN APP_HUESPED H ON R.huesped_id = H.id
+                JOIN APP_CLIENTE CL ON OC.cliente_id = CL.ID
+                JOIN APP_TIPOCOMEDOR TC ON R.tipo_comedor_id = TC.id
+                JOIN APP_HABITACION HA ON R.habitacion_id = HA.id
+                JOIN APP_TIPOHABITACION THA ON HA.tipo_habitacion_id = THA.id
+                WHERE R.ID = {id}
+            """)
+            huesped = cursor.fetchone()
+            if not huesped:
+                messages.error(request, 'Lo sentimos, La Reserva Buscada No existe o Fue Eliminada.')
+                return redirect('reservas')
+            else:
+                if huesped[8] !=0:
+                    messages.error(request, 'Lo sentimos, La Reserva ya está Finalizada.')
+                    return redirect('reservas')
+                else:
+                    fdesde = huesped[6]
+                    fhasta = huesped[7]
+                    descripcion = huesped[5]
+                    cursor.execute (f"""
+                    SELECT P.ID, P.DESCRIPCION, P.DIA_DESDE, P.DIA_HASTA, TC.DESCRIPCION
+                    FROM APP_PLATOSEMANAL P
+                    JOIN APP_TIPOCOMEDOR TC ON P.TIPO_COMEDOR_ID = TC.ID
+                    WHERE TC.DESCRIPCION LIKE '{descripcion}' AND  '{fdesde}' BETWEEN DIA_DESDE AND DIA_HASTA OR '{fhasta}' BETWEEN DIA_DESDE AND DIA_HASTA
+                    """)     
+                    platos = cursor.fetchall()
+                    if not platos:
+                        messages.error(request, 'Lo sentimos, No existen Platos Disponibles para ofrecer. Modifique o Agregue e Intente de Nuevo')
+                        return redirect('reservas')
+        except Exception as e:                        
+            print(e)
+            messages.error(request, 'Lo sentimos, La Reserva Buscada No existe o Fue Eliminada.')
+            return redirect('reservas')
+        print(huesped)
+
+    if request.method == "POST":
+        platoId = request.POST['plato']
+        if not platoId:
+            messages.warning(request, 'Seleccione un Plato para Continuar')
+        else:
+            with connection.cursor() as cursor:     
+                try:            
+                    cursor.execute(f"SELECT descripcion FROM APP_PLATOSEMANAL WHERE id = {platoId}")
+                    platoDes = cursor.fetchone()
+                    platoDes = platoDes[0]
+                    cursor.execute(f"UPDATE APP_RESERVA SET CHECK_IN = 1, PLATO = {platoId} WHERE ID ={id}")
+                    messages.success(request, f'Check-In Realizado Correctamente. Plato Seleccionado para el Huésped: {platoDes}')
+                    return redirect('reservas')
+                except Exception as e:                        
+                    print(e)
+    data = {
+        'huesped':huesped,
+        'inicio_index': inicio_index,
+        'platos':platos
+        
+    }  
+
+    return render(request, 'Empleados/Ventas/check-in.html', data)
 
 def comentarios(request):
     return render(request, 'Empleados/comentarios.html')

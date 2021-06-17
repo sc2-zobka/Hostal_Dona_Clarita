@@ -101,13 +101,13 @@
 							</div>
 
 							<hr>
-							<h5 class="card-title text-center">Información Adicional</h5>
+							<h5 class="card-title text-center">Información Adicional <br><button type="button" class="btn btn2 btn-info " data-toggle="popover" data-placement="top" title="¿Porqué la Región está Bloqueada?" data-content="La Región se Asigna Automáticamente al Seleccionar La Comuna y se ve reflejada al Guardar"><i class="fa fa-info-circle"></i></button></h5>
 							<hr>
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Región de Residencia <strong class="text-danger">*</strong></label>
-										<select name="reg_sel" id="reg_sel" class="cb-single form-control">
+										<select name="reg_sel" id="reg_sel" class="cb-single form-control" disabled>
 											<option value="" selecte>Seleccionar Región...</option>
 											{% for r in regiones %}
 												{% if region is not None and region.2 == r.2 %}
@@ -174,6 +174,11 @@
 <!-- /Page Wrapper -->
 
 {% block js %}
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+</script>
 <script>
 	$(document).ready(function () {
 		$('.cb-single').select2();

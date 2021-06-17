@@ -32,7 +32,7 @@
 						<hr>
 						<h4 class="card-title">Información de Mi Perfil</h4>
 						<hr>
-						<h6 class="alert alert-info"><i class="fa fa-info-circle"></i> <strong>ATENCIÓN:</strong> Campos Obligatorios se identifican con *</h6>
+						<h6 class="alert alert-info"><i class="fa fa-info-circle"></i> <strong>ATENCIÓN:</strong> Campos Obligatorios se identifican con <strong class="text-danger">*</strong></h6>
 						<small>Última Conexión: {{cliente.10}}</small>
 					</div>
 					<div class="card-body">
@@ -44,23 +44,23 @@
 							<div class="row">
 								<div class="col-md-4">
 									<div class="form-group">
-										<label>Usuario (*)</label>
+										<label>Usuario <strong class="text-danger">*</strong></label>
 										<input type="text" class="form-control" name="" value="{{ cliente.4 }}"
 											disabled>
 									</div>
 								</div>
 								<div class="col-md-4">
 									<div class="form-group">
-										<label>Rut (*)</label>
+										<label>Rut <strong class="text-danger">*</strong></label>
 										<input type="text" class="form-control" name="rut"
-											placeholder="Ingrese Rut  de Trabajador(a)" value="{{ cliente.1 }}">
+											placeholder="Ingrese Rut  de Trabajador(a)" value="{{ cliente.1 }}" disabled>
 									</div>
 								</div>
 								<div class="col-md-4">
 									<div class="form-group">
-										<label>Razon Social (*)</label>
+										<label>Razon Social <strong class="text-danger">*</strong></label>
 										<input type="text" class="form-control" name="r_social"
-											placeholder="Ingrese Razón Social de Empresa" value="{{ cliente.2 }}">
+											placeholder="Ingrese Razón Social de Empresa" value="{{ cliente.2 }}" disabled>
 									</div>
 								</div>
 							</div>
@@ -74,7 +74,7 @@
 								</div>
 								<div class="col-md-4">
 									<div class="form-group">
-										<label>Correo electrónico (*)</label>
+										<label>Correo electrónico <strong class="text-danger">*</strong></label>
 										<input type="text" class="form-control" name="email"
 											placeholder="Ingrese Correo electrónico" value="{{ cliente.5 }}">
 									</div>
@@ -88,13 +88,13 @@
 								</div>
 							</div>
 							<hr>
-							<h5 class="card-title text-center">Información Adicional</h5>
+							<h5 class="card-title text-center">Información Adicional <br><button type="button" class="btn btn2 btn-info " data-toggle="popover" data-placement="top" title="¿Porqué la Región está Bloqueada?" data-content="La Región se Asigna Automáticamente al Seleccionar La Comuna y se ve reflejada al Guardar"><i class="fa fa-info-circle"></i></button></h5>
 							<hr>
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label>Región de Residencia (*)</label>
-										<select name="reg_sel" id="reg_sel" class="cb-single form-control">
+										<label>Región de Residencia <strong class="text-danger">*</strong></label>
+										<select name="reg_sel" id="reg_sel" class="cb-single form-control" disabled>
 											<option value="" selecte>Seleccionar Región...</option>
 											{% for r in regiones %}
 											{% if region is not None and region.2 == r.2 %}
@@ -108,7 +108,7 @@
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
-										<label>Comuna de Residencia (*) </label>
+										<label>Comuna de Residencia <strong class="text-danger">*</strong></label>
 										<select name="com_sel" id="com_sel" class="cb-single form-control">
 											<option value="" selecte>Seleccionar Comuna...</option>
 											{% for c in comunas %}
@@ -125,7 +125,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="form-group">
-										<label>Dirección (*)</label>
+										<label>Dirección <strong class="text-danger">*</strong></label>
 										<input type="text" name="direccion" class="form-control"
 											placeholder="Ingrese Dirección" value="{{ direccion }}">
 									</div>
@@ -185,5 +185,10 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
 <script src="{% static 'appADM/assets/js/traslate.js' %}"></script>
 <script src="{% static 'appADM/assets/js/valida-cliente.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+</script>
 {% endblock %}
 {% endblock %}

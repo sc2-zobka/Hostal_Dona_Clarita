@@ -124,18 +124,7 @@ class Habitacion(models.Model):
     def __str__(self):
         return str(self.numero_habitacion)
 
-class EstatusFactura(models.Model):
-    descripcion = models.CharField(max_length=50)
 
-    def __str__(self):
-        return self.descripcion
-
-class Factura(models.Model):
-   fecha_emision = models.DateField(auto_now_add=True)
-   monto_neto = models.IntegerField(blank=True)
-   iva = models.IntegerField()
-   monto_total = models.IntegerField()
-   estado_factura = models.ForeignKey(EstatusFactura, on_delete=models.PROTECT, default=0)
 
 class Accesorio(models.Model):
     descripcion = models.CharField(max_length=20)
@@ -191,7 +180,6 @@ class OrdenCompra(models.Model):
     iva = models.IntegerField(null=True)
     monto_total = models.IntegerField(null=True)
     cantidad_huesped = models.IntegerField()
-    factura = models.ForeignKey(Factura, on_delete=models.PROTECT, default=0, null=True)
     cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT, default=0)
     estatus_orden_compra = models.ForeignKey(EstatusOrdenCompra, on_delete=models.PROTECT, default=0)
 
@@ -263,7 +251,6 @@ class OrdenPedido(models.Model):
     fecha_emision = models.DateField(auto_now_add=True)
     empleado = models.ForeignKey(Empleado, on_delete=models.PROTECT, default=0)
     estatus_orden_pedido = models.ForeignKey(EstatusOrdenPedido, on_delete=models.PROTECT, default=0)
-    factura = models.ForeignKey(Factura, on_delete=models.PROTECT, default=0)
     cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT, default=0)
 
 class DetalleOrdenPedido(models.Model):
@@ -282,4 +269,23 @@ class RecepcionOrdenPedido(models.Model):
     id_detalle_pedido = models.IntegerField()
     estatus_recepcion = models.ForeignKey(EstatusRecepcion, on_delete=models.PROTECT, default=0)
 
-    
+class EstatusDocumento(models.Model):#Modifiqué
+    descripcion = models.CharField(max_length=50)
+    def __str__(self):
+        return self.descripcion
+class TipoDocumento(models.Model):#Modifiqué
+    codigo_sii = models.CharField(max_length=2, primary_key=True)
+    descripcion = models.CharField(max_length=40,default='')
+    abreviado = models.CharField(max_length=3,default='')
+    estado = models.BooleanField(default=True)
+
+class Documento(models.Model):#Modifiqué
+   tipo_doc = models.ForeignKey(TipoDocumento, on_delete=models.PROTECT)
+   nro_ocompra = models.ForeignKey(OrdenCompra, on_delete=models.PROTECT, null=True)
+   nro_opedido = models.ForeignKey(OrdenPedido, on_delete=models.PROTECT, null=True)
+   iva = models.IntegerField()
+   fecha_emision = models.DateField(auto_now_add=True)
+   monto_neto = models.IntegerField(blank=True)
+   iva = models.IntegerField()
+   monto_total = models.IntegerField()
+   estado_documento = models.ForeignKey(EstatusDocumento, on_delete=models.PROTECT, default=0)

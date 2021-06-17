@@ -341,20 +341,28 @@
                             {% endif %}
                         </ul>
                 </li>
-                {% if request.path == '/dashboard/ventas/' %}
-                <li class=" active">
-                    {% else %}
-                <li>
-                    {% endif %}
-                    <a href="{% url 'ventas' %}"><i class="fa fa-money"></i> <span>Facturas</span></a>
-                </li>
+                
                 {% if request.path == '/dashboard/ordenes-compras/' %}
                 <li class=" active">
                     {% else %}
                 <li>
                     {% endif %}
                     <a href="{% url 'oc-list-views' %}"><i class="fa fa-money"></i> <span>Ord. De Compras</span></a>
-                </li>                
+                </li> 
+                {% if request.path == '/dashboard/reservas/' %}
+                <li class=" active">
+                    {% else %}
+                <li>
+                    {% endif %}
+                    <a href="{% url 'reservas' %}"><i class="fa fa fa-check"></i> <span>Reservas (Check-In)</span></a>
+                </li>      
+                {% if request.path == '/dashboard/documentos-tributarios/' %}
+                <li class=" active">
+                    {% else %}
+                <li>
+                    {% endif %}
+                    <a href="{% url 'ventas' %}"><i class="fa fa-money"></i> <span>Doc. Tributarios</span></a>
+                </li>                                          
                 <li class="submenu">
                     <a href="#"><i class="fa fa-cogs"></i> <span>Configuraciones</span> <span
                             class="menu-arrow"></span></a>

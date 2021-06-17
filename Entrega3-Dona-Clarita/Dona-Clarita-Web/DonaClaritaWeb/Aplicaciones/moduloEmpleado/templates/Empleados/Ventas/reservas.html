@@ -1,0 +1,244 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Ventas{% endblock%}
+{% block contenido-panel %}
+{% load humanize %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title">Reservas Check-In</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Reservas Check-In</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<!-- /Page Header -->
+		<div class="row">
+			<div class="col-md-12">
+				<h6 class="alert alert-info text-center"><i class="fa fa-info-circle"></i>
+					<strong>ATENCIÓN:</strong> Ingrese Rango de Fechas para realizar Búsqueda de Huéspedes </h6>
+				<form action="" method="POST">
+					{% csrf_token%}
+					<div class="row">
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label for="fdesde">Fecha Desde <strong class="text-danger">*</strong></label>
+								<input type="date" name="fdesde" id="fdesde" class="form-control" value="{{fdesde}}">
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label for="fhasta">Fecha Hasta <strong class="text-danger">*</strong></label>
+								<input type="date" name="fhasta" id="fhasta" class="form-control" value="{{fhasta}}">
+							</div>
+						</div>
+						<div class="col-lg-4"> <br>
+							<a class="btn btn2 btn-secondary" style="margin-top:7px;" href="{% url 'reservas'%}"><i
+									class="fa fa-paint-brush"></i> Limpiar</a>
+							<button type="submit" class="btn btn2 btn-info" style="margin-top:7px;"><i
+									class="fa fa-search"></i> Buscar</button>
+						</div>
+					</div>
+				</form>
+				<br>
+				<!-- Recent Orders -->
+				<div class="card">
+					<div class="card-body">						
+						<div class="table-responsive">
+							<table class="datatable table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										<th class="text-center">N° Reserva</th>
+										<th class="text-center" data-toggle="tooltip" data-placement="top" title="Orden de Compra" >O.C</th>
+										<th>Empresa</th>
+										<th class="text-center">Rut</th>
+										<th>Nombre</th>
+										<th class="text-center">Tipo Comedor</th>
+										<th class="text-center">Habitación</th>
+										<th class="text-center">Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for reserva in reservas %}
+									<tr>
+										<td class="text-center">{{reserva.0}}</td>
+										<td class="text-center"  data-toggle="tooltip" data-placement="top" title="Orden de Compra" >{{reserva.1}}</td>
+										<td>{{reserva.2}}</td>
+										<td >{{reserva.3|intcomma}}</td>
+										<td>{{reserva.4}}</td>
+										<td class="text-center">{{reserva.5}}</td>
+										<td class="text-center">{{reserva.7}} - N° {{reserva.6}}</td>
+										<td class="text-center">
+											<div class="actions">
+												<a class="btn btn2 btn-sm bg-info" data-toggle="modal"
+													href="#Add_Specialities_details{{reserva.0}}">
+													<i class="fa fa-eye"></i> Ver
+												</a>
+												{% if reserva.10 == 0%}
+												<a class="btn btn2 btn-sm bg-success" data-toggle="tooltip" href="{% url 'check-in' reserva.0%}"
+													title="Facturar Orden de Compra">
+													<i class="fa fa-check"></i> Check-In
+												</a>
+												{% endif %}
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- /Recent Orders -->
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Page Wrapper -->
+<!-- Add Modal -->
+{% for reserva in reservas %}
+<div class="modal fade" id="Add_Specialities_details{{reserva.0}}" aria-hidden="true" role="dialog">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="text-center modal-header">
+				{% if reserva.10 %}
+				<h5 class="modal-title text-center">Reserva N°{{reserva.0}} - <strong class="text-primary">Check-In Finalizado</strong> </h5>
+				{% else %}
+				<h5 class="modal-title text-center">Reserva N°{{reserva.0}} - <strong class="text-warning">Check-In Pendiente</strong> </h5>
+				{% endif %}
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="row form-row">
+						<div class="col-12 col-sm-4">
+							<div class="form-group">
+								<label>N° Ord. Compra</label>
+								<input type="text" class="form-control" placeholder="N° Orden Compra" value="{{reserva.1}}" disabled>
+							</div>
+						</div>
+						<div class="col-12 col-sm-8">
+							<div class="form-group">
+								<label>Razón Social</label>
+								<input type="text" class="form-control" placeholder="Razón social"  value="{{reserva.2}}" disabled>
+							</div>
+						</div>
+						<div class="col-12 col-sm-4">
+							<div class="form-group">
+								<label>Rut Huésped</label>
+								<input type="text" class="form-control" placeholder="N° Orden Compra" value="{{reserva.3|intcomma}}" disabled>
+							</div>
+						</div>
+						<div class="col-12 col-sm-8">
+							<div class="form-group">
+								<label>Nombre Huésped</label>
+								<input type="text" class="form-control" placeholder="Razón social"  value="{{reserva.4}}" disabled>
+							</div>
+						</div>						
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label>Inicio Estadia</label>
+								<input type="date" class="form-control"disabled value="{{reserva.8|date:'Y-m-d'}}">
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label>Fin de Estadia</label>
+								<input type="date" class="form-control" disabled value="{{reserva.9|date:'Y-m-d'}}">
+							</div>
+						</div>
+						<div class="col-12 col-sm-4">
+							<div class="form-group">
+								<label>Tipo Comedor</label>
+								<input type="text" class="form-control" placeholder="Cantidad de Huespedes" value="{{reserva.5}}" disabled>
+							</div>
+						</div>
+						<div class="col-12 col-sm-4">
+							<div class="form-group">
+								<label>Plato</label>
+								<input type="text" class="form-control" placeholder="Monto Total" value="{{reserva.11}}" disabled>
+							</div>
+						</div>
+						<div class="col-12 col-sm-4">
+							<div class="form-group">
+								<label>Habitación</label>
+								<input type="text" class="form-control" placeholder="Monto Total" value="{{reserva.7}} - N° {{reserva.6}}" disabled>
+							</div>
+						</div>
+					</div>
+				</form>
+				<hr>
+			</div>
+		</div>
+	</div>
+</div>
+{%endfor%}
+<!-- /ADD Modal -->
+{% block js %}
+{% if messages %}
+<div>
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+	<script>
+		Swal.fire({
+			title: "Error en Validación",
+			text: "{{message}}",
+			icon: "error",
+			timer: 5000,
+            timerProgressBar: true
+		})
+	</script>
+	{% elif message.tags  == 'warning'%}
+	<script>
+		Swal.fire({
+			title: "¡Atención!",
+			text: "{{message}}",
+			icon: "warning",
+			timer: 5000,
+            timerProgressBar: true			
+		})
+	</script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Gestión de Reservas",
+			text: "{{message}}",
+			icon: "success"
+		})
+	</script>
+	{% endif %}
+	{% endfor %}
+</div>
+{% endif %}
+<script>
+	function facturar(id) {
+		Swal.fire({
+				"title": "¿Estás seguro de querer Facturar esta Orden de Compra?",
+				"text": "Esta acción solo se podrá revertir Anulando la Factura",
+				"icon": "question",
+				"showCancelButton": true,
+				"confirmButtonText": "Si, Facturar",
+				"cancelButtonText": "No, Cancelar",
+				"reverseButtons": true,
+				"cancelButtonColor": "#d44747"
+
+			})
+			.then(function (result) {
+				if (result.isConfirmed) {
+					window.location.href = "/dashboard/facturar-oc/" + id + "/"
+				}
+			})
+	}
+</script>
+{% endblock %}
+{% endblock %}

@@ -1,6 +1,6 @@
 from django.urls import path
 from Aplicaciones.moduloEmpleado.views import  dashboard,\
-                   clientes, edit_clientes, eliminar_cliente,cliente_pass, nuevo_proveedor, proveedores, edit_proveedor, eliminar_proveedor, proveedor_pass, \
+                   clientes, documentos, edit_clientes, eliminar_cliente,cliente_pass, nuevo_proveedor, proveedores, edit_proveedor, eliminar_proveedor, proveedor_pass, \
                    empleados, edit_empleado,nuevo_empleado, eliminar_empleado, empleado_pass, tipo_empleado, editar_tipoEmpleado, eliminar_tipoEmpleado, \
                    nueva_habitacion, edit_habitacion, elim_habitacion, habitaciones, tipo_habitacion, edit_tipo_hab, elim_tipo_hab, accesorios, edit_accesorios, eliminar_accesorios,\
                    nuevo_plato, edit_plato, platos, tipo_comedor, edit_tipo_comedor, eliminar_tipo_comedor, eliminar_platos,\
@@ -8,7 +8,7 @@ from Aplicaciones.moduloEmpleado.views import  dashboard,\
                    huespedes, nuevo_huesped, huesped_carga,edit_huesped, eliminar_huesped, \
                    productos, nuevo_producto,edit_producto, eliminar_producto, tipo_producto, edit_tipo_producto, eliminar_tipo_producto,  categoria, edit_categoria, eliminar_categoria,\
                    nueva_ordenPedido, ordenes_pedido, edit_ordenPedido, check_ordenPedido,\
-                   comentarios,  ventas, orden_compra_views
+                   comentarios,  documentos, orden_compra_views, facturarOC, notaCredito, reservas, check_in
 
 
 
@@ -96,7 +96,12 @@ urlpatterns = [
 
 
     path('dashboard/comentarios/', comentarios, name="comentarios"),
-    path('dashboard/ventas/', ventas, name="ventas"),
+    path('dashboard/documentos-tributarios/', documentos, name="ventas"),
     path('dashboard/ordenes-compras/', orden_compra_views, name="oc-list-views"),
+    path('dashboard/facturar-oc/<id>/', facturarOC, name="facturar-oc"),
+    path('dashboard/notacredito/<id>/', notaCredito, name="notacredito"),
+    path('dashboard/reservas/', reservas, name="reservas"),
+    path('dashboard/check-in/<id>/', check_in, name="check-in"),
+
 
 ]

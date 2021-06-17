@@ -324,7 +324,6 @@ def config_user(request):
     }
 
     if request.method == 'POST':
-        razon_social = request.POST['r_social']
         nombre_comercial = request.POST['nom_fantasia']
         email = request.POST['email']
         telefono = request.POST['fono']
@@ -332,29 +331,26 @@ def config_user(request):
         comuna = request.POST.get('com_sel', None)
         direccion = request.POST['direccion']
 
-        razon_social = razon_social.strip().lower()
         nombre_comercial = nombre_comercial.strip().lower()
         email = email.strip().lower()
         telefono = telefono.strip().lower()
-        region = region.strip().lower()
         comuna = comuna.strip().lower()
         direccion = direccion.strip().lower()
 
-        if len(razon_social) >0 and len(nombre_comercial) >=0 and len(email) >0 and len(telefono) >=0 and len(comuna) > 0 and len(direccion) >0:
+        if  len(nombre_comercial) >=0 and len(email) >0 and len(telefono) >=0 and len(comuna) > 0 and len(direccion) >0:
             user_db = request.user
             if len(email) > 0:
                 user_db.email = email
-                user_db.first_name = razon_social
                 user_db.save()
             
             with connection.cursor() as cursor:
                 try:
-                    cursor.execute("UPDATE APP_CLIENTE SET RAZON_SOCIAL = %s, " \
+                    cursor.execute("UPDATE APP_CLIENTE SET  " \
                         "DIRECCION = %s, " \
                         "CELULAR = %s, " \
                         "NOMBRE_COMERCIAL = %s, " \
                         "COMUNA_ID = %s " \
-                        "WHERE USUARIO_ID = %s", [razon_social, direccion, telefono, nombre_comercial, comuna, user_db.id])
+                        "WHERE USUARIO_ID = %s", [ direccion, telefono, nombre_comercial, comuna, user_db.id])
                                     
                     messages.success(request, f' Se ha Modificado correctamente')
                     return redirect('config-user')

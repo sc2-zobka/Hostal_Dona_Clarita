@@ -2,6 +2,7 @@
 {% load static %}
 {% block title %}Ventas{% endblock%}
 {% block contenido-panel %}
+{% load humanize %}
 <!-- Page Wrapper -->
 <div class="page-wrapper">
 	<div class="content container-fluid">
@@ -35,7 +36,7 @@
 										<th>N° Huéspedes</th>
 										<th class="text-center">Total</th>
 										<th class="text-center">Estado</th>
-										<th class="text-right">Acciones</th>
+										<th class="text-center">Acciones</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -48,31 +49,37 @@
 											</h2>
 										</td>
 										<td>{{oc.2}}</td>
-										<td>{{oc.3}}</td>
+										<td>{{oc.3 }}</td>
 										{% if oc.4 == None %}
 										<td class="text-center">-</td>
 										{% else %}
-										<td class="text-center">{{oc.4}}</td>
+										<td class="text-center">${{oc.4|intcomma}}</td>
 										{% endif %}
 										{% if oc.6 == 1 %}
 										<td class="text-center">
-											<span class="badge badge-pill bg-warning inv-badge">Pendiente</span>
+											<span class="badge badge-pill bg-warning inv-badge">{{oc.5}}</span>
 										</td>
 										{% elif oc.6 == 2%}
 										<td class="text-center">
-											<span class="badge badge-pill bg-success inv-badge">Pagada</span>
+											<span class="badge badge-pill bg-success inv-badge">{{oc.5}}</span>
 										</td>
 										{% elif oc.6 == 3%}
 										<td class="text-center">
-											<span class="badge badge-pill bg-danger inv-badge">Anulada</span>
+											<span class="badge badge-pill bg-danger inv-badge">{{oc.5}}</span>
 										</td>
 										{% endif %}
-										<td class="text-right">
+										<td class="text-center">
 											<div class="actions">
 												<a class="btn btn2 btn-sm bg-primary" data-toggle="modal"
 													href="#Add_Specialities_details{{oc.9}}" >
 													<i class="fa fa-eye"></i> Ver
 												</a>
+												{% if oc.6 != 2%}
+												<a class="btn btn2 btn-sm bg-success" data-toggle="tooltip"
+													href="#"  title="Facturar Orden de Compra" onClick="facturar({{ oc.9 }})">
+													<i class="fa fa-clipboard"></i> Facturar
+												</a>
+												{% endif %}												
 											</div>
 										</td>
 									</tr>
@@ -96,7 +103,7 @@
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Orden de Compra N°{{oc.9}} - Pendiente</h5>
+				<h5 class="modal-title">Orden de Compra N°{{oc.9}} - {{oc.5}}</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -136,8 +143,8 @@
 						</div>
 						<div class="col-12 col-sm-6">
 							<div class="form-group">
-								<label>Monto Total</label>
-								<input type="number" class="form-control" placeholder="Monto Total" value="{{oc.4}}" disabled>
+								<label>Monto Total (CLP)</label>
+								<input type="number" class="form-control" placeholder="Monto Total" value="{{oc.4|intcomma}}" disabled>
 							</div>
 						</div>
 					</div>
@@ -149,6 +156,56 @@
 {%endfor%}
 <!-- /ADD Modal -->
 {% block js %}
-
+{% if messages %}
+<div>
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+	<script>
+		Swal.fire({
+			title: "Error en Validación",
+			text: "{{message}}",
+			icon: "error"
+		})
+	</script>
+	{% elif message.tags  == 'warning'%}
+	<script>
+		Swal.fire({
+			title: "¡Atención!",
+			text: "{{message}}",
+			icon: "warning"
+		})
+	</script>	
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Gestión de Ordenes de Compra",
+			text: "{{message}}",
+			icon: "success"
+		})
+	</script>
+	{% endif %}
+	{% endfor %}
+</div>
+{% endif %}
+<script>
+	function facturar(id) {
+		Swal.fire({
+				"title": "¿Estás seguro de querer Facturar esta Orden de Compra?",
+				"text": "Esta acción solo se podrá revertir Anulando la Factura",
+				"icon": "question",
+				"showCancelButton": true,
+				"confirmButtonText": "Si, Facturar",
+				"cancelButtonText": "No, Cancelar",
+				"reverseButtons": true,
+				"cancelButtonColor": "#d44747"
+				
+			})
+			.then(function (result) {
+				if (result.isConfirmed) {
+					window.location.href = "/dashboard/facturar-oc/" + id + "/"
+				}
+			})
+	}
+</script>
 {% endblock %}
 {% endblock %}

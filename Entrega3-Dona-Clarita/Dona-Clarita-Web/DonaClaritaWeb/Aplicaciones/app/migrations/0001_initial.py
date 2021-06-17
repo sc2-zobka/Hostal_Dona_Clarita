@@ -130,13 +130,6 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='EstatusFactura',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('descripcion', models.CharField(max_length=50)),
-            ],
-        ),
-        migrations.CreateModel(
             name='EstatusOrdenCompra',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -157,17 +150,7 @@ class Migration(migrations.Migration):
                 ('descripcion', models.CharField(max_length=50)),
             ],
         ),
-        migrations.CreateModel(
-            name='Factura',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('fecha_emision', models.DateField(auto_now_add=True)),
-                ('monto_neto', models.IntegerField(blank=True)),
-                ('iva', models.IntegerField()),
-                ('monto_total', models.IntegerField()),
-                ('estado_factura', models.ForeignKey(default=0, on_delete=django.db.models.deletion.PROTECT, to='app.estatusfactura')),
-            ],
-        ),
+
         migrations.CreateModel(
             name='Habitacion',
             fields=[
@@ -331,7 +314,6 @@ class Migration(migrations.Migration):
                 ('cliente', models.ForeignKey(default=0, on_delete=django.db.models.deletion.PROTECT, to='app.cliente')),
                 ('empleado', models.ForeignKey(default=0, on_delete=django.db.models.deletion.PROTECT, to='app.empleado')),
                 ('estatus_orden_pedido', models.ForeignKey(default=0, on_delete=django.db.models.deletion.PROTECT, to='app.estatusordenpedido')),
-                ('factura', models.ForeignKey(default=0, on_delete=django.db.models.deletion.PROTECT, to='app.factura')),
             ],
         ),
         migrations.CreateModel(
@@ -345,7 +327,6 @@ class Migration(migrations.Migration):
                 ('cantidad_huesped', models.IntegerField()),
                 ('cliente', models.ForeignKey(default=0, on_delete=django.db.models.deletion.PROTECT, to='app.cliente')),
                 ('estatus_orden_compra', models.ForeignKey(default=0, on_delete=django.db.models.deletion.PROTECT, to='app.estatusordencompra')),
-                ('factura', models.ForeignKey(default=0, null=True, on_delete=django.db.models.deletion.PROTECT, to='app.factura')),
             ],
         ),
         migrations.CreateModel(

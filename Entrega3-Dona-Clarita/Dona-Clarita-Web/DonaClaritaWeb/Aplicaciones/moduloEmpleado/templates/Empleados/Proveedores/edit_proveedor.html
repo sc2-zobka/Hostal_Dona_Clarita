@@ -91,20 +91,21 @@
 								</div>														
 							</div>
 							<hr>
-							<h5 class="card-title text-center">Información Adicional</h5>
+							<h5 class="card-title text-center">Información Adicional <br><button type="button" class="btn btn2 btn-info " data-toggle="popover" data-placement="top" title="¿Porqué la Región está Bloqueada?" data-content="La Región se Asigna Automáticamente al Seleccionar La Comuna y se ve reflejada al Guardar"><i class="fa fa-info-circle"></i></button></h5>
 							<hr>
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Región de Residencia <strong class="text-danger">*</strong></label>
-										<select name="reg_sel" id="reg_sel" class="cb-single form-control">
+										<select name="reg_sel" id="reg_sel" class="cb-single form-control" disabled>
+											<option value="" selecte>Seleccionar Región...</option>
 											{% for r in regiones %}
-											{% if region is not None and region.2 == r.2 %}
-											<option value="{{ r.0 }}" selected>{{ r.2 }}</option>
-											{% else %}
-											<option value="{{ r.0 }}">{{ r.2 }}</option>
-											{% endif %}
-										{% endfor %}
+												{% if region is not None and region.2 == r.2 %}
+												<option value="{{ r.0 }}" selected>{{ r.2 }}</option>
+												{% else %}
+												<option value="{{ r.0 }}">{{ r.2 }}</option>
+												{% endif %}
+											{% endfor %}
 										</select>
 									</div>
 								</div>
@@ -138,7 +139,7 @@
 								<div class="col-md-2">
 									<div class="form-group mb-0">
 										<a class="btn btn2 btn-danger btn-block text-center"
-											href="{% url 'empleados-list' %}"><i class="fa fa-reply"></i> Volver</a>
+											href="{% url 'proveedores-list' %}"><i class="fa fa-reply"></i> Volver</a>
 									</div>
 								</div>
 								&nbsp;
@@ -196,5 +197,10 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
 <script src="{% static 'appADM/assets/js/traslate.js' %}"></script>
 <script src="{% static 'appADM/assets/js/valida-cliente.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+</script>
 {% endblock %}
 {% endblock %}

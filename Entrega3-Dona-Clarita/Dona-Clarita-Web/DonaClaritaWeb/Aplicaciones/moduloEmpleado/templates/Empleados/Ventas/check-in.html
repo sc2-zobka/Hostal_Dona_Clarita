@@ -1,0 +1,180 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Ordenes de Pedidos{% endblock%}
+{% block css-adm %}
+<link rel="stylesheet" href="{% static 'appADM/assets/css/oc.css' %}">
+{% endblock %}
+{% block contenido-panel %}
+{% load humanize %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title"><i class="fa fa-check"></i> Check-In Reserva N° {{huesped.0}}</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item"><a href="{% url 'oc-list' %}">Reservas</a></li>
+						<li class="breadcrumb-item active">Check-In Reserva N° {{huesped.0}}</li>
+
+					</ul>
+				</div>				
+			</div>
+		</div>
+		<!-- /Page Header -->
+		<div class="row">
+			<div class="col-md-12">
+
+				<div class="container mt-5">
+					<div class="row d-flex justify-content-center align-items-center">
+						<div class="col-1"></div>
+						<div class="col-xl-12 col-md-12">
+							<div class="ms-panel ms-panel-fh">
+								<div class="ms-panel-header">
+									<h6 class="text-center alert alert-primary"><strong >Check-In Reserva N°{{huesped.0}}<br>
+										Rut: {{huesped.1|intcomma}} </strong></h6>
+								</div>
+								<div class="ms-panel-body">
+									<form class="ms-form-wizard ms-wizard-pill style2-wizard" method="POST" id="form1">
+										{% csrf_token%}
+										<div class="ms-wizard-step">
+											<br>
+											<div class="form-row">
+												<div class="col-md-12">
+													<div class="table-wrapper-scroll-y my-custom-scrollbar">
+														<table class="table table-bordered table-striped mb-0">
+															<thead>
+																<tr>
+																	<th class="text-center">
+																		<h6>#</h6>
+																	</th>
+																	<th class="text-center">
+																		<h6>Rut</h6>
+																	</th>
+																	<th class="text-center">
+																		<h6>Nombre</h6>
+																	</th>
+																	<th class="text-center">
+																		<h6>Habitación</h6>
+																	</th>
+																	<th class="text-center">
+																		<h6>Tipo Comedor</h6>
+																	</th>
+																	<th class="text-center">
+																		<h6>Seleccionar Plato<strong class="text-danger">*</strong></h6>
+																	</th>																	
+																</tr>
+															</thead>
+															<tbody>																
+																<tr>
+																	<td class="text-center"><a>{{ inicio_index | add:1 }}</a></td>
+																	<td class="text-center"><a>{{ huesped.1 |intcomma}}</a></td>
+																	<td class="text-center">
+																		<h2>{{ huesped.2 }}</h2>
+																	</td>
+																	<td class="text-center">
+																		<h2>{{huesped.4}} - N° {{ huesped.3 }}</h2>
+																	</td>
+																	<td class="text-center">{{huesped.5}}</td>
+																	<td class="text-center">
+																		<select name="plato" id="plato" class="form-control cb-single">
+																			<option value="">Seleccionar Plato...</option>
+																			{% for plato in platos %}
+																			<option value="{{ plato.0 }}">{{ plato.1 }}</option>
+																			{% endfor %}
+																		</select>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-3"></div>
+												<div class="col-md-3">
+													<div class="form-group mb-0">
+														<a class="btn btn2 btn-danger btn-block text-center" href="{% url 'reservas' %}"><i class="fa fa-reply"></i> Volver
+															</a>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<div class="form-group mb-0">
+														<button class="btn btn2 btn-success btn-block text-center" type="submit"> <i class="fa fa-check-square-o"></i> Realizar Check-In
+															</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="col-1"></div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Page Wrapper -->
+{% block js %}
+{% if messages %}
+<div>
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+	<script>
+		Swal.fire({
+			title: "Error en Validación",
+			text: "{{message}}",
+			icon: "error",
+			timer: 5000,
+            timerProgressBar: true
+		})
+	</script>
+	{% elif message.tags  == 'warning'%}
+	<script>
+		Swal.fire({
+			title: "¡Atención!",
+			text: "{{message}}",
+			icon: "warning",
+			timer: 5000,
+            timerProgressBar: true			
+		})
+	</script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Gestión de Ordenes de Compra",
+			text: "{{message}}",
+			icon: "success"
+		})
+	</script>
+	{% endif %}
+	{% endfor %}
+</div>
+{% endif %}
+<script src="{% static 'appADM/assets/js/jquery.steps.min.js' %}"></script>
+<script src="{% static 'appADM/assets/js/form-wizard.js' %}"></script>
+<script>
+	$(document).ready(function () {
+		$('#dtHorizontalExample').DataTable({
+			"scrollY": "50vh",
+			"scrollCollapse": true,
+		});
+		$('.dataTables_length').addClass('bs-select');
+	});
+</script>
+<script>
+	$(document).ready(function () {
+		$('.cb-multiple').select2();
+		$('.cb-single').select2();
+	});
+</script>
+{% endblock %}
+{% endblock %}

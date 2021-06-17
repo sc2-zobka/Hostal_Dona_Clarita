@@ -29,7 +29,8 @@
 				<div class="card">
 					<div class="card-header text-center">
 						<hr>
-						<h4 class="card-title">Información de Empresa</h4>
+						<h4 class="card-title">Información de Empresa<br>
+							<br><button type="button" class="btn btn2 btn-info " data-toggle="popover" data-placement="top" title="¿Porqué la Región está Bloqueada?" data-content="La Región se Asigna Automáticamente al Seleccionar La Comuna y se ve reflejada al Guardar"><i class="fa fa-info-circle"></i></button></h4>
 						<hr>
 						<h6 class="alert alert-info"><i class="fa fa-info-circle"></i>
 							<strong>ATENCIÓN:</strong> Campos Obligatorios se identifican con <strong
@@ -65,7 +66,7 @@
 								<div class="col-md-4">
 									<div class="form-group">
 										<label>Región <strong class="text-danger">*</strong></label>
-										<select name="reg_ssel" id="" class="cb-single form-control">
+										<select name="reg_ssel" id="" class="cb-single form-control" disabled>
 											<option value="" selected>Seleccionar Región...</option>
 											{% for r in regiones %}
 											{% if region is not None and region.2 == r.2 %}
@@ -223,5 +224,10 @@
 	{% endfor %}
 </div>
 {% endif %}
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+</script>
 {% endblock %}
 {% endblock %}

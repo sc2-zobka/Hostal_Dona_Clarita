@@ -96,6 +96,7 @@ class Cliente(models.Model):
     celular = models.IntegerField(null=True)
     nombre_comercial = models.CharField(max_length=100, null=True)
     tipo_cliente = models.ForeignKey(TipoCliente, on_delete=models.PROTECT, default=0)
+    codigo = models.IntegerField(null=True)
 
 class EstadoHabitacion(models.Model):
     descripcion = models.CharField(max_length=50)
@@ -252,6 +253,7 @@ class OrdenPedido(models.Model):
     empleado = models.ForeignKey(Empleado, on_delete=models.PROTECT, default=0)
     estatus_orden_pedido = models.ForeignKey(EstatusOrdenPedido, on_delete=models.PROTECT, default=0)
     cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT, default=0)
+    observacion = models.CharField(max_length=500, null=True)
 
 class DetalleOrdenPedido(models.Model):
     cantidad = models.IntegerField()
@@ -268,6 +270,7 @@ class RecepcionOrdenPedido(models.Model):
     fecha_entrega = models.DateField()
     id_detalle_pedido = models.IntegerField()
     estatus_recepcion = models.ForeignKey(EstatusRecepcion, on_delete=models.PROTECT, default=0)
+    observacion = models.CharField(max_length=500, null=True)
 
 class EstatusDocumento(models.Model):#Modifiqué
     descripcion = models.CharField(max_length=50)

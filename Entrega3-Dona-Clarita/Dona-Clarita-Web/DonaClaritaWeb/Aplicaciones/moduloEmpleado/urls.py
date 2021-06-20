@@ -7,7 +7,7 @@ from Aplicaciones.moduloEmpleado.views import  dashboard,\
                    nuevo_servicio_ad, servicios_ad, edit_servicioad, eliminar_servicioad,\
                    huespedes, nuevo_huesped, huesped_carga,edit_huesped, eliminar_huesped, \
                    productos, nuevo_producto,edit_producto, eliminar_producto, tipo_producto, edit_tipo_producto, eliminar_tipo_producto,  categoria, edit_categoria, eliminar_categoria,\
-                   nueva_ordenPedido, ordenes_pedido, edit_ordenPedido, check_ordenPedido,\
+                   nueva_ordenPedido, ordenes_pedido, edit_ordenPedido, check_ordenPedido, anular_ordenPedido, rechazar_ordenPedido, \
                    comentarios,  documentos, orden_compra_views, facturarOC, notaCredito, reservas, check_in
 
 
@@ -89,8 +89,11 @@ urlpatterns = [
     #***Módulo:Empleados*** Opción: ordenes pedidos
     path('dashboard/nueva-orden-pedido/', nueva_ordenPedido, name="orden-pedido-new"),
     path('dashboard/ordenes-pedidos/', ordenes_pedido, name="ordenes-pedidos-list"),
-    path('dashboard/edit-orden-pedido/', edit_ordenPedido, name="edit-orden-pedido"),
-    path('dashboard/check-orden-pedido/', check_ordenPedido, name="check-orden-pedido"),
+    path('dashboard/edit-orden-pedido/<id>/', edit_ordenPedido, name="edit-orden-pedido"),
+    path('dashboard/check-orden-pedido/<id>/', check_ordenPedido, name="check-orden-pedido"),
+    path('dashboard/anular-orden-pedido/<id>/', anular_ordenPedido, name="anular-orden-pedido"),
+    path('dashboard/rechazar-orden-pedido/<id>/', rechazar_ordenPedido, name="rechazar-orden-pedido"),
+    # path('dashboard/recepcionar-orden-pedido/<id>/<obs>/', recepcionar_ordenPedido, name="recepcionar-orden-pedido"),
 
 
 

@@ -31,6 +31,7 @@
 									<tr>
 										<th>N° Pedido</th>										
 										<th>Nombre Proveedor</th>
+										<th>Fec. Emisión</th>
 										<th>Fec. Recepción</th>
 										<th>Total Prod.</th>
 										<th class="text-center">Estado</th>
@@ -39,176 +40,78 @@
 									</tr>
 								</thead>
 								<tbody>
+									{% for pedido in pedidos %}
 									<tr>
-										<td><a href="#">IN0001</a></td>										
+										<td><a href="#">{{ pedido.0 }}</a></td>										
 										<td>
 											<h2 class="table-avatar">
-												<a href="#" class="avatar avatar-sm mr-2"><img
-														class="avatar-img rounded-circle"
-														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
-														alt="User Image"></a>
-												<a href="#">Nombre Proveedor </a>
+												<a href="#">{{ pedido.1 }}</a>
 											</h2>
 										</td>
-										<td>-</td>
-										<td>5</td>
+										<td>{{ pedido.2 }}</td>
+										<td>{% if pedido.3 is None %}-{% else %}{{ pedido.3 }}{% endif %}</td>
+										<td>{{ pedido.4 }}</td>
 										<td class="text-center">
+											{% if pedido.5 == 'ENVIADA' %}
+											<span class="badge badge-pill bg-success inv-badge">Enviada</span>
+											{% elif pedido.5 == 'ANULADA' %}
 											<span class="badge badge-pill bg-danger inv-badge">Anulada</span>
+											{% elif pedido.5 == 'PENDIENTE RECEPCION' %}
+											<span class="badge badge-pill bg-success inv-badge">Pendiente recepción</span>
+											{% elif pedido.5 == 'RECHAZADO' %}
+											<span class="badge badge-pill bg-danger inv-badge">Rechazado</span>
+											{% elif pedido.5 == 'RECEPCIONADO' %}
+											<span class="badge badge-pill bg-success inv-badge">Recepcionado</span>
+											{% endif %}
 										</td>
-										<td class="text-center">-</td>
+										<td class="text-center">{% if pedido.6 is None %}-{% else %}{{ pedido.6 }}{% endif %}</td>
 										<td class="text-center">
 											<div class="actions">
+												{% if pedido.5 == 'ENVIADA' %}
+												<a title="Editar Pedido" data-toggle="tooltip"
+													class="btn btn-sm bg-primary-light"
+													href="{% url 'edit-orden-pedido' pedido.0 %}">
+													<i class="fa fa-edit"></i> Editar
+												</a>
 												<a title="Imprimir Pedido" data-toggle="tooltip"
 													class="btn btn2 btn-sm bg-primary" href="#">
 													<i class="fa fa-print"></i> Imprimir
 												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td><a href="#">IN0001</a></td>
-										<td>
-											<h2 class="table-avatar">
-												<a href="#" class="avatar avatar-sm mr-2"><img
-														class="avatar-img rounded-circle"
-														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
-														alt="User Image"></a>
-												<a href="#">Nombre Proveedor </a>
-											</h2>
-										</td>
-										<td>-</td>
-										<td>5</td>
-										<td class="text-center">
-											<span class="badge badge-pill bg-warning inv-badge">Pendiente
-												Confirmación</span>
-										</td>
-										<td class="text-center">-</td>
-										<td class="text-center">
-											<div class="actions">
 												<a title="Anular Pedido" data-toggle="tooltip"
-													class="btn btn-sm bg-danger-light" href="#">
+													class="btn btn-sm bg-danger-light" href="#" onClick="anular({{ pedido.0 }})">
 													<i class="fa fa-ban"></i> Anular
 												<a/>
-												<a title="Editar Pedido" data-toggle="tooltip"
-													class="btn btn-sm bg-primary-light"
-													href="{% url 'edit-orden-pedido'%}">
-													<i class="fa fa-edit"></i> Editar
+												{% elif pedido.5 == 'ANULADA' %}
+												<a title="Imprimir Pedido" data-toggle="tooltip"
+													class="btn btn2 btn-sm bg-primary" href="#">
+													<i class="fa fa-print"></i> Imprimir
 												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td><a href="#">IN0001</a></td>
-										<td>
-											<h2 class="table-avatar">
-												<a href="#" class="avatar avatar-sm mr-2"><img
-														class="avatar-img rounded-circle"
-														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
-														alt="User Image"></a>
-												<a href="#">Nombre Proveedor </a>
-											</h2>
-										</td>
-										<td>-</td>
-										<td>5</td>
-										<td class="text-center">
-											<span class="badge badge-pill bg-warning inv-badge">Pendiente
-												Recepción</span>
-										</td>
-										<td class="text-center">-</td>
-										<td class="text-center">
-											<div class="actions">
+												{% elif pedido.5 == 'PENDIENTE RECEPCION' %}
 												<a title="Editar Pedido" data-toggle="tooltip"
 													class="btn btn-sm bg-primary-light"
-													href="{% url 'edit-orden-pedido'%}">
+													href="{% url 'edit-orden-pedido' pedido.0 %}">
 													<i class="fa fa-edit"></i> Editar
 												</a>
 												<a title="Recepcionar Pedido" data-toggle="tooltip"
 													class="btn btn2 btn-sm bg-success-light"
-													href="{% url 'check-orden-pedido'%}">
+													href="{% url 'check-orden-pedido' pedido.0 %}">
 													<i class="fa fa-clipboard"></i> Recepcionar
 												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td><a href="#">IN0001</a></td>
-										<td>
-											<h2 class="table-avatar">
-												<a href="#" class="avatar avatar-sm mr-2"><img
-														class="avatar-img rounded-circle"
-														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
-														alt="User Image"></a>
-												<a href="#">Nombre Proveedor </a>
-											</h2>
-										</td>
-										<td>09-06-2021 19:34</td>
-										<td>5</td>
-										<td class="text-center">
-											<span class="badge badge-pill bg-success inv-badge">Recepcionada</span>
-										</td>
-										<td class="text-center">Si</td>
-										<td class="text-center">
-											<div class="actions">
+												{% elif pedido.5 == 'RECHAZADO' %}
 												<a title="Imprimir Pedido" data-toggle="tooltip"
 													class="btn btn2 btn-sm bg-primary" href="#">
 													<i class="fa fa-print"></i> Imprimir
 												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td><a href="#">IN0001</a></td>
-										<td>
-											<h2 class="table-avatar">
-												<a href="#" class="avatar avatar-sm mr-2"><img
-														class="avatar-img rounded-circle"
-														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
-														alt="User Image"></a>
-												<a href="#">Nombre Proveedor </a>
-											</h2>
-										</td>
-										<td>09-06-2021 19:34</td>
-										<td>5</td>
-										<td class="text-center">
-											<span class="badge badge-pill bg-danger inv-badge">Rechazada</span>
-										</td>
-										<td class="text-center">Si</td>
-										<td class="text-center">
-											<div class="actions">
+												{% elif pedido.5 == 'RECEPCIONADO' %}
 												<a title="Imprimir Pedido" data-toggle="tooltip"
 													class="btn btn2 btn-sm bg-primary" href="#">
 													<i class="fa fa-print"></i> Imprimir
 												</a>
+												{% endif %}
 											</div>
 										</td>
 									</tr>
-									<tr>
-										<td><a href="#">IN0001</a></td>
-										<td>
-											<h2 class="table-avatar">
-												<a href="#" class="avatar avatar-sm mr-2"><img
-														class="avatar-img rounded-circle"
-														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
-														alt="User Image"></a>
-												<a href="#">Nombre Proveedor </a>
-											</h2>
-										</td>
-										<td>09-06-2021 19:34</td>
-										<td>5</td>
-										<td class="text-center">
-											<span class="badge badge-pill bg-success inv-badge">Recepcionada</span>
-										</td>
-										<td class="text-center">No</td>
-										<td class="text-center">
-											<div class="actions">
-												<a title="Imprimir Pedido" data-toggle="tooltip"
-													class="btn btn2 btn-sm bg-primary" href="#">
-													<i class="fa fa-print"></i> Imprimir
-												</a>
-											</div>
-										</td>
-									</tr>
-
+									{% endfor %}
 								</tbody>
 							</table>
 						</div>
@@ -222,10 +125,73 @@
 </div>
 <!-- /Page Wrapper -->
 {% block js %}
+{% if messages %}
+<div>
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+	<script>
+		Swal.fire({
+			title: "Error en Validación",
+			text: "{{message}}",
+			icon: "error"
+		})
+	</script>
+	{% elif message.tags  == 'warning'%}
+	<script>
+		Swal.fire({
+			title: "¡Atención!",
+			text: "{{message}}",
+			icon: "warning"
+		})
+	</script>	
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Gestión de Ordenes de Pedido",
+			text: "{{message}}",
+			icon: "success"
+		})
+	</script>
+	{% endif %}
+	{% endfor %}
+</div>
+{% endif %}
+<script>
+	function recepcionar(id) {
+		Swal.fire({
+				"title": "¿Estás seguro de esta acción?",
+				"text": "Esta acción no se puede deshacer",
+				"icon": "question",
+				"showCancelButton": true,
+				"confirmButtonText": "Si, Recepcionar",
+				"cancelButtonText": "No, Cancelar",
+				"reverseButtons": true,
+				"confirmButtonColor": "#d44747"
+			})
+			.then(function (result) {
+				if (result.isConfirmed) {
+					window.location.href = "/dashboard/check-orden-pedido/" + id + "/"
+				}
+			})
+	}
 
-
-
-
-
+	function anular(id) {
+		Swal.fire({
+				"title": "¿Estás seguro de esta acción?",
+				"text": "Esta acción no se puede deshacer",
+				"icon": "question",
+				"showCancelButton": true,
+				"confirmButtonText": "Si, Anular",
+				"cancelButtonText": "No, Cancelar",
+				"reverseButtons": true,
+				"confirmButtonColor": "#d44747"
+			})
+			.then(function (result) {
+				if (result.isConfirmed) {
+					window.location.href = "/dashboard/anular-orden-pedido/" + id + "/"
+				}
+			})
+	}
+</script>
 {% endblock %}
 {% endblock %}

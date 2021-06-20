@@ -794,9 +794,25 @@ def nuevo_proveedor(request):
                                         id_empleadoUs = id_emp[0][0]
                                         if id_empleadoUs > 0:
                                             print(id_empleadoUs)
+                                            codigo_db = 0
+                                            codigo = 0
+                                            try:
+                                                cursor.execute("""                                
+                                                    SELECT MAX(CODIGO) FROM APP_CLIENTE
+                                                """)
+
+                                                codigo_db = cursor.fetchone()
+                                                codigo = codigo_db[0]
+
+                                                if codigo < 999:
+                                                    codigo = codigo + 1
+                                            except Exception as e:
+                                                print(e)
+                                                codigo = 1
+
                                             cursor.execute(f"""                                
-                                                INSERT INTO APP_CLIENTE (ESTATUS, RAZON_SOCIAL,  RUT_EMPRESA, DV, DIRECCION, CELULAR, NOMBRE_COMERCIAL,  COMUNA_ID, TIPO_CLIENTE_ID, USUARIO_ID  )
-                                                                    VALUES({estado}, '{r_social}', '{vrutSinDv}', '{dv}','{direccion}','{fono}', '{nom_fantasia}','{com_sel}', '2',  {id_empleadoUs} )
+                                                INSERT INTO APP_CLIENTE (ESTATUS, RAZON_SOCIAL,  RUT_EMPRESA, DV, DIRECCION, CELULAR, NOMBRE_COMERCIAL,  COMUNA_ID, TIPO_CLIENTE_ID, USUARIO_ID, CODIGO)
+                                                                    VALUES({estado}, '{r_social}', '{vrutSinDv}', '{dv}','{direccion}','{fono}', '{nom_fantasia}','{com_sel}', '2',  {id_empleadoUs}, {codigo} )
                                             """)
                                             messages.success(
                                                 request, f'El Proveedor de Rut {rut} se ha creado de manera correcta')
@@ -2432,7 +2448,7 @@ def nuevo_producto(request):
     ttprodID = ''
     with connection.cursor() as cursor:
         try:
-            cursor.execute("SELECT ID, (RUT_EMPRESA||'-'|| DV), RAZON_SOCIAL FROM APP_CLIENTE WHERE TIPO_CLIENTE_ID = 2 AND ESTATUS = 1")
+            cursor.execute("SELECT CODIGO, (RUT_EMPRESA||'-'|| DV), RAZON_SOCIAL FROM APP_CLIENTE WHERE TIPO_CLIENTE_ID = 2 AND ESTATUS = 1")
             proveedores = cursor.fetchall()
             cursor.execute("SELECT * FROM APP_TIPOPRODUCTO WHERE ESTADO = 1")
             tproductos = cursor.fetchall()  
@@ -2889,13 +2905,17 @@ def nueva_ordenPedido(request):
     idProveedor = ''
     inicio_index =  0
     productos = ''
+    proveedor = ''
+    fecha = ''
+    observacion = None
+
     with connection.cursor() as cursor:
         try:
             cursor.execute("SELECT ID FROM APP_TIPOCLIENTE WHERE DESCRIPCION LIKE 'PROVEEDOR'")
             idProveedor = cursor.fetchone()
             idProveedor = idProveedor[0]
             cursor.execute(
-                f"""SELECT ID AS '0' ,(RUT_EMPRESA ||'-'|| DV) AS '1', RAZON_SOCIAL AS '2' 
+                f"""SELECT CODIGO AS '0' ,(RUT_EMPRESA ||'-'|| DV) AS '1', RAZON_SOCIAL AS '2'
                 FROM APP_CLIENTE 
                 WHERE TIPO_CLIENTE_ID = {idProveedor} AND ESTATUS=1""")
 
@@ -2905,6 +2925,9 @@ def nueva_ordenPedido(request):
             pass
     
     if request.method == "POST":
+        #
+        # Post primer formulario
+        #
         proveedor = request.POST['proveedor']
         fecha = request.POST['fecha']
         try:
@@ -2919,7 +2942,7 @@ def nueva_ordenPedido(request):
             elif len(proveedor) ==2:
                 codprovedor = '0'+proveedor
             else:
-                codprovedor = proveedor 
+                codprovedor = proveedor
 
             print(codprovedor)              
             with connection.cursor() as cursor:
@@ -2934,7 +2957,76 @@ def nueva_ordenPedido(request):
                           FROM APP_PRODUCTO WHERE substr(ESPECIFICACION, 1, 3) = '{codprovedor}' """)
                         productos = cursor.fetchall()
                         
+                        cantidades_list = request.POST.getlist('cant')
+                        productos_list = request.POST.getlist('prd')
+                        
+                        indice = 0
+                        productos_cant = {}
 
+                        for cantidad in cantidades_list:
+                            if int(cantidad) > 0:
+                                productos_cant[int(productos_list[indice])] = int(cantidad)
+                            indice = indice + 1
+                        
+                        #
+                        # Validar que se ingresaron productos
+                        #
+                        if len(productos_cant) > 0:
+                            #
+                            # Crear Orden de pedido
+                            #
+
+                            #
+                            # Obtener empleado
+                            #
+                            cursor.execute("SELECT ID FROM APP_EMPLEADO " \
+                                "WHERE USUARIO_ID = %s", [request.user.id])
+                            empleado_db = cursor.fetchone()
+
+                            #
+                            # Obtener Estado Orden Pedido (Enviado)
+                            #
+                            cursor.execute("SELECT ID FROM APP_ESTATUSORDENPEDIDO " \
+                                "WHERE DESCRIPCION LIKE %s", ['ENVIADA'])
+                            estatus_orden_pedido_db = cursor.fetchone()
+
+                            #
+                            # Obtener Cliente (Proveedor)
+                            #
+                            cursor.execute("SELECT ID FROM APP_CLIENTE " \
+                                "WHERE CODIGO = %s", [proveedor])
+                            cliente_db = cursor.fetchone()
+
+                            #
+                            # Insertar Orden de pedido
+                            #
+                            if observacion == '':
+                                print('entro')
+                                cursor.execute("INSERT INTO APP_ORDENPEDIDO (FECHA_EMISION, ESTATUS_ORDEN_PEDIDO_ID, CLIENTE_ID, EMPLEADO_ID) " \
+                                    "VALUES (%s, %s, %s, %s)", [fecha, estatus_orden_pedido_db[0], cliente_db[0], empleado_db[0]])
+                            else:
+                                print('no entro')
+                                cursor.execute("INSERT INTO APP_ORDENPEDIDO (FECHA_EMISION, ESTATUS_ORDEN_PEDIDO_ID, CLIENTE_ID, EMPLEADO_ID, OBSERVACION) " \
+                                    "VALUES (%s, %s, %s, %s, %s)", [fecha, estatus_orden_pedido_db[0], cliente_db[0], empleado_db[0], observacion])
+                            
+                            #
+                            # Obtener ultima Orden de pedido
+                            #
+                            cursor.execute("SELECT ID FROM APP_ORDENPEDIDO ORDER BY ID DESC")
+                            orden_pedido_db = cursor.fetchone()
+
+                            #
+                            # Insertar Detalles Orden de Pedido
+                            #
+                            for producto_k, cantidad_v in productos_cant.items():
+                                producto_id = producto_k
+                                cantidad  = cantidad_v
+
+                                cursor.execute("INSERT INTO APP_DETALLEORDENPEDIDO (CANTIDAD, ORDEN_PEDIDO_ID, PRODUCTO_ID) " \
+                                    "VALUES (%s, %s, %s)", [cantidad, orden_pedido_db[0], producto_id])
+                            
+                            messages.success(request, f'Orden de pedido #{orden_pedido_db[0]} creada correctamente!')
+                            return redirect('ordenes-pedidos-list')
                     else:
                         messages.error(request, 'Lo sentimos. No se encontraron Productos Asociados al Proveedor. Cree Productos o Elija otro Proveedor para Continuar.')
                     
@@ -2945,22 +3037,196 @@ def nueva_ordenPedido(request):
         'proveedores':proveedores,
         'mensaje': mensaje,
         'inicio_index': inicio_index,
-        'productos':productos
+        'productos':productos,
+        'observacion': observacion,
+        'proveedor': proveedor,
+        'fecha': fecha
     }
 
     return render(request, 'Empleados/OrdenesPedidos/orden_pedido.html', data)
 
 
 def ordenes_pedido(request):
-    return render(request, 'Empleados/OrdenesPedidos/ordenes_pedido.html')
+    ordenes_pedido_db = None
+
+    with connection.cursor() as cursor:
+        try:
+            if not request.user.is_proveedor:
+                cursor.execute("SELECT OP.ID AS '0', CL.RAZON_SOCIAL AS '1', OP.FECHA_EMISION AS '2',  ROP.FECHA_ENTREGA AS '3', " \
+                    "SUM(DOP.CANTIDAD) AS '4', EOP.DESCRIPCION AS '5', ROP.OBSERVACION AS '6' " \
+                    "FROM APP_ORDENPEDIDO OP " \
+                    "JOIN APP_DETALLEORDENPEDIDO DOP ON DOP.ORDEN_PEDIDO_ID = OP.ID " \
+                    "JOIN APP_ESTATUSORDENPEDIDO EOP ON OP.ESTATUS_ORDEN_PEDIDO_ID = EOP.ID " \
+                    "LEFT JOIN APP_RECEPCIONORDENPEDIDO ROP ON DOP.ID = ROP.ID_DETALLE_PEDIDO " \
+                    "JOIN APP_CLIENTE CL ON OP.CLIENTE_ID = CL.ID " \
+                    "GROUP BY 1")
+
+                ordenes_pedido_db = cursor.fetchall()
+                print(ordenes_pedido_db)
+            else:
+                pass
+            
+        except Exception as e:
+            print(e)
+            pass
+    
+    data = {
+        "pedidos": ordenes_pedido_db
+    }
+
+    return render(request, 'Empleados/OrdenesPedidos/ordenes_pedido.html', data)
 
 
-def edit_ordenPedido(request):
-    return render(request, 'Empleados/OrdenesPedidos/edit_orden_pedido.html')
+def edit_ordenPedido(request, id):
+    orden_pedido_db = None
+    detalle_orden_pedido_db = None
 
+    with connection.cursor() as cursor:
+        try:
+            cursor.execute("SELECT OP.ID AS '0', EOP.DESCRIPCION AS '1', ( EM.NOMBRES || ' ' || EM.APELLIDO_P || ' ' || EM.APELLIDO_M) AS '2', " \
+                "OP.FECHA_EMISION AS '3', (CL.RUT_EMPRESA || '-' || CL.DV) AS '4', CL.RAZON_SOCIAL AS '5', OP.OBSERVACION AS '6' " \
+                "FROM APP_ORDENPEDIDO OP " \
+                "JOIN APP_ESTATUSORDENPEDIDO EOP ON OP.ESTATUS_ORDEN_PEDIDO_ID = EOP.ID " \
+                "JOIN APP_CLIENTE CL ON OP.CLIENTE_ID = CL.ID " \
+                "JOIN APP_EMPLEADO EM ON OP.EMPLEADO_ID = EM.ID " \
+                "WHERE OP.ID = %s", [id])
+            orden_pedido_db = cursor.fetchone()
 
-def check_ordenPedido(request):
-    return render(request, 'Empleados/OrdenesPedidos/check_rec_pedidos.html')
+            cursor.execute("SELECT PR.ESPECIFICACION AS '0', PR.DESCRIPCION AS '1', PR.STOCK AS '2', "\
+                "PR.STOCK_CRITICO AS '3', DOP.CANTIDAD AS '4', DOP.ID AS '5' " \
+                "FROM APP_PRODUCTO PR " \
+                "JOIN APP_DETALLEORDENPEDIDO DOP ON DOP.PRODUCTO_ID = PR.ID " \
+                "WHERE DOP.ORDEN_PEDIDO_ID = %s", [id])
+            detalle_orden_pedido_db = cursor.fetchall()
+            
+        except Exception as e:
+            print(e)
+            pass
+    
+        if request.method == 'POST':
+            fecha_emision = request.POST['fec-emision']
+            observacion = request.POST['observacion']
+            cantidades = request.POST.getlist('cantidad')
+            detalle_orden = request.POST.getlist('detall-id')
+
+            print(request.POST)
+
+            print(fecha_emision)
+            print(observacion)
+            print(cantidades)
+            print(detalle_orden)
+
+            indice = 0
+
+            for cantidad in cantidades:
+                cursor.execute("UPDATE APP_DETALLEORDENPEDIDO SET CANTIDAD = %s " \
+                "WHERE ID = %s", [cantidad, detalle_orden[indice]])
+
+                indice = indice + 1
+            
+            cursor.execute("UPDATE APP_ORDENPEDIDO SET FECHA_EMISION = %s, OBSERVACION = %s " \
+                "WHERE ID = %s", [fecha_emision, observacion, orden_pedido_db[0]])
+
+            messages.success(request, 'Orden de pedido modificada correctamente')
+            return redirect('ordenes-pedidos-list')
+    
+    data = {
+        'orden_pedido': orden_pedido_db,
+        'detalle_pedido': detalle_orden_pedido_db
+    }
+
+    return render(request, 'Empleados/OrdenesPedidos/edit_orden_pedido.html', data)
+
+def check_ordenPedido(request, id):
+    orden_pedido_db = None
+    detalle_orden_pedido_db = None
+    n_detalles = None
+
+    with connection.cursor() as cursor:
+        try:
+            cursor.execute("SELECT OP.ID AS '0', EOP.DESCRIPCION AS '1', ( EM.NOMBRES || ' ' || EM.APELLIDO_P || ' ' || EM.APELLIDO_M) AS '2', " \
+                "OP.FECHA_EMISION AS '3', (CL.RUT_EMPRESA || '-' || CL.DV) AS '4', CL.RAZON_SOCIAL AS '5', OP.OBSERVACION AS '6' " \
+                "FROM APP_ORDENPEDIDO OP " \
+                "JOIN APP_ESTATUSORDENPEDIDO EOP ON OP.ESTATUS_ORDEN_PEDIDO_ID = EOP.ID " \
+                "JOIN APP_CLIENTE CL ON OP.CLIENTE_ID = CL.ID " \
+                "JOIN APP_EMPLEADO EM ON OP.EMPLEADO_ID = EM.ID " \
+                "WHERE OP.ID = %s", [id])
+            orden_pedido_db = cursor.fetchone()
+
+            cursor.execute("SELECT PR.ESPECIFICACION AS '0', PR.DESCRIPCION AS '1', DOP.CANTIDAD AS '2', DOP.ID AS '3' " \
+                "FROM APP_PRODUCTO PR " \
+                "JOIN APP_DETALLEORDENPEDIDO DOP ON DOP.PRODUCTO_ID = PR.ID " \
+                "WHERE DOP.ORDEN_PEDIDO_ID = %s", [id])
+            detalle_orden_pedido_db = cursor.fetchall()
+
+            n_detalles = len(detalle_orden_pedido_db)
+            
+            if request.method == 'POST':
+                with connection.cursor() as cursor:
+                    try:
+                        cursor.execute("SELECT ID FROM APP_ESTATUSORDENPEDIDO " \
+                            "WHERE DESCRIPCION LIKE %s", ['RECEPCIONADO'])
+                        estatus_db = cursor.fetchone()
+
+                        cursor.execute("UPDATE APP_ORDENPEDIDO SET ESTATUS_ORDEN_PEDIDO_ID = %s " \
+                            "WHERE ID = %s", [estatus_db[0], id])
+                        
+                        
+
+                        messages.success(request, f'Orden de pedido #{id} recepcionada correctamente')
+                        return redirect('ordenes-pedidos-list')
+                    except Exception as e:
+                        messages.error(request, 'Orden de pedido no se pudo modificar')
+                        print(e)
+
+                return redirect('ordenes-pedidos-list')
+        except Exception as e:
+            print(e)
+            pass
+    
+    data = {
+        'orden_pedido': orden_pedido_db,
+        'detalle_pedido': detalle_orden_pedido_db,
+        'n_detalles': n_detalles
+    }
+
+    return render(request, 'Empleados/OrdenesPedidos/check_rec_pedidos.html', data)
+
+def anular_ordenPedido(request, id):
+    with connection.cursor() as cursor:
+        try:
+            cursor.execute("SELECT ID FROM APP_ESTATUSORDENPEDIDO " \
+                "WHERE DESCRIPCION LIKE %s", ['ANULADA'])
+            estatus_db = cursor.fetchone()
+
+            cursor.execute("UPDATE APP_ORDENPEDIDO SET ESTATUS_ORDEN_PEDIDO_ID = %s " \
+                "WHERE ID = %s", [estatus_db[0], id])
+
+            messages.success(request, 'Orden de pedido modificada correctamente')
+            return redirect('ordenes-pedidos-list')
+        except Exception as e:
+            messages.error(request, 'Orden de pedido no se pudo modificar')
+            print(e)
+
+    return redirect('ordenes-pedidos-list')
+
+def rechazar_ordenPedido(request, id):
+    with connection.cursor() as cursor:
+        try:
+            cursor.execute("SELECT ID FROM APP_ESTATUSORDENPEDIDO " \
+                "WHERE DESCRIPCION LIKE %s", ['RECHAZADO'])
+            estatus_db = cursor.fetchone()
+
+            cursor.execute("UPDATE APP_ORDENPEDIDO SET ESTATUS_ORDEN_PEDIDO_ID = %s " \
+                "WHERE ID = %s", [estatus_db[0], id])
+
+            messages.success(request, f'Orden de pedido #{id} rechazada correctamente')
+            return redirect('ordenes-pedidos-list')
+        except Exception as e:
+            messages.error(request, 'Orden de pedido no se pudo modificar')
+            print(e)
+
+    return redirect('ordenes-pedidos-list')
 
 #CAMBIAR FORMATO DE FECHA AL PASAR A PRODUCTIVO (ORACLE)
 def documentos(request):

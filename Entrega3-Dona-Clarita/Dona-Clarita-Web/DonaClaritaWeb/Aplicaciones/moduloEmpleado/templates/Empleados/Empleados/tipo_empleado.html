@@ -1,6 +1,6 @@
 {% extends 'appADM/base.html' %}
 {% load static %}
-{% block title %}Nuevo Empleado{% endblock%}
+{% block title %}Gestión de Tipos de Empleados{% endblock%}
 {% block contenido-panel %}
 <!-- Page Wrapper -->
 <div class="page-wrapper">
@@ -10,10 +10,10 @@
 		<div class="page-header">
 			<div class="row">
 				<div class="col-sm-12">
-					<h3 class="page-title"><i class="fa fa-address-card"></i> Nuevo Tipo de Empleado</h3>
+					<h3 class="page-title"><i class="fa fa-window-restore"></i> Gestión de Tipos de Empleados</h3>
 					<ul class="breadcrumb">
 						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
-						<li class="breadcrumb-item active">Nuevo Tipo de Empleado</li>
+						<li class="breadcrumb-item active"> Gestión de Tipos de Empleados</li>
 					</ul>
 				</div>
 			</div>
@@ -81,9 +81,9 @@
 											<tbody>
 												{% for tipo_empleado in tipo_empleados %}
 												<tr>
-													<td>{{ tipo_empleado.2 }}</td>
+													<td>{{ tipo_empleado.1 }}</td>
 													<td class="text-center">
-														{% if tipo_empleado.1 %}
+														{% if tipo_empleado.2 == 1 %}
 														<span
 															class="badge badge-pill bg-success inv-badge" >Activo</span>
 														{% else %}
@@ -97,7 +97,7 @@
 																href="{% url 'edit-tipo-empleado' tipo_empleado.0 %}">
 																<i class="fa fa-pencil"></i> Editar
 															</a>
-															{% if tipo_empleado.1 %}
+															{% if tipo_empleado.2 == 1 %}
 															<a class="btn btn-sm bg-danger-light" href="#" title="Eliminar Tipo de Empleado" data-toggle="tooltip"
 																onClick="eliminar({{ tipo_empleado.0 }})">
 																<i class="fa fa-trash"></i> Eliminar
@@ -143,7 +143,7 @@
 	{% else %}
 	<script>
 		Swal.fire({
-			title: "Tipo de Empleado",
+			title: " Gestión de Tipos de Empleados",
 			text: "{{message}}",
 			icon: "success",
 			timer: 5000,

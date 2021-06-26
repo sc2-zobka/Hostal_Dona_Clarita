@@ -1,7 +1,8 @@
 {% extends 'appADM/base.html' %}
 {% load static %}
-{% block title %}Ordenes de Pedidos{% endblock%}
+{% block title %}Ordenes de Compras{% endblock%}
 {% block contenido-panel %}
+{% load humanize %}
 <!-- Page Wrapper -->
 <div class="page-wrapper">
 	<div class="content container-fluid">
@@ -32,42 +33,36 @@
 							<table class="datatable table table-hover table-center mb-0">
 								<thead>
 									<tr>
-										<th>#</th>
-										<th>N° Orden</th>
-										<th>N° Huéspedes</th>
+										<th class="text-center">N° Orden</th>
+										<th class="text-center">N° Huéspedes</th>
 										<th>Total</th>
 										<th class="text-center">Estado</th>
-										<th class="text-right">Acciones</th>
+										<th class="text-center">Acciones</th>
 									</tr>
 								</thead>
 								<tbody>
 									{% for orden_compra in ordenes_compra %}
-									<tr>
-										<td><a>1</a></td>
-										<td>{{ orden_compra.0 }}</td>
-										<td>
-											<h2 class="table-avatar">
-												<a href="#">{{ orden_compra.1 }}</a>
-											</h2>
-										</td>
-										<td>${% if orden_compra.2 is None %}0{% else  %}{{ orden_compra.2 }}{% endif %}</td>
+									<tr>										
+										<td class="text-center">{{ orden_compra.0 }}</td>
+										<td class="text-center">{{ orden_compra.1 }}</a></td>
+										<td>${% if orden_compra.2 is None %}0{% else  %}{{ orden_compra.2|intcomma }}{% endif %}</td>
 										<td class="text-center">
 											{% if orden_compra.3 == 'aceptada' %}
 											<span class="badge badge-pill bg-primary inv-badge">Aceptada</span>
 											{% elif orden_compra.3 == 'rechazada' %}
 											<span class="badge badge-pill bg-danger inv-badge">Rechazada</span>
 											{% elif orden_compra.3 == 'facturada' %}
-											<span class="badge badge-pill bg-info inv-badge">Facturada</span>
+											<span class="badge badge-pill bg-success inv-badge">Facturada</span>
 											{% elif orden_compra.3 == 'pendiente' %}
 											<span class="badge badge-pill bg-warning inv-badge">Pendiente</span>
 											{% endif %}
 										</td>
-										<td class="text-right">
+										<td class="text-center">
 											<div class="actions">
-												<a class="btn btn-sm bg-primary-light" data-toggle="modal"
-													href="#delete_modal"><i class="fa fa-eye"></i></a>
-												<a class="btn btn-sm bg-success-light" data-toggle="modal"
-													href="#delete_modal"><i class="fa fa-print"></i></a>
+												<a class="btn btn2 btn-sm bg-info"
+												href="{% url 'oc-print' orden_compra.0 %}" target="_blank">
+												<i class="fa fa-print"></i> imprimir
+											</a>
 											</div>
 										</td>
 									</tr>

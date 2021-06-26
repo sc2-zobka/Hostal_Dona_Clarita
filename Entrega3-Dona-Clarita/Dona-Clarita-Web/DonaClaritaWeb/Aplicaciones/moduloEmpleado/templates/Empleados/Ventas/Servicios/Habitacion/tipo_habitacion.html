@@ -1,0 +1,204 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Gestión de Tipos de Habitaciones{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title"><i class="fa fa-window-restore"></i> Gestión de Tipos de Habitaciones</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active"> Gestión de Tipos de Habitaciones</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+			<div class="col-12">
+				<!-- General -->
+				<div class="card">
+					<div class="row">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-8">
+							<div class="card">
+								<div class="card-header text-center">
+									<hr>
+									<h4 class="card-title">Información de Tipo de Habitación</h4>
+									<hr>
+									<h6 class="alert alert-info"><i class="fa fa-info-circle"></i>
+										<strong>ATENCIÓN:</strong> Campos Obligatorios se identifican con <strong
+											class="text-danger">*</strong></h6>
+								</div>
+								<div class="card-body">
+									<form action="#" method="POST">
+										{% csrf_token %}
+										<div class="row">
+											<div class="col-md-4">
+												<div class="form-group">
+													<label>Nombre <strong class="text-danger">*</strong></label>
+													<input type="text" class="form-control" name="nombre-tiphab"
+														placeholder="Ingrese Cargo de Habitación">
+												</div>
+											</div>
+											<div class="col-xl-4 offset-lg-12">
+												<div class="form-group">
+													<label>Capacidad <strong class="text-danger">*</strong></label>
+													<input type="number" class="form-control" name="capacidad" min="1"
+														placeholder="Ingrese Capacidad de Huéspedes">
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="form-group">
+													<label>Estado <strong class="text-danger">*</strong></label>
+													<select name="est-sel" id="" class="form-control cb-simple">
+														<option value="1">Activo</option>
+														<option value="0">Inactivo</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12">
+												<label>Accesorios</label>
+												<select class="cb-multiple form-control" name="accesorios-sel"
+													multiple="multiple">
+													{% for accesorio in accesorios %}
+													<option value="{{ accesorio.id }}">{{ accesorio.descripcion }}
+													</option>
+													{% endfor %}
+												</select>
+											</div>
+										</div>
+										<hr>
+										<div class="row">
+											<div class="col-md-4"></div>
+											<div class="col-md-4">
+												<div class="form-group mb-0">
+													<button class="btn btn2 btn-info btn-block text-center"
+														type="submit"><i class="fa fa-save"></i> Guardar</button>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+								<hr>
+								<h4 class="page-title text-center">Tipos de Habitaciones</h4>
+								<hr>
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="datatable table table-hover table-center mb-0">
+											<thead>
+												<tr>
+													<th>Nombre</th>
+													<th>Capacidad Huéspedes</th>
+													<th class="text-center">Estado</th>
+													<th class="text-center">Acciones</th>
+												</tr>
+											</thead>
+											<tbody>
+												{% for tipo_habitacion in tipos_habitaciones %}
+												<tr>
+													<td>{{ tipo_habitacion.descripcion }}</td>
+													<td>{{ tipo_habitacion.capacidad }}</td>
+													<td class="text-center">
+														{% if tipo_habitacion.estado == '1' %}
+														<span
+															class="badge badge-pill bg-success inv-badge">Activo</span>
+														{% else %}
+														<span
+															class="badge badge-pill bg-danger inv-badge">Inactivo</span>
+														{% endif %}
+													</td>
+													<td class="text-center">
+														<div class="actions">
+															<a class="btn btn-sm bg-success-light"
+																href="{% url 'edit-tipo-habitacion' tipo_habitacion.id %}">
+																<i class="fa fa-pencil"></i> Editar
+															</a>
+															{% if tipo_habitacion.estado == '1' %}
+															<a class="btn btn-sm bg-danger-light"
+																onClick="eliminar({{ tipo_habitacion.id }})" href="#">
+																<i class="fa fa-trash"></i> Eliminar
+															</a>
+															{% endif %}
+														</div>
+													</td>
+												</tr>
+												{% endfor %}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- /General -->
+				</div>
+			</div>
+			<br>
+		</div>
+	</div>
+	<!-- /Page Wrapper -->
+
+	{% block js %}
+	<script>
+		$(document).ready(function () {
+			$('.cb-multiple').select2();
+			$('.cb-simple').select2();
+		});
+	</script>
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+	<script>
+		Swal.fire({
+			title: "Error en Validación",
+			text: "{{message}}",
+			icon: "error",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Gestión de Tipos de Habitaciones",
+			text: "{{message}}",
+			icon: "success",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+	{% endif %}
+	{% endfor %}
+
+	<script>
+		function eliminar(id) {
+			Swal.fire({
+					"title": "¿Estás seguro de esta acción?",
+					"text": "Esta acción no se puede deshacer",
+					"icon": "question",
+					"showCancelButton": true,
+					"confirmButtonText": "Si, Eliminar",
+					"cancelButtonText": "No, Cancelar",
+					"reverseButtons": true,
+					"confirmButtonColor": "#d44747"
+				})
+				.then(function (result) {
+					if (result.isConfirmed) {
+						window.location.href = "/dashboard/elim-tipo-habitacion/" + id + "/"
+					}
+				})
+		}
+	</script>
+	{% endblock %}
+	{% endblock %}

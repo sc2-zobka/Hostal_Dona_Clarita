@@ -1,6 +1,6 @@
 {% extends 'appADM/base.html' %}
 {% load static %}
-{% block title %}Nuevo Empleado{% endblock%}
+{% block title %}Gestión de Categorias{% endblock%}
 {% block contenido-panel %}
 <!-- Page Wrapper -->
 <div class="page-wrapper">
@@ -10,10 +10,10 @@
 		<div class="page-header">
 			<div class="row">
 				<div class="col-sm-12">
-					<h3 class="page-title"><i class="fa fa-address-card"></i> Nueva Categoria</h3>
+					<h3 class="page-title"><i class="fa fa-window-restore"></i> Gestión de Categorias</h3>
 					<ul class="breadcrumb">
 						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
-						<li class="breadcrumb-item active"> Nueva Categoria</li>
+						<li class="breadcrumb-item active"> Gestión de Categorias</li>
 					</ul>
 				</div>
 			</div>
@@ -84,7 +84,7 @@
 												<tr>
 													<td>{{categoria.1}}</td>
 													<td class="text-center">
-														{% if categoria.2 %}
+														{% if categoria.2 == '1' %}
 														<span
 															class="badge badge-pill bg-success inv-badge" >Activo</span>
 														{% else %}
@@ -98,7 +98,7 @@
 																href="{% url 'edit-categoria' categoria.0 %}">
 																<i class="fa fa-pencil"></i> Editar
 															</a>
-															{% if categoria.2 %}
+															{% if categoria.2 == '1' %}
 															<a class="btn btn-sm bg-danger-light" href="#" title="Eliminar Categoria" data-toggle="tooltip"
 																onClick="eliminar({{ categoria.0 }})">
 																<i class="fa fa-trash"></i> Eliminar

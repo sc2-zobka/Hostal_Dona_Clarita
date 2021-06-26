@@ -1,6 +1,6 @@
 {% extends 'appADM/base.html' %}
 {% load static %}
-{% block title %}Nuevo Empleado{% endblock%}
+{% block title %}Editar Orden de Pedido{% endblock%}
 {% block contenido-panel %}
 <!-- Page Wrapper -->
 <div class="page-wrapper">
@@ -10,7 +10,7 @@
 		<div class="page-header">
 			<div class="row">
 				<div class="col-sm-12">
-					<h3 class="page-title"><i class="fa fa-edit"></i> Edición Orden de Pedido N° 1234</h3>
+					<h3 class="page-title"><i class="fa fa-edit"></i> Edición Orden de Pedido N° {{ orden_pedido.0 }}</h3>
 					<ul class="breadcrumb">
 						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
 						<li class="breadcrumb-item"><a href="{% url 'ordenes-pedidos-list' %}">Ordenes de Pedido</a>
@@ -45,29 +45,29 @@
 											<div class="col-xl-3 offset-xl-12">
 												<div class="form-group">
 													<label>N° de Pedido <strong class="text-danger">*</strong></label>
-													<input type="text" class="form-control" name="precio" min="1"
-														placeholder="Código de Producto" disabled value="1234">
+													<input type="text" class="form-control" name="id" min="1"
+														placeholder="Código de Producto" disabled value="{{ orden_pedido.0 }}">
 												</div>
 											</div>
 											<div class="col-xl-3 offset-xl-12">
 												<div class="form-group">
 													<label>Estado <strong class="text-danger">*</strong></label>
 													<input type="text" class="form-control" name="precio" disabled
-														value="Pendiente">
+														value="{{ orden_pedido.1|title }}">
 												</div>
 											</div>
 											<div class="col-xl-3 offset-xl-12">
 												<div class="form-group">
 													<label>Emitida Por <strong class="text-danger">*</strong></label>
 													<input type="text" class="form-control" name="precio" disabled
-														value="Juanito Perez">
+														value="{{ orden_pedido.2 }}">
 												</div>
 											</div>
 											<div class="col-xl-3 offset-xl-12">
 												<div class="form-group">
 													<label>Fecha Emisión <strong class="text-danger">*</strong></label>
-													<input type="date" class="form-control" name=""
-														min="{% now 'Y-m-d' %}" value="{% now 'Y-m-d' %}">
+													<input type="date" class="form-control" name="fec-emision"
+														value="{{ orden_pedido.3|date:'Y-m-d' }}">
 												</div>
 											</div>
 										</div>
@@ -75,8 +75,8 @@
 											<div class="col-xl-4 offset-lg-12">
 												<div class="form-group">
 													<label>Rut Proveedor <strong class="text-danger">*</strong></label>
-													<input type="number" class="form-control" name="precio" min="1"
-														placeholder="Rut Proveedor" disabled>
+													<input class="form-control" name="precio" min="1"
+														placeholder="Rut Proveedor" disabled value="{{ orden_pedido.4 }}">
 												</div>
 											</div>
 											<div class="col-xl-8 offset-lg-12">
@@ -84,7 +84,7 @@
 													<label>Nombre de Proveedor <strong
 															class="text-danger">*</strong></label>
 													<input type="text" class="form-control" name="precio"
-														value="Nombre del Proveedor" disabled>
+														placeholder="Nombre del Proveedor" disabled value="{{ orden_pedido.5 }}">
 												</div>
 											</div>
 										</div>
@@ -119,42 +119,27 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for detalle in detalle_pedido %}
 																<tr>
 																	<td class="text-center"><a>1</a></td>
-																	<td class="text-center"><a>13242332222</a></td>
+																	<td class="text-center"><a>{{ detalle.0 }}</a></td>
 																	<td class="text-center">
-																		<h2>Nombre Producto</h2>
+																		<h2>{{ detalle.1 }}</h2>
 																	</td>
 																	<td class="text-center">
-																		<h2>2</h2>
+																		<h2>{{ detalle.2 }}</h2>
 																	</td>
 																	<td class="text-center" style="list-style: none;">
-																		<h2>5</h2>
+																		<h2>{{ detalle.3 }}</h2>
 																	</td>
 																	<td class="text-center">
 																		<h2><input class="form-control text-center"
-																				type="number" name="" id=""
-																				style="width: 100px;"></h2>
+																				type="number" name="cantidad" id="" min="0"
+																				style="width: 100px;" value="{{ detalle.4 }}">
+																			<input hidden name="detall-id" value="{{ detalle.5 }}"></h2>
 																	</td>
 																</tr>
-																<tr>
-																	<td class="text-center"><a>2</a></td>
-																	<td class="text-center"><a>13242332222</a></td>
-																	<td class="text-center">
-																		<h2>Nombre Producto</h2>
-																	</td>
-																	<td class="text-center">
-																		<h2>2</h2>
-																	</td>
-																	<td class="text-center" style="list-style: none;">
-																		<h2>5</h2>
-																	</td>
-																	<td class="text-center">
-																		<h2><input class="form-control text-center"
-																				type="number" name="" id=""
-																				style="width: 100px;"></h2>
-																	</td>
-																</tr>
+																{% endfor %}
 															</tbody>
 														</table>
 													</div>
@@ -166,7 +151,7 @@
 													<div class="form-group">
 														<label>Observación</label>
 														<textarea class="form-control" name="observacion" id=""
-															cols="30" rows="2"></textarea>
+															cols="30" rows="2">{{ obs }}</textarea>
 													</div>
 												</div>
 											</div>
@@ -202,10 +187,37 @@
 	<!-- /Page Wrapper -->
 
 	{% block js %}
+
+{% if messages %}
+<div>
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
 	<script>
-		$(document).ready(function () {
-			$('.cb-single').select2();
-		});
+		Swal.fire({
+			title: "Error en Validación",
+			text: "{{message}}",
+			icon: "error"
+		})
 	</script>
+	{% elif message.tags  == 'warning'%}
+	<script>
+		Swal.fire({
+			title: "¡Atención!",
+			text: "{{message}}",
+			icon: "warning"
+		})
+	</script>	
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Gestión de Ordenes de Compra",
+			text: "{{message}}",
+			icon: "success"
+		})
+	</script>
+	{% endif %}
+	{% endfor %}
+</div>
+{% endif %}
 	{% endblock %}
 	{% endblock %}

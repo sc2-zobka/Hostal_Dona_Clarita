@@ -118,10 +118,8 @@
 										<select name="tipo_e" id="tipo_e" class="cb-single form-control">
 											<option value="">Seleccione una opción...</option>
 											{% for tipo_empleado in tipo_empleados %}
-											{% if tipo_empleado.1 == 1 %}
-											<option value="{{ tipo_empleado.0 }}">{{ tipo_empleado.2 }}
+											<option value="{{ tipo_empleado.0 }}">{{ tipo_empleado.1 }}
 											</option>
-											{% endif %}
 											{% endfor %}
 										</select>
 									</div>

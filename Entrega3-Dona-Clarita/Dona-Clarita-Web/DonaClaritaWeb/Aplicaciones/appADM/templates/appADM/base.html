@@ -62,20 +62,31 @@
                     margin-top: 12px;">
                     <i class="fe fe-question"></i>
                 </button>
-
+                
                 <!-- User Menu -->
                 <li class="nav-item dropdown has-arrow">
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                        <span class="user-img"><img class="rounded-circle"
-                                src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}" width="31"
-                                alt="avatar"></span>
+                        
+                        {% if user.imagen != '' and not user.is_empleado%}
+                        <span class="user-img"><img class="rounded-circle" src="./../../media/Usuarios/{{user}}/{{user.imagen}}" width="31" height ="31" alt="{{nom}}" style="object-fit: cover;"></span>
+                        {% elif user.imagen != '' and user.is_empleado or user.is_superuser %}
+                        <span class="user-img"><img class="rounded-circle" src="./../../media/Empleados/{{user}}/{{user.imagen}}" width="31" height ="31" alt="{{nom}}" style="object-fit: cover;"></span>                        
+                        {% else %}
+                        <span class="user-img"><img class="rounded-circle" src="{% static 'appADM/assets/img/us-none.png' %}" width="31" height ="31" alt="avatar"></span>
+                        {% endif %}
                     </a>
                     <div class="dropdown-menu">
                         <div class="user-header">
-                            <div class="avatar avatar-sm">
-                                <img src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}" alt="avatar"
-                                    class="avatar-img rounded-circle">
+                            {% if user.imagen != '' and not user.is_empleado%}
+                            <div class="avatar avatar-sm"> <img src="./../../media/Usuarios/{{user}}/{{user.imagen}}"  width="31" height ="31" alt="{{nom}}" style="object-fit: cover;" class="avatar-img rounded-circle">
                             </div>
+                            {% elif user.imagen != '' and user.is_empleado or user.is_superuser %}
+                            <div class="avatar avatar-sm"> <img src="./../../media/Empleados/{{user}}/{{user.imagen}}"  width="31" height ="31" alt="{{nom}}" style="object-fit: cover;" class="avatar-img rounded-circle">
+                            </div>
+                            {% else %}
+                            <div class="avatar avatar-sm"> <img src="{% static 'appADM/assets/img/us-none.png' %}" alt="avatar" class="avatar-img rounded-circle">
+                            </div>
+                            {% endif %}
                             <div class="user-text">
                                 <h6>@{{user.username}}</h6>
                                
@@ -91,9 +102,9 @@
                             </div>
                         </div>
                         {% if user.is_cliente or user.is_proveedor %}
-                        <a class="dropdown-item" href="{% url 'config-user' %}">Configuración</a>
+                        <a class="dropdown-item" href="{% url 'config-user' %}">Mi Perfil</a>
                         {% else %}
-                        <a class="dropdown-item" href="{% url 'config-emp' %}">Configuración</a>
+                        <a class="dropdown-item" href="{% url 'config-emp' %}">Mi Perfil</a>
                         {% endif %}
                         <a class="dropdown-item" href="{% url 'logout' %}">Cerrar Sesión</a>
                         

@@ -1,3 +1,10 @@
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -11,281 +18,424 @@ class User(AbstractUser):
     class Meta:
         db_table = 'auth_user'
 
-class Configuracion(models.Model):
-    nombre_empresa = models.CharField(max_length=100)
-    logo_empresa = models.CharField(max_length=100, null=True)
-    favicon = models.CharField(max_length=100, null=True)
-    razon_social = models.CharField(max_length=100)
-    # Multiples empresas se refiere a una ERP?
-    rut_empresa = models.IntegerField(primary_key=True)
-    dv = models.CharField(max_length=1)
-    direccion = models.CharField(max_length=100)
-    usuario = models.ForeignKey(User, on_delete=models.PROTECT, default=0, null=True)
-
-class TipoMoneda(models.Model):
-    codigo_moneda = models.CharField(max_length=3, primary_key=True)
-    descripcion = models.CharField(max_length=20, null=True)
-    valor_conversion = models.IntegerField()    
-    valor_peso = models.DecimalField(max_digits=10, decimal_places=2)
-    estado = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.codigo_moneda
-
-class MultiMoneda(models.Model):
-    rut_empresa = models.ForeignKey(Configuracion, on_delete=models.PROTECT, default=0)
-    tipo_moneda = models.ForeignKey(TipoMoneda, on_delete=models.PROTECT, default=0)
-
-class TipoEmpleado(models.Model):
-    estatus = models.BooleanField(default=True)
-    descripcion = models.CharField(max_length=64)
-
-class Pais(models.Model):
-    descripcion = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.descripcion
-
-class Region(models.Model):
-    reg_cod = models.CharField(max_length=10)
-    descripcion = models.CharField(max_length=100)
-    pais = models.ForeignKey(Pais, on_delete=models.PROTECT, default=0)
-
-    def __str__(self):
-        return self.descripcion
-
-class Comuna(models.Model):
-    region = models.ForeignKey(Region, on_delete=models.PROTECT, default=0)
-    descripcion = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.descripcion
-
-class Empleado(models.Model):
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
-    estatus = models.BooleanField(default=True)
-    nombres = models.CharField(max_length=64)
-    apellido_p = models.CharField(max_length=50)
-    apellido_m = models.CharField(max_length=50)
-    tipo_empleado = models.ForeignKey(TipoEmpleado, on_delete=models.PROTECT, default=0)
-    rut_empleado = models.IntegerField()
-    dv = models.CharField(max_length=1)
-    celular = models.IntegerField(null=True)
-    nacimiento = models.DateField()
-    nacionalidad = models.CharField(max_length=50, null=True)
-    comuna = models.ForeignKey(Comuna, on_delete=models.PROTECT, null=True)
-    direccion = models.CharField(max_length=200, null=True)
-    numero_direccion = models.CharField(max_length=20, null=True)
-    pedidos = models.BooleanField(help_text="¿Puede realizar pedidos?")
-
-
-class TipoCliente(models.Model):
-    descripcion = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.descripcion
-
-class Cliente(models.Model):
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
-    estatus = models.BooleanField(default=True)
-    razon_social = models.CharField(max_length=100)
-    rut_empresa = models.IntegerField()
-    dv = models.CharField(max_length=1)
-    direccion = models.CharField(max_length=100, null=True)
-    comuna = models.ForeignKey(Comuna, on_delete=models.PROTECT, null=True)
-    celular = models.IntegerField(null=True)
-    nombre_comercial = models.CharField(max_length=100, null=True)
-    tipo_cliente = models.ForeignKey(TipoCliente, on_delete=models.PROTECT, default=0)
-
-class EstadoHabitacion(models.Model):
-    descripcion = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.descripcion
-
-class TipoHabitacion(models.Model):
-    descripcion = models.CharField(max_length=50)
-    estado = models.BooleanField(default=True)
-    capacidad = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.descripcion
-
-class Habitacion(models.Model):
-    numero_habitacion = models.IntegerField()
-    precio = models.IntegerField()
-    descripcion = models.CharField(max_length=200)
-    estado_habitacion = models.ForeignKey(EstadoHabitacion, on_delete=models.PROTECT, default=0)
-    tipo_habitacion = models.ForeignKey(TipoHabitacion, on_delete=models.PROTECT, default=0)
-    imagen = models.CharField(max_length=100, null=True)
-    estado = models.BooleanField(default=True)
-    muestra_menu = models.BooleanField(default=True)
-
-    def __str__(self):
-        return str(self.numero_habitacion)
-
-
 
 class Accesorio(models.Model):
+    id_accesorio = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=20)
-    estatus = models.BooleanField(default=True)
+    estatus = models.CharField(max_length=1)
 
-    def __str__(self):
-        return self.descripcion
+    class Meta:
+        managed = False
+        db_table = 'accesorio'
 
-class HabitacionAccesorio(models.Model):
-    tipo_habitacion = models.ForeignKey(TipoHabitacion, on_delete=models.PROTECT, default=0)
-    accesorio = models.ForeignKey(Accesorio, on_delete=models.PROTECT, default=0)
 
-class ServicioAdicional(models.Model):
-    nombre = models.CharField(max_length=50, default="")
+class Categoria(models.Model):
+    id_categoria = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=100)
+    estatus = models.CharField(max_length=1)
+
+    class Meta:
+        managed = False
+        db_table = 'categoria'
+
+
+class Cliente(models.Model):
+    id_cliente = models.AutoField(primary_key=True)
+    estatus = models.CharField(max_length=1)
+    razon_social = models.CharField(max_length=100)
+    rut_empresa = models.BigIntegerField()
+    dv = models.CharField(max_length=1)
+    id_usuario = models.ForeignKey('User', models.DO_NOTHING, db_column='id', blank=True, null=True)
+    direccion = models.CharField(max_length=100, blank=True, null=True)
+    comuna = models.ForeignKey('Comuna', models.DO_NOTHING, blank=True, null=True)
+    celular = models.BigIntegerField(blank=True, null=True)
+    nombre_comercial = models.CharField(max_length=100, blank=True, null=True)
+    id_tipo_cliente = models.ForeignKey('TipoCliente', models.DO_NOTHING, db_column='id_tipo_cliente')
+
+    class Meta:
+        managed = False
+        db_table = 'cliente'
+
+
+class Comuna(models.Model):
+    comuna_id = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=50)
-    precio = models.IntegerField()
-    mostrar_inicio = models.BooleanField(default=False)
-    imagen = models.CharField(max_length=100, null=True)
-    estado = models.BooleanField(default=True)
+    id_region = models.ForeignKey('Region', models.DO_NOTHING, db_column='id_region')
 
-    def __str__(self):
-        return self.descripcion
+    class Meta:
+        managed = False
+        db_table = 'comuna'
+
+
+class Configuracion(models.Model):
+    rut_empresa = models.AutoField(primary_key=True)
+    dv = models.CharField(max_length=1)
+    nombre_empresa = models.CharField(max_length=100)
+    logo_empresa = models.CharField(max_length=100, blank=True, null=True)
+    favicon = models.CharField(max_length=100, blank=True, null=True)
+    razon_social = models.CharField(max_length=100)
+    direccion = models.CharField(max_length=100)
+    id_usuario = models.ForeignKey('User', models.DO_NOTHING, db_column='id', blank=True, null=True)
+    comuna = models.ForeignKey(Comuna, models.DO_NOTHING)
+    divisa_principal = models.CharField(max_length=3, blank=True, null=True)
+    divisa_secundaria = models.CharField(max_length=3, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'configuracion'
+
+
+class DetalleOrdenCompra(models.Model):
+    id_detalle_orden_de_compra = models.AutoField(primary_key=True)
+    id_orden_de_compra = models.ForeignKey('OrdenCompra', models.DO_NOTHING, db_column='id_orden_de_compra')
+    inicio_estadia = models.DateField()
+    final_estadia = models.DateField()
+    monto = models.BigIntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'detalle_orden_compra'
+
+
+class DetalleOrdenPedido(models.Model):
+    id_detalle_pedido = models.AutoField(primary_key=True)
+    cantidad = models.BigIntegerField()
+    id_orden_pedido = models.ForeignKey('OrdenPedido', models.DO_NOTHING, db_column='id_orden_pedido')
+    id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto')
+
+    class Meta:
+        managed = False
+        db_table = 'detalle_orden_pedido'
+
 
 class DetalleServicioAdicional(models.Model):
-    detalle_orden_compra = models.ForeignKey("DetalleOrdenCompra", on_delete=models.PROTECT, default=0, null=True)
-    servicio_adicional = models.ForeignKey("ServicioAdicional", on_delete=models.PROTECT, default=0)
+    id_det_serv_adic = models.AutoField(primary_key=True)
+    id_detalle_orden_de_compra = models.ForeignKey(DetalleOrdenCompra, models.DO_NOTHING, db_column='id_detalle_orden_de_compra', blank=True, null=True)
+    id_servicio = models.ForeignKey('ServicioAdicional', models.DO_NOTHING, db_column='id_servicio')
 
-class EstatusOrdenCompra(models.Model):
+    class Meta:
+        managed = False
+        db_table = 'detalle_servicio_adicional'
+
+
+class Documento(models.Model):
+    id_documento = models.AutoField(primary_key=True)
+    fecha_emision = models.DateField()
+    monto_neto = models.BigIntegerField()
+    iva = models.BigIntegerField()
+    monto_total = models.BigIntegerField()
+    id_estatus_documento = models.ForeignKey('EstatusDocumento', models.DO_NOTHING, db_column='id_estatus_documento')
+    id_orden_de_compra = models.ForeignKey('OrdenCompra', models.DO_NOTHING, db_column='id_orden_de_compra', blank=True, null=True)
+    id_orden_pedido = models.ForeignKey('OrdenPedido', models.DO_NOTHING, db_column='id_orden_pedido', blank=True, null=True)
+    codigo_sii = models.ForeignKey('TipoDocumento', models.DO_NOTHING, db_column='codigo_sii')
+    fecha_anulacion = models.DateField(blank=True, null=True)
+    doc_anulado = models.BigIntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'documento'
+
+
+class Empleado(models.Model):
+    id_empleado = models.AutoField(primary_key=True)
+    rut_empleado = models.BigIntegerField()
+    dv = models.CharField(max_length=1)
+    nombres = models.CharField(max_length=100)
+    apellido_p = models.CharField(max_length=50)
+    apellido_m = models.CharField(max_length=50)
+    nacimiento = models.DateField()
+    celular = models.BigIntegerField(blank=True, null=True)
+    direccion = models.CharField(max_length=100, blank=True, null=True)
+    nacionalidad = models.CharField(max_length=50, blank=True, null=True)
+    comuna = models.ForeignKey(Comuna, models.DO_NOTHING, blank=True, null=True)
+    id_usuario = models.ForeignKey('User', models.DO_NOTHING, db_column='id', blank=True, null=True)
+    pedidos = models.CharField(max_length=1)
+    estatus = models.CharField(max_length=1)
+    id_tipo = models.ForeignKey('TipoEmpleado', models.DO_NOTHING, db_column='id_tipo')
+
+    class Meta:
+        managed = False
+        db_table = 'empleado'
+
+
+class EstadoHabitacion(models.Model):
+    id_estado_habitacion = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=50)
 
-    def __str__(self):
-        return self.descripcion
+    class Meta:
+        managed = False
+        db_table = 'estado_habitacion'
 
-class TipoComedor(models.Model):
-    descripcion = models.CharField(max_length=100)
-    estado = models.BooleanField(default=True)
-    precio = models.IntegerField(default=0)
 
-    def __str__(self):
-        return self.descripcion
+class EstatusDocumento(models.Model):
+    id_estatus_documento = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=50)
+
+    class Meta:
+        managed = False
+        db_table = 'estatus_documento'
+
+
+class EstatusOrdenCompra(models.Model):
+    id_estatus_orden_compra = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=50, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'estatus_orden_compra'
+
+
+class EstatusOrdenPedido(models.Model):
+    id_estatus_orden_pedido = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=50)
+
+    class Meta:
+        managed = False
+        db_table = 'estatus_orden_pedido'
+
+
+class EstatusRecepcion(models.Model):
+    id_estatus_recep = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=50)
+
+    class Meta:
+        managed = False
+        db_table = 'estatus_recepcion'
+
+
+class Habitacion(models.Model):
+    id_habitacion = models.AutoField(primary_key=True)
+    numero_habitacion = models.BigIntegerField()
+    precio = models.BigIntegerField()
+    descripcion = models.CharField(max_length=200)
+    id_estado_habitacion = models.ForeignKey(EstadoHabitacion, models.DO_NOTHING, db_column='id_estado_habitacion')
+    id_tipo_habitacion = models.ForeignKey('TipoHabitacion', models.DO_NOTHING, db_column='id_tipo_habitacion')
+    imagen = models.CharField(max_length=100)
+    estado = models.CharField(max_length=1)
+    muestra_menu = models.CharField(max_length=1)
+
+    class Meta:
+        managed = False
+        db_table = 'habitacion'
+
+
+class HabitacionAccesorio(models.Model):
+    id_hab_acce = models.AutoField(primary_key=True)
+    id_tipo_habitacion = models.ForeignKey('TipoHabitacion', models.DO_NOTHING, db_column='id_tipo_habitacion')
+    id_accesorio = models.ForeignKey(Accesorio, models.DO_NOTHING, db_column='id_accesorio')
+
+    class Meta:
+        managed = False
+        db_table = 'habitacion_accesorio'
+
+
+class Huesped(models.Model):
+    id_huesped = models.AutoField(primary_key=True)
+    rut = models.BigIntegerField()
+    dv = models.CharField(max_length=1)
+    nombre = models.CharField(max_length=100)
+    apelldio_p = models.CharField(max_length=50)
+    apellido_m = models.CharField(max_length=50)
+    email = models.CharField(max_length=50, blank=True, null=True)
+    telefono = models.BigIntegerField(blank=True, null=True)
+    id_cliente = models.ForeignKey(Cliente, models.DO_NOTHING, db_column='id_cliente')
+    fecha_nacimiento = models.DateField(blank=True, null=True)
+    estado = models.CharField(max_length=1)
+
+    class Meta:
+        managed = False
+        db_table = 'huesped'
+
+
+class OrdenCompra(models.Model):
+    id_orden_de_compra = models.AutoField(primary_key=True)
+    fecha_emision = models.DateField()
+    monto_neto = models.BigIntegerField(blank=True, null=True)
+    iva = models.BigIntegerField(blank=True, null=True)
+    monto_total = models.BigIntegerField(blank=True, null=True)
+    cant_huesped = models.BigIntegerField()
+    id_cliente = models.ForeignKey(Cliente, models.DO_NOTHING, db_column='id_cliente')
+    id_estatus_orden_compra = models.ForeignKey(EstatusOrdenCompra, models.DO_NOTHING, db_column='id_estatus_orden_compra')
+
+    class Meta:
+        managed = False
+        db_table = 'orden_compra'
+
+
+class OrdenPedido(models.Model):
+    id_orden_pedido = models.AutoField(primary_key=True)
+    fecha_emision = models.DateField()
+    id_estatus_orden_pedido = models.ForeignKey(EstatusOrdenPedido, models.DO_NOTHING, db_column='id_estatus_orden_pedido')
+    id_cliente = models.ForeignKey(Cliente, models.DO_NOTHING, db_column='id_cliente')
+    id_empleado = models.ForeignKey(Empleado, models.DO_NOTHING, db_column='id_empleado')
+
+    class Meta:
+        managed = False
+        db_table = 'orden_pedido'
+
+
+class Pais(models.Model):
+    id_pais = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=50)
+
+    class Meta:
+        managed = False
+        db_table = 'pais'
+
 
 class PlatoSemanal(models.Model):
-    tipo_comedor = models.ForeignKey(TipoComedor, on_delete=models.PROTECT, default=0)
+    id_comedor = models.AutoField(primary_key=True)
+    id_tipo_comedor = models.ForeignKey('TipoComedor', models.DO_NOTHING, db_column='id_tipo_comedor')
     descripcion = models.CharField(max_length=100)
     dia_desde = models.DateField()
     dia_hasta = models.DateField()
-    imagen = models.CharField(max_length=100, null=True)
-    estado = models.BooleanField(default=True)
+    imagen = models.CharField(max_length=100, blank=True, null=True)
+    estado = models.CharField(max_length=1)
 
-class OrdenCompra(models.Model):
-    fecha_emision = models.DateField(auto_now_add=True)
-    monto_neto = models.IntegerField(null=True)
-    iva = models.IntegerField(null=True)
-    monto_total = models.IntegerField(null=True)
-    cantidad_huesped = models.IntegerField()
-    cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT, default=0)
-    estatus_orden_compra = models.ForeignKey(EstatusOrdenCompra, on_delete=models.PROTECT, default=0)
+    class Meta:
+        managed = False
+        db_table = 'plato_semanal'
 
-class DetalleOrdenCompra(models.Model):
-    orden_compra = models.ForeignKey(OrdenCompra, on_delete=models.PROTECT, default=0)
-    inicio_estadia = models.DateField()
-    final_estadia = models.DateField()
-    monto = models.IntegerField(null=True)
-
-class Huesped(models.Model):
-    rut = models.IntegerField()
-    dv = models.CharField(max_length=1)
-    nombre = models.CharField(max_length=30)
-    apellido_p = models.CharField(max_length=50)
-    apellido_m = models.CharField(max_length=50)
-    email = models.CharField(max_length=50, null=True)
-    telefono = models.IntegerField(null=True)
-    cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT, default=0)
-    fecha_nac = models.DateField(null=True)
-    estado = models.BooleanField(default=True)
-
-class HuespedDetalle(models.Model):
-    detalle_orden_compra = models.ForeignKey(DetalleOrdenCompra, on_delete=models.PROTECT, default=0)
-    rut_huesped = models.ForeignKey(Huesped, on_delete=models.PROTECT, default=0)
-    check_in = models.BooleanField(default=False)
-
-class Reserva(models.Model):
-    detalle_orden_compra = models.ForeignKey(DetalleOrdenCompra, on_delete=models.PROTECT, default=0)
-    huesped = models.ForeignKey(Huesped, on_delete=models.PROTECT, default=0)
-    check_in = models.BooleanField(null=True)
-    habitacion = models.ForeignKey(Habitacion, on_delete=models.PROTECT, default=0)
-    plato = models.IntegerField(null=True)
-    tipo_comedor = models.ForeignKey(TipoComedor, on_delete=models.PROTECT, default=0)
-
-class Categoria(models.Model):
-    descripcion = models.CharField(max_length=100)
-    estatus = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.descripcion
-
-class TipoProducto(models.Model):
-    descripcion = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.descripcion
 
 class Producto(models.Model):
+    id_producto = models.AutoField(primary_key=True)
     especificacion = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=100)
-    precio = models.IntegerField()
-    stock = models.IntegerField()
-    stock_critico = models.IntegerField()
-    fecha_vencimiento = models.DateField(null=True)
-    categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT, default=0)
-    tipo_producto = models.ForeignKey(TipoProducto, on_delete=models.PROTECT, default=0)
-    estado = models.BooleanField(default=True)
+    precio = models.BigIntegerField()
+    stock = models.BigIntegerField()
+    stock_critico = models.BigIntegerField()
+    fecha_vencimiento = models.DateField(blank=True, null=True)
+    id_categoria = models.ForeignKey(Categoria, models.DO_NOTHING, db_column='id_categoria')
+    id_tipo_producto = models.ForeignKey('TipoProducto', models.DO_NOTHING, db_column='id_tipo_producto')
+    estado = models.CharField(max_length=1)
 
-    def __str__(self):
-        return self.descripcion
+    class Meta:
+        managed = False
+        db_table = 'producto'
 
-class EstatusOrdenPedido(models.Model):
-    descripcion = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.descripcion
-
-class OrdenPedido(models.Model):
-    fecha_emision = models.DateField(auto_now_add=True)
-    empleado = models.ForeignKey(Empleado, on_delete=models.PROTECT, default=0)
-    estatus_orden_pedido = models.ForeignKey(EstatusOrdenPedido, on_delete=models.PROTECT, default=0)
-    cliente = models.ForeignKey(Cliente, on_delete=models.PROTECT, default=0)
-
-class DetalleOrdenPedido(models.Model):
-    cantidad = models.IntegerField()
-    orden_pedido = models.ForeignKey(OrdenPedido, on_delete=models.PROTECT, default=0)
-    producto = models.ForeignKey(Producto, on_delete=models.PROTECT, default=0)
-
-class EstatusRecepcion(models.Model):
-    descripcion = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.descripcion
 
 class RecepcionOrdenPedido(models.Model):
+    id_registro_pedido = models.AutoField(primary_key=True)
     fecha_entrega = models.DateField()
-    id_detalle_pedido = models.IntegerField()
-    estatus_recepcion = models.ForeignKey(EstatusRecepcion, on_delete=models.PROTECT, default=0)
+    id_detalle_pedido = models.BigIntegerField()
+    id_estatus_recep = models.ForeignKey(EstatusRecepcion, models.DO_NOTHING, db_column='id_estatus_recep')
+    observacion = models.CharField(max_length=500, blank=True, null=True)
 
-class EstatusDocumento(models.Model):#Modifiqué
+    class Meta:
+        managed = False
+        db_table = 'recepcion_orden_pedido'
+
+
+class Region(models.Model):
+    id_region = models.AutoField(primary_key=True)
+    reg_cod = models.CharField(max_length=10)
+    descripcion = models.CharField(max_length=100)
+    id_pais = models.ForeignKey(Pais, models.DO_NOTHING, db_column='id_pais')
+
+    class Meta:
+        managed = False
+        db_table = 'region'
+
+
+class Reserva(models.Model):
+    id_reserva = models.AutoField(primary_key=True)
+    id_detalle_orden_de_compra = models.ForeignKey(DetalleOrdenCompra, models.DO_NOTHING, db_column='id_detalle_orden_de_compra')
+    check_in = models.CharField(max_length=1, blank=True, null=True)
+    id_habitacion = models.ForeignKey(Habitacion, models.DO_NOTHING, db_column='id_habitacion')
+    plato = models.BigIntegerField(blank=True, null=True)
+    id_tipo_comedor = models.ForeignKey('TipoComedor', models.DO_NOTHING, db_column='id_tipo_comedor')
+    id_huesped = models.ForeignKey(Huesped, models.DO_NOTHING, db_column='id_huesped')
+
+    class Meta:
+        managed = False
+        db_table = 'reserva'
+
+
+class ServicioAdicional(models.Model):
+    id_servicio = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=50)
-    def __str__(self):
-        return self.descripcion
-class TipoDocumento(models.Model):#Modifiqué
-    codigo_sii = models.CharField(max_length=2, primary_key=True)
-    descripcion = models.CharField(max_length=40,default='')
-    abreviado = models.CharField(max_length=3,default='')
-    estado = models.BooleanField(default=True)
+    precio = models.BigIntegerField()
+    mostrar_inicio = models.CharField(max_length=1)
+    imagen = models.CharField(max_length=100, blank=True, null=True)
+    estado = models.CharField(max_length=1)
 
-class Documento(models.Model):#Modifiqué
-   tipo_doc = models.ForeignKey(TipoDocumento, on_delete=models.PROTECT)
-   nro_ocompra = models.ForeignKey(OrdenCompra, on_delete=models.PROTECT, null=True)
-   nro_opedido = models.ForeignKey(OrdenPedido, on_delete=models.PROTECT, null=True)
-   iva = models.IntegerField()
-   fecha_emision = models.DateField(auto_now_add=True)
-   monto_neto = models.IntegerField(blank=True)
-   iva = models.IntegerField()
-   monto_total = models.IntegerField()
-   estado_documento = models.ForeignKey(EstatusDocumento, on_delete=models.PROTECT, default=0)
+    class Meta:
+        managed = False
+        db_table = 'servicio_adicional'
+
+
+class TipoCliente(models.Model):
+    id_tipo_cliente = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=50)
+
+    class Meta:
+        managed = False
+        db_table = 'tipo_cliente'
+
+
+class TipoComedor(models.Model):
+    id_tipo_comedor = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=100)
+    estado = models.CharField(max_length=1)
+    precio = models.BigIntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'tipo_comedor'
+
+
+class TipoDocumento(models.Model):
+    codigo_sii = models.CharField(primary_key=True, max_length=2)
+    descripcion = models.CharField(max_length=40, blank=True, null=True)
+    abreviado = models.CharField(max_length=3)
+    estado = models.CharField(max_length=1)
+
+    class Meta:
+        managed = False
+        db_table = 'tipo_documento'
+
+
+class TipoEmpleado(models.Model):
+    id_tipo = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=50)
+    estatus = models.BigIntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'tipo_empleado'
+
+
+class TipoHabitacion(models.Model):
+    id_tipo_habitacion = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=100)
+    estado = models.CharField(max_length=1)
+    capacidad = models.BigIntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'tipo_habitacion'
+
+
+class TipoMoneda(models.Model):
+    codigo_moneda = models.CharField(primary_key=True, max_length=3)
+    descripcion = models.CharField(max_length=20, blank=True, null=True)
+    valor_conversion = models.BigIntegerField()
+    valor_peso = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    estado = models.CharField(max_length=1)
+
+    class Meta:
+        managed = False
+        db_table = 'tipo_moneda'
+
+
+class TipoProducto(models.Model):
+    id_tipo_producto = models.AutoField(primary_key=True)
+    descripcion = models.CharField(max_length=50)
+    estado = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'tipo_producto'
+
+

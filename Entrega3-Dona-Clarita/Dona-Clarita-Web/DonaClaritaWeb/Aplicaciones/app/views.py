@@ -9,24 +9,33 @@ def index(request):
     try:
         with connection.cursor() as cursor:
 
-            cursor.execute("SELECT count(*) as tt FROM APP_HABITACION")
-            count_hab = cursor.fetchone()
-            cursor.execute("SELECT * FROM APP_HABITACION")
+            cursor.execute("SELECT count(*) as tt FROM HABITACION")
+            count_hab = cursor.fetchone()[0]
+            cursor.execute("SELECT * FROM HABITACION")
             habitaciones = list(cursor.fetchall())
-            if count_hab:
-                if count_hab[0] <3:             
-                    rand_hab = sample(habitaciones, count_hab[0])
-                    data["habitaciones"] = rand_hab
-                else:
-                    rand_hab = sample(habitaciones, count_hab[0])
-                    data["habitaciones"] = rand_hab                    
-
-            cursor.execute("SELECT * FROM APP_SERVICIOADICIONAL WHERE MOSTRAR_INICIO = %s", [1])
+            if int(count_hab) < 3:     
+                print('soy menor')        
+                rand_hab = sample(habitaciones, count_hab)
+                print(rand_hab)
+                data["habitaciones"] = rand_hab
+                print(data["habitaciones"])
+            else:
+                rand_hab = sample(habitaciones, 3)
+                data["habitaciones"] = rand_hab 
+            print('imprimo cant hab:', count_hab)                   
+            cursor.execute("SELECT count(*) FROM SERVICIO_ADICIONAL WHERE MOSTRAR_INICIO = 1")
+            count_serv = cursor.fetchone()[0]
+            print('cantidad serv', count_serv)
+            cursor.execute("SELECT * FROM SERVICIO_ADICIONAL WHERE MOSTRAR_INICIO = %s", [1])
             servicios_adicionales = list(cursor.fetchall())
-
-            rand_serv = sample(servicios_adicionales, 3)
-            data["servicios_adicionales"] = rand_serv
-    except:
+            if int(count_serv) <3:             
+                rand_serv = sample(servicios_adicionales, count_serv)
+                data["servicios_adicionales"] = rand_serv
+            else:
+                rand_serv = sample(servicios_adicionales, 3)
+                data["servicios_adicionales"] = rand_serv
+    except Exception as e:
+        print(e)
         pass
 
     return render(request, 'app/index.html', data)

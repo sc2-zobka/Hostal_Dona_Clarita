@@ -19,7 +19,7 @@
                     <a href="{% url 'dashboard-cli' %}"><i class="fa fa-home"></i> <span>Inicio</span></a>
                 </li>
                 <li>
-                    {% if request.path == '/dashboard/ordenes-compra/' %}
+                    {% if request.path == '/dashboard/listado-pedidos/' %}
                     <a href="#" class="subdrop"><i class="fa fa-clipboard"></i> <span>Ordenes Pedidos</span> <span
                             class="menu-arrow"></span></a>
                     <ul style="display: block;">
@@ -28,11 +28,11 @@
                                 class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             {% endif %}
-                            {% if request.path == '/dashboard/ordenes-compra/' %}
-                            <li class="active"><a href="{% url 'oc-list' %}"><i class="fa fa-list-ol"
+                            {% if request.path == '/dashboard/listado-pedidos/' %}
+                            <li class="active"><a href="{% url 'ordenes-proveedor' %}"><i class="fa fa-list-ol"
                                         style="font-size: 15px;"> </i><span> Listado Ordenes</span></a></li>
                             {% else %}
-                            <li><a href="{% url 'oc-list' %}"><i class="fa fa-list-ol"
+                            <li><a href="{% url 'ordenes-proveedor' %}"><i class="fa fa-list-ol"
                                         style="font-size: 15px;"></i><span> Listado Ordenes</span></a></li>
                             {% endif %}
                         </ul>

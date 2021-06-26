@@ -18,6 +18,19 @@
         }
         //CUENTA HUESPEDES ELEGIDOS POR CLIENTE FORM (OC-FORM-1.HTML)
         var huesped = {{nhuesped}}
+		var unico = false;
+
+        if ( huesped == 1 ) {
+            for (var y = 0; y < servicios.length; y++) {
+				if (servicios[y].value != "") {
+					unico = true;
+				}
+			}
+
+            if ( unico ) {
+                $("#form2").submit();
+            }
+        }
         
         if (cont == 0 && cont2 == 0) {
             Swal.fire({

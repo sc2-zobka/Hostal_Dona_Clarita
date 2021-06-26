@@ -1,6 +1,6 @@
 {% extends 'appADM/base.html' %}
 {% load static %}
-{% block title %}Nuevo Empleado{% endblock%}
+{% block title %}Revisar Orden de Pedido{% endblock%}
 {% block contenido-panel %}
 <!-- Page Wrapper -->
 <div class="page-wrapper">
@@ -10,7 +10,7 @@
 		<div class="page-header">
 			<div class="row">
 				<div class="col-sm-12">
-					<h3 class="page-title"><i class="fa fa-check-square-o"></i> Recepción Orden de Pedido N° 1234</h3>
+					<h3 class="page-title"><i class="fa fa-check-square-o"></i> Recepción Orden de Pedido N° {{ orden_pedido.0 }}</h3>
 					<ul class="breadcrumb">
 						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
 						<li class="breadcrumb-item"><a href="{% url 'ordenes-pedidos-list' %}">Ordenes de Pedido</a>
@@ -46,28 +46,28 @@
 												<div class="form-group">
 													<label>N° de Pedido <strong class="text-danger">*</strong></label>
 													<input type="text" class="form-control" name="precio" min="1"
-														placeholder="Código de Producto" disabled value="1234">
+														placeholder="Código de Producto" disabled value="{{ orden_pedido.0 }}">
 												</div>
 											</div>
 											<div class="col-xl-3 offset-xl-12">
 												<div class="form-group">
 													<label>Estado <strong class="text-danger">*</strong></label>
 													<input type="text" class="form-control" name="precio" disabled
-														value="Pendiente">
+														value="{{ orden_pedido.1|title }}">
 												</div>
 											</div>
 											<div class="col-xl-3 offset-xl-12">
 												<div class="form-group">
 													<label>Emitida Por <strong class="text-danger">*</strong></label>
 													<input type="text" class="form-control" name="precio" disabled
-														value="Juanito Perez">
+														value="{{ orden_pedido.2 }}">
 												</div>
 											</div>
 											<div class="col-xl-3 offset-xl-12">
 												<div class="form-group">
 													<label>Fecha Emisión <strong class="text-danger">*</strong></label>
 													<input type="date" class="form-control" name=""
-														min="{% now 'Y-m-d' %}" value="{% now 'Y-m-d' %}" disabled>
+														value="{{ orden_pedido.3|date:"Y-m-d" }}" disabled>
 												</div>
 											</div>
 										</div>
@@ -76,7 +76,7 @@
 												<div class="form-group">
 													<label>Rut Proveedor <strong class="text-danger">*</strong></label>
 													<input type="text" class="form-control" name="precio" disabled
-														placeholder="Rut de Proveedor">
+														placeholder="Rut de Proveedor" value="{{ orden_pedido.4 }}">
 												</div>
 											</div>
 											<div class="col-xl-8 offset-lg-12">
@@ -84,7 +84,7 @@
 													<label>Nombre de Proveedor <strong
 															class="text-danger">*</strong></label>
 													<input type="text" class="form-control" name="precio"
-														value="Nombre del Proveedor" disabled>
+														placeholder="Nombre del Proveedor" value="{{ orden_pedido.5 }}" disabled>
 												</div>
 											</div>
 										</div>
@@ -114,36 +114,24 @@
 																</tr>
 															</thead>
 															<tbody>
+																{% for detalle in detalle_pedido %}
 																<tr>
 																	<td class="text-center"><a>1</a></td>
-																	<td class="text-center"><a>13242332222</a></td>
+																	<td class="text-center"><a>{{ detalle.0 }}</a></td>
 																	<td class="text-center">
-																		<h2>Nombre Producto</h2>
+																		<h2>{{ detalle.1 }}</h2>
 																	</td>
 																	<td class="text-center">
-																		<h2>2</h2>
-																	</td>
-																	<td class="text-center">
-																		<h2><input class="text-center" type="checkbox"
-																				name="" id="" style="width: 100px;">
-																		</h2>
-																	</td>
-																</tr>
-																<tr>
-																	<td class="text-center"><a>2</a></td>
-																	<td class="text-center"><a>13242332222</a></td>
-																	<td class="text-center">
-																		<h2>Nombre Producto</h2>
-																	</td>
-																	<td class="text-center">
-																		<h2>2</h2>
+																		<h2>{{ detalle.2 }}</h2>
 																	</td>
 																	<td class="text-center">
 																		<h2><input class="text-center" type="checkbox"
-																				name="" id="" style="width: 100px;">
+																				name="chk" id="" style="width: 100px;">
+																			<input hidden name="detall-id" value="{{ detalle.3 }}">
 																		</h2>
 																	</td>
 																</tr>
+																{% endfor %}
 															</tbody>
 														</table>
 													</div>
@@ -154,7 +142,7 @@
 												<div class="col-xl-12 offset-lg-12">
 													<div class="form-group">
 														<label>Observación</label>
-														<textarea class="form-control" name="observacion" id=""
+														<textarea class="form-control" name="observacion" id="obs"
 															cols="30" rows="2"></textarea>
 													</div>
 												</div>
@@ -174,15 +162,19 @@
 											<div class="col-md-2">
 												<div class="form-group mb-0">
 													<div class="form-group mb-0">
-														<button class="btn btn2 btn-danger btn-block text-center" id="btn-submit"><i
+														<button class="btn btn2 btn-danger btn-block text-center" name="btn-rechazar" id="btn-submit" type="submit"><i
 																class="fa fa-ban"></i> Rechazar</button>
+														{% comment %} <input type="button" class="btn btn2 btn-danger btn-block text-center" id="btn-submit" name="btn-rechazar" value=" Rechazar" /> {% endcomment %}
 													</div>
 												</div>
 											</div>
 											<div class="col-md-2">
 												<div class="form-group mb-0">
-													<button class="btn btn2 btn-info btn-block text-center"
-														type="submit"><i class="fa fa-save"></i> Recepcionar</button>
+													<div class="form-group mb-0">
+														<button class="btn btn2 btn-info btn-block text-center" name="btn-recepcionar" id="btn-submit-recep" type="submit"><i 
+																class="fa fa-save"></i> Recepcionar</button>
+														{% comment %} <input type="button" class="btn btn2 btn-info btn-block text-center" id="btn-submit-recep" name="btn-recepcionar" value=" Recepcionar" /> {% endcomment %}
+													</div>
 												</div>
 											</div>
 										</div>
@@ -201,6 +193,41 @@
 
 	{% block js %}
 	<script>
+		$(document).on('click', '#btn-submit-recep', function (e) {
+			e.preventDefault();
+			let formulario = document.getElementById('myForm');
+			let elementos = formulario.elements.length;
+			let observaciones = $('#obs').val();
+			
+			let total_checkeados = 0;
+
+			for(let i = 0; i < elementos; i++) {
+				if((formulario.elements[i].type=="checkbox") && (formulario.elements[i].checked)) { 
+					total_checkeados++;
+				}
+			}
+
+			if ( total_checkeados < {{ n_detalles }} ) {
+				Swal.fire({
+					"title": "¿Recepcionar sin cumplir?",
+					"text": "No estan todos los productos seleccionados ¿Desea continuar?",
+					"icon": "question",
+					"showCancelButton": true,
+					"confirmButtonText": "Si, Recepcionar",
+					"cancelButtonText": "No, Cancelar",
+					"reverseButtons": true,
+					"confirmButtonColor": "#d44747"
+	
+				}).then(function (result) {
+					if (result.isConfirmed) {
+						$('#myForm').submit();
+					}
+					return false;
+				});
+			}
+		});
+	</script>
+	<script>
 		$(document).on('click', '#btn-submit', function (e) {
 			e.preventDefault();
 			Swal.fire({
@@ -215,7 +242,8 @@
 	
 			}).then(function (result) {
 				if (result.isConfirmed) {
-					$('#myForm').submit();
+					//$('#myForm').submit();
+					window.location.href = "/dashboard/rechazar-orden-pedido/" + {{ orden_pedido.0 }} + "/"
 				}
 				return false;
 			});

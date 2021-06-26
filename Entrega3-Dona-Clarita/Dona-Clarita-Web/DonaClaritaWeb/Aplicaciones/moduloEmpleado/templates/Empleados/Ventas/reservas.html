@@ -1,6 +1,6 @@
 {% extends 'appADM/base.html' %}
 {% load static %}
-{% block title %}Ventas{% endblock%}
+{% block title %}Reservas{% endblock%}
 {% block contenido-panel %}
 {% load humanize %}
 <!-- Page Wrapper -->
@@ -11,7 +11,7 @@
 		<div class="page-header">
 			<div class="row">
 				<div class="col-sm-12">
-					<h3 class="page-title">Reservas Check-In</h3>
+					<h3 class="page-title"><i class="fa fa-check"></i> Reservas Check-In</h3>
 					<ul class="breadcrumb">
 						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
 						<li class="breadcrumb-item active">Reservas Check-In</li>
@@ -82,7 +82,7 @@
 													href="#Add_Specialities_details{{reserva.0}}">
 													<i class="fa fa-eye"></i> Ver
 												</a>
-												{% if reserva.10 == 0%}
+												{% if reserva.10 == '0'%}
 												<a class="btn btn2 btn-sm bg-success" data-toggle="tooltip" href="{% url 'check-in' reserva.0%}"
 													title="Facturar Orden de Compra">
 													<i class="fa fa-check"></i> Check-In
@@ -109,7 +109,7 @@
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="text-center modal-header">
-				{% if reserva.10 %}
+				{% if reserva.10 == '1'%}
 				<h5 class="modal-title text-center">Reserva N°{{reserva.0}} - <strong class="text-primary">Check-In Finalizado</strong> </h5>
 				{% else %}
 				<h5 class="modal-title text-center">Reserva N°{{reserva.0}} - <strong class="text-warning">Check-In Pendiente</strong> </h5>

@@ -1,7 +1,8 @@
 {% extends 'appADM/base.html' %}
 {% load static %}
-{% block title %}Ventas{% endblock%}
+{% block title %}Mis Facturas{% endblock%}
 {% block contenido-panel %}
+{% load humanize %}
 			<!-- Page Wrapper -->
             <div class="page-wrapper">
                 <div class="content container-fluid">
@@ -10,10 +11,10 @@
 					<div class="page-header">
 						<div class="row">
 							<div class="col-sm-12">
-								<h3 class="page-title"><i class="fa fa-money"></i> Facturas<strong class="text-danger"> SIN PROGRAMAR</strong></h3>
+								<h3 class="page-title"><i class="fa fa-money"></i> Mis Documentos Tributarios</h3>
 								<ul class="breadcrumb">
 									<li class="breadcrumb-item"><a href="{% url 'dashboard-cli' %}">Inicio</a></li>
-									<li class="breadcrumb-item active">Facturas</li>
+									<li class="breadcrumb-item active">Documentos Tributarios</li>
 								</ul>
 							</div>
 						</div>
@@ -29,34 +30,68 @@
 										<table class="datatable table table-hover table-center mb-0">
 											<thead>
 												<tr>
-													<th>#</th>
-													<th>N° Factura</th>													
-													<th>Valor Un.</th>
-													<th>Total</th>
+													<th>N° Doc.</th>
+													<th>Tipo Doc.</th>
+													<th>Doc. Ref.</th>
+													<th>Fecha Emisión</th>
+													<th class="text-center">Total</th>
 													<th class="text-center">Estado</th>
-													<th class="text-right">Acciones</th>
+													<th class="text-center">Acciones</th>
 												</tr>
 											</thead>
 											<tbody>
+												{% for doc in docs %}
 												<tr>
-													<td><a>2</a></td>
-													<td>#002</td>
-													<td>$12.000</td>
-													<td>$60.000</td>
-													<td class="text-center">
-														<span class="badge badge-pill bg-warning inv-badge">Pendiente</span>
+													<td>{{doc.0}}</td>
+													{% if doc.1 == 'FE'%}
+													<td data-toggle="tooltip" title="Factura Electrónica">{{doc.1}}</td>
+													{% elif doc.1 == 'NC'%}
+													<td data-toggle="tooltip" title="Nota de Crédito">{{doc.1}}</td>
+													{% endif %}
+													{% if doc.2 != '0'%}
+													<td>
+														<h2 class="table-avatar" data-toggle="tooltip" title="Orden de Compra">
+															{{doc.2}} (OC)
+														</h2>
 													</td>
-													<td class="text-right">
+													{% elif doc.9 != '0'%}
+													<td>
+														<h2 class="table-avatar" data-toggle="tooltip" title="Orden de Pedido">
+															{{doc.9}} (OP)
+														</h2>
+													</td>
+													{% endif %}
+													<td>{{doc.3}}</td>
+													{% if doc.4 == None %}
+													<td class="text-center">-</td>
+													{% else %}
+													<td class="text-center">${{doc.4|intcomma}}</td>
+													{% endif %}
+													{% if doc.5 == 1 %}
+													<td class="text-center">
+														<span class="badge badge-pill bg-success inv-badge">{{doc.6}}</span>
+													</td>
+													{% elif doc.5 == 2%}
+													<td class="text-center">
+														<span class="badge badge-pill bg-danger inv-badge">{{doc.6}}</span>
+													</td>
+													{% endif %}
+													<td class="text-center">
 														<div class="actions">
-															<a class="btn btn-sm bg-danger-light"
-																href="#" title="Anular Factura" data-toggle="tooltip"><i class="fa fa-ban"></i> Anular</a>
-																<a class="btn btn-sm bg-primary-light" title="Ver Factura" data-toggle="tooltip"
-																href="{% url 'factura-view'%}"><i class="fa fa-eye"></i> Ver</a>
-															<a class="btn btn-sm bg-success-light" title="Imprimir Factura" data-toggle="tooltip"
-															href="{% url 'factura-print' %}" target="_blank" ><i class="fa fa-print"></i> Imprimir</a>
+															<a class="btn btn2 btn-sm bg-info"
+																href="{% url 'factura-print' doc.0 %}" target="_blank">
+																<i class="fa fa-print"></i> imprimir
+															</a>
+															{% if doc.7 == 1 and doc.1 == 'FE'%}
+															<a class="btn btn2 btn-sm bg-danger" data-toggle="tooltip" href="#"
+																title="Anular Factura" onClick="facturar({{ doc.0 }})">
+																<i class="fa fa-ban"></i> Anular
+															</a>
+															{% endif %}
 														</div>
 													</td>
 												</tr>
+												{% endfor %}
 											</tbody>
 										</table>
 									</div>

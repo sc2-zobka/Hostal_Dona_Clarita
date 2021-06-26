@@ -1,6 +1,6 @@
 {% extends 'appADM/base.html' %}
 {% load static %}
-{% block title %}Nuevo Empleado{% endblock%}
+{% block title %}Editar Proveedor{% endblock%}
 {% block contenido-panel %}
 <!-- Page Wrapper -->
 <div class="page-wrapper">
@@ -72,19 +72,19 @@
 								<div class="col-md-3">
 									<div class="form-group">
 										<label>Teléfono Contacto</label>
-										<input type="text" class="form-control" name="fono" placeholder="Ingrese Número Contacto" value="{{proveedor.6}}">
+										<input type="number" class="form-control" name="fono" placeholder="Ingrese Número Contacto" value="{{celular}}">
 									</div>
 								</div>
 								<div class="col-md-3">
 									<div class="form-group">
 										<label>Estado <strong class="text-danger">*</strong></label>
 										<select name="estado" id="" class="form-control cb-single">
-											{% if proveedor.7%}
-											<option value="1" selected>Activo</option>
+											{% if proveedor.7 == '1'%}
+											<option value="1" selected>Activo (Actual)</option>
 											<option value="0">Inactivo</option>
 											{% else %}
 											<option value="1" >Activo</option>
-											<option value="0" selected>Inactivo</option>
+											<option value="0" selected>Inactivo (Actual)</option>
 											{% endif%}
 										</select>
 									</div>
@@ -101,7 +101,7 @@
 											<option value="" selecte>Seleccionar Región...</option>
 											{% for r in regiones %}
 												{% if region is not None and region.2 == r.2 %}
-												<option value="{{ r.0 }}" selected>{{ r.2 }}</option>
+												<option value="{{ r.0 }}" selected>{{ r.2 }} (Actual)</option>
 												{% else %}
 												<option value="{{ r.0 }}">{{ r.2 }}</option>
 												{% endif %}
@@ -116,7 +116,7 @@
 											<option value="" selecte>Seleccionar Comuna...</option>
 											{% for c in comunas %}
 												{% if comuna is not None and comuna.1 == c.1 %}
-												<option value="{{ c.0 }}" selected>{{ c.1 }}</option>
+												<option value="{{ c.0 }}" selected>{{ c.1 }} (Actual)</option>
 												{% else %}
 												<option value="{{ c.0 }}">{{ c.1 }}</option>
 												{% endif %}

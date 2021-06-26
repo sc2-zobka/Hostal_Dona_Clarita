@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+{% load humanize %}
+
+<head>
+	<meta charset="UTF-8">
+	<title>ORDEN DE COMPRA N° {{cabecera_oc.0}} - Hostal Doña Clarita</title>
+	{% load static %}
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'appADM/assets/img/favicondc.PNG' %}" media="all">
+	<!-- Main CSS -->
+
+	<link rel="stylesheet" href="{% static 'appADM/assets/css/factura.css' %}">
+</head>
+
+<body>
+	<!-- Page Wrapper -->
+	<div class="page-wrapper">
+		<div class="content container-fluid">
+			<div class="row">
+				<div class="col-md-12 ">
+					<div class="card">
+
+						<!--Imagen de anulado solo estado anulado -->
+						{% if orden_pedido_db.1 == 'ANULADA'%}
+						<img class="anulada" src="{% static 'appADM/assets/img/anulado.png' %}" alt="Anulada"
+							width="350">
+						{%elif orden_pedido_db.1 == 'RECHAZA PROVEEDOR' or orden_pedido_db.1 == 'RECHAZADO'%}
+						<img class="anulada" src="{% static 'appADM/assets/img/rechazada.png' %}" alt="Rechazado">
+						{% endif %}
+						<div id="page_pdf">
+							<table id="factura_head">
+								<tr>
+									<td class="info_factura">
+										<div class="round">
+											<span class="h3">ORDEN DE COMPRA</span>
+											<hr>
+											<h5 class="text-center"><strong>N° {{cabecera_oc.0}}</strong></h5>
+											<h6 class="text-center"><strong>ESTADO:
+													{{cabecera_oc.9}}</strong>
+										</div>
+									</td>
+									<td class="info_empresa">
+										<br>
+										<div>
+											<span class="h2"><strong>{{datos_empresa.0}}</strong></span>
+											<p>{{datos_empresa.1}}, </p>
+											<p> {{datos_empresa.2}}, {{datos_empresa.3}} - Chile</p>
+											{% if datos_empresa.4 != None%}
+											<p>TELÉFONO: {{datos_empresa.4}}</p>
+											{% endif%}
+											<p>{{datos_empresa.5}}</p>
+											<br>
+										</div>
+									</td>
+									<td class="logo_factura">
+										<div>
+											<img src="{% static 'appADM/assets/img/logodcblue.png' %}" width="200">
+										</div>
+									</td>
+								</tr>
+							</table>
+							<table id="factura_cliente">
+								<tr>
+									<td class="info_cliente">
+										<div class="round">
+											<span class="h3 ">Datos Orden de Compra</span>
+											<hr>
+											<table class="datos_cliente">
+												<tr>
+													<td><strong>Cliente Solicita:</strong>
+														{{cabecera_oc.2}}
+													</td>
+													<td><strong>Empresa a Destino:</strong>
+														{{datos_empresa.0}}
+													</td>
+												</tr>
+												<tr>
+													<td><strong>Rut Cliente:</strong>
+														{{cabecera_oc.3|intcomma}}-{{cabecera_oc.4}}
+													</td>
+													<td><strong>Rut Empresa:</strong>
+														{{datos_empresa.7|intcomma}}-{{datos_empresa.8}}
+													</td>
+												</tr>
+												<tr>
+													<td><strong>Fec. Creación:</strong>
+														{{cabecera_oc.10}}
+													</td>
+													<td><strong>Dirección Empresa:</strong>
+														{{datos_empresa.1}}
+													</td>
+
+												<tr>
+													<td><strong>Dirección Cliente:</strong>
+														{{cabecera_oc.5}}
+													</td>
+													<td><strong>Comuna:</strong>
+														{{datos_empresa.2}}
+													</td>
+												</tr>
+								</tr>
+							</table>
+						</div>
+						</td>
+
+						</tr>
+						</table>
+
+						<table id="factura_detalle">
+							<thead>
+								<tr>
+									<th width="50px">Cant.</th>
+									<th class="textleft">Descripción</th>
+									<th class="textleft" width="80px">Precio Unitario</th>
+									<th class="textleft" width="80px"> Precio Total</th>
+								</tr>
+							</thead>
+							<tbody id="detalle_productos">
+								{% for sa in serv_ad %}
+								<tr>
+									<td class="textcenter">{{sa.0}}</td>
+									<td>{{sa.2}} {%if sa.3 == 0 %}- GRATIS{%endif%}</td>
+									<td class="textleft">${{sa.3|intcomma}}</td>
+									<td class="textleft">${{sa.4|intcomma}}</td>
+								</tr>
+								{% endfor %}
+								{% for comedor in detcomedor %}
+								<tr>
+									<td class="textcenter">{{comedor.0}}</td>
+									<td>{{comedor.1}}</td>
+									<td class="textleft">${{comedor.2|intcomma}}</td>
+									<td class="textleft">${{comedor.3|intcomma}}</td>
+								</tr>
+								{% endfor %}
+								{% for habitacion in habitaciones %}
+								<tr>
+									<td class="textcenter">{{habitacion.0}}</td>
+									<td>{{habitacion.1}}</td>
+									<td class="textleft">${{habitacion.2|intcomma}}</td>
+									<td class="textleft">${{habitacion.3|intcomma}}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+
+							<tfoot id="detalle_totales">
+								<tr>
+									<td colspan="3" class="textright"><span>MONTO NETO</span></td>
+									<td class="textleft"><span>${{cabecera_oc.6|intcomma}}</span></td>
+
+								</tr>
+								<tr>
+									<td colspan="3" class="textright"><span>IVA (19%)</span></td>
+									<td class="textleft"><span>${{cabecera_oc.7|intcomma}}</span></td>
+								</tr>
+								<tr>
+									<td colspan="3" class="textright"><span>TOTAL</span></td>
+									<td class="textleft"><span>${{cabecera_oc.8|intcomma}}</span></td>
+								</tr>
+
+							</tfoot>
+						</table>
+					</div>
+				</div>
+				<br>
+				<br>
+			</div>
+		</div>
+	</div>
+	</div>
+
+	<!-- /Page Wrapper -->
+	</div>
+
+	<footer>
+
+		<p class="nota textcenter">Si usted tiene dudas sobre el Documento</p>
+		<p class="nota textcenter"> póngase en contacto con nombre, teléfono y
+			correo electrónico a soporte@hostaldonaclarita.cl</p>
+	</footer>
+	<script>
+		window.print();
+		window.onmousemove = function () {
+			window.close();
+		}
+	</script>
+</body>
+
+</html>

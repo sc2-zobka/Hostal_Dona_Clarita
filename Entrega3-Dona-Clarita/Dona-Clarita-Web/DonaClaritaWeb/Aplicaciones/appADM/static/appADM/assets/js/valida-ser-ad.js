@@ -14,10 +14,8 @@ $("#form1").validate({
         descripcion:{
             required: true,
             minlength:5,
-            maxlength:100 
+            maxlength:50 
         }, 
-
-                               
     },
     messages:{
       

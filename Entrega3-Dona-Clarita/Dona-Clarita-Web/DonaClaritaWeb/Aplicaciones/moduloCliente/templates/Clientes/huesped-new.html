@@ -1,6 +1,10 @@
 {% extends 'appADM/base.html' %}
 {% load static %}
-{% block title %}Nuevo Trabajador{% endblock%}
+
+{% block title %}{% if user.is_cliente %}Nuevo Trabajador{% else %}Nuevo Huésped{% endif %}{% endblock%}
+
+
+
 {% block contenido-panel %}
 <!-- Page Wrapper -->
 <div class="page-wrapper">

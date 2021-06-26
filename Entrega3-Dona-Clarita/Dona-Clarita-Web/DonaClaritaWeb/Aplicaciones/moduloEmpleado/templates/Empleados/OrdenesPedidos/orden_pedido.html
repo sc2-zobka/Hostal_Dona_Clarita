@@ -1,6 +1,6 @@
 {% extends 'appADM/base.html' %}
 {% load static %}
-{% block title %}Ordenes de Pedidos{% endblock%}
+{% block title %}Nueva Orden de Pedido{% endblock%}
 {% block css-adm %}
 <link rel="stylesheet" href="{% static 'appADM/assets/css/oc.css' %}">
 {% endblock %}
@@ -13,7 +13,7 @@
 		<div class="page-header">
 			<div class="row">
 				<div class="col-sm-12">
-					<h3 class="page-title"><i class="fa fa-file-text-o"></i> Nueva Orden de Pedido</h3>
+					<h3 class="page-title"><i class="fa fa-plus-circle"></i> Nueva Orden de Pedido</h3>
 					<ul class="breadcrumb">
 						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
 						<li class="breadcrumb-item"><a href="{% url 'oc-list' %}">Ordenes de Pedido</a></li>
@@ -90,8 +90,13 @@
 										</div>
 									</form>
 									{% elif mensaje == 'sigue'%}
-									<form class="ms-form-wizard ms-wizard-pill style2-wizard" method="POST" id="form1">
+									<form class="ms-form-wizard ms-wizard-pill style2-wizard" method="post" id="form1">
 										{% csrf_token%}
+										<input type="hidden" name="proveedor" value="{{proveedor}}">
+    									<input type="hidden" name="fecha" value="{{fecha}}">
+										{% if observacion is not None %}
+										<input type="hidden" name="observacion" value="{{observacion}}">
+										{% endif %}
 										<div class="ms-wizard-step">
 											<br>
 											<div class="form-row">
@@ -118,9 +123,6 @@
 																	<th class="text-center">
 																		<h6>Cant. Solicitar <strong class="text-danger">*</strong></h6>
 																	</th>
-																	<th class="text-center">
-																		<h6>Seleccionar <strong class="text-danger">*</strong></h6>
-																	</th>
 																</tr>
 															</thead>
 															<tbody>
@@ -136,10 +138,8 @@
 																		<h2>{{ producto.4 }}</h2>
 																	</td>
 																	<td class="text-center">
-																		<h2><input class="form-control text-center" type="number" name="" id="" style="width: 100px;" min="0"></h2>
-																	</td>
-																	<td class="text-center">
-																		<input class="" type="checkbox" value="{{ trabajador.rut }}" name="chk" id="chk">
+																		<h2><input class="form-control text-center" type="number" name="cant" id="" style="width: 100px;" min="0" value="0">
+																		<input hidden name="prd" value="{{ producto.0 }}"></h2>
 																	</td>
 																</tr>
 																{% endfor %}

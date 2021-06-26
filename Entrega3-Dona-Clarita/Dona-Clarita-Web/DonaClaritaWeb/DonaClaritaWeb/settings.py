@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -43,7 +44,8 @@ INSTALLED_APPS = [
     'Aplicaciones.moduloEmpleado',
     'Aplicaciones.moduloCliente',
     'Aplicaciones.moduloProveedor',
-    'import_export', 
+    'import_export',
+
 ]
 
 MIDDLEWARE = [
@@ -81,12 +83,18 @@ WSGI_APPLICATION = 'DonaClaritaWeb.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.oracle",
+        "NAME": "127.0.0.1:1521/xe",
+        "USER": "portafolio",
+        "PASSWORD": "123",
+        "TEST": {
+            "USER": "default_test",
+            "TBLSPACE": "default_test_tbls",
+            "TBLSPACE_TMP": "default_test_tbls_tmp",
+        },
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -125,7 +133,6 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-import os
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 AUTH_USER_MODEL = "app.User"
@@ -133,4 +140,3 @@ AUTH_USER_MODEL = "app.User"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-

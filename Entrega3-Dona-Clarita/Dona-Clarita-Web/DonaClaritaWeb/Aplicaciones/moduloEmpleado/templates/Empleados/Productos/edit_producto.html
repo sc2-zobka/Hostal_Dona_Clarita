@@ -1,6 +1,6 @@
 {% extends 'appADM/base.html' %}
 {% load static %}
-{% block title %}Nuevo Empleado{% endblock%}
+{% block title %}Editar Producto{% endblock%}
 {% block contenido-panel %}
 <!-- Page Wrapper -->
 <div class="page-wrapper">
@@ -95,7 +95,7 @@
 												<div class="form-group">
 													<label>Estado <strong class="text-danger">*</strong></label>
 													<select class="cb-single form-control" name="estado">
-														{% if data_producto.7%}
+														{% if data_producto.9 == '1' %}
 														<option value="1" selected>Activo</option>
 														<option value="0">Inactivo</option>
 														{% else %}

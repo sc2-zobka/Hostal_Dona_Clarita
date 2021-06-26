@@ -1,0 +1,162 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Listado de Habitaciones{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-7 col-auto">
+					<h3 class="page-title"><i class="fa fa-list-ol"></i> Listado Habitaciones</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active"> Listado Habitaciones</li>
+					</ul>
+				</div>
+				<div class="col-sm-5 col">
+					<a href="{% url 'servicio-new' %}" class="btn btn2 btn-primary float-right mt-2"><i
+							class="fa fa-plus"></i> Agregar Habitación</a>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="datatable table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										<th>Tipo Habitación</th>
+										<th class="text-center">N°</th>
+										<th class="text-center">Precio</th>
+										<th class="text-center">Estado</th>
+										<th class="text-center">Disponibilidad</th>
+										<th class="text-center">¿Muestra Menú?</th>
+										<th class="text-center">Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for habitacion in habitaciones %}
+									<tr>
+										<td>
+											<h2 class="table-avatar">
+												{% if habitacion.4 %}
+												<a class="avatar avatar-sm mr-2">
+													<img class="avatar-img"
+														src="../../media/Habitaciones/{{habitacion.4}}"
+														alt="Imagen Habitación">
+												</a>
+												{% else %}
+												<a class="avatar avatar-sm mr-2">
+													<img class="avatar-img"
+														src="{% static 'appADM/assets/img/noimagen.png' %}"
+														alt="Imagen Habitación">
+												</a>												
+												{% endif %}
+												<a href="#">{{habitacion.9}}</a>
+											</h2>
+										</td>
+										<td>
+											<h2 class="table-avatar">
+												<a>#{{ habitacion.1 }}</a>
+											</h2>
+										</td>
+										<td class="text-center">${{ habitacion.2 }}</td>
+										<td class="text-center">
+											{% if habitacion.3 == '1' %}
+											<span class="badge badge-pill bg-success inv-badge">Activo</span>
+											{% else %}
+											<span class="badge badge-pill bg-danger inv-badge">Inactivo</span>
+											{% endif %}
+										</td>
+										<td class="text-center">
+											
+											<a>{{ habitacion.7 }}</a>
+										</td>			
+										<td class="text-center">
+											{% if habitacion.5 == '1' %}
+											<a>Sí</a>
+											{% else %}
+											<a>No</a>
+											{% endif %}
+										</td>																				
+										<td class="text-center">
+											<div class="actions">
+												<a class="btn btn-sm bg-success-light"
+													href="{% url 'edit-habitacion' habitacion.0 %}">
+													<i class="fa fa-pencil"></i> Editar
+												</a>
+												{% if habitacion.3  == '1'%}
+												<a 	class="btn btn-sm bg-danger-light" onClick="eliminar({{ habitacion.0 }})">
+													<i class="fa fa-trash"></i> Eliminar
+												</a>
+												{% endif %}
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Page Wrapper -->
+
+
+{% block js %}
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+	<script>
+		Swal.fire({
+			title: "Problemas al Cargar",
+			text: "{{message}}",
+			icon: "error",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Gestión de Habitaciones",
+			text: "{{message}}",
+			icon: "success",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+	{% endif %}
+	{% endfor %}
+
+	<script>
+		function eliminar(id) {
+			Swal.fire({
+				"title": "¿Estás seguro de esta acción?",
+            "text": "Esta acción no se puede deshacer",
+            "icon": "question",
+            "showCancelButton":true,
+            "confirmButtonText": "Si, Eliminar",
+            "cancelButtonText": "No, Cancelar",
+            "reverseButtons": true,
+            "confirmButtonColor":"#d44747"
+				})
+				.then(function(result) {
+					if (result.isConfirmed) {
+						window.location.href = "/dashboard/elim-habitacion/"+id+"/"
+					}
+				})
+		}
+	</script>
+{% endblock %}
+{% endblock %}

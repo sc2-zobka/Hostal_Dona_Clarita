@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+{% load humanize %}
 
 <head>
 	<meta charset="UTF-8">
-	<title>Factura</title>
+	<title>{{documento.10}} N° {{documento.11}} - Hostal Doña Clarita</title>
 	{% load static %}
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'appADM/assets/img/favicondc.PNG' %}">
-    <!-- Main CSS -->
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'appADM/assets/img/favicondc.PNG' %}" media="all">
+	<!-- Main CSS -->
 
 	<link rel="stylesheet" href="{% static 'appADM/assets/css/factura.css' %}">
 </head>
@@ -20,32 +21,41 @@
 					<div class="card">
 
 						<!--Imagen de anulado solo estado anulado -->
+						{% if documento.13 == 'ANULADA'%}
 						<img class="anulada" src="{% static 'appADM/assets/img/anulado.png' %}" alt="Anulada"
 							width="350">
+						{% endif %}
 						<div id="page_pdf">
 							<table id="factura_head">
 								<tr>
 									<td class="logo_factura">
 										<div>
-											<img src="{% static 'appADM/assets/img/logodcblue.png' %}" width="150">
+											<img src="{% static 'appADM/assets/img/logodcblue.png' %}" width="200">
 										</div>
 									</td>
 									<td class="info_empresa">
 										<br>
 										<div>
-											<span class="h2"><strong>HOSTAL DOÑA CLARITA</strong></span>
-											<p>Avda. Concha y Toro 1320, </p>
-											<p> Puente Alto, Santiago - Chile</p>
-											<p>Teléfono: +(569) 1234 5678</p>
-											<p>contacto@hostaldonaclarita.cl</p>
+											
+											<span class="h2"><strong>{{datos_empresa.0}}</strong></span>
+											<p>{{datos_empresa.1}}, </p>
+											<p> {{datos_empresa.2}}, {{datos_empresa.3}} - Chile</p>
+											{% if datos_empresa.4 != None%}
+											<p>TELÉFONO: {{datos_empresa.4}}</p>
+											{% endif%}
+											<p>{{datos_empresa.5}}</p>
+											<br>
+											{% if documento.9 == 'NC'%}
+											<h2><strong>Anula Factura: {{documento.14}}</strong></h2>
+											{% endif %}
 										</div>
 									</td>
 									<td class="info_factura">
 										<div class="round">
-											<span class="h3">FACTURA ELECTRÓNICA</span>
+											<span class="h3">{{documento.10}}</span>
 											<hr>
-											<h5 class="text-center"><strong>N° 12345</strong></h5>
-											<h6 class="text-center"><strong>RUT 73.001.232-3</strong></h6>
+											<h5 class="text-center"><strong>N° {{documento.11}}</strong></h5>
+											<h6 class="text-center"><strong>RUT {{documento.1|intcomma}}-{{documento.15}}</strong></h6>
 										</div>
 									</td>
 								</tr>
@@ -59,33 +69,33 @@
 											<table class="datos_cliente">
 												<tr>
 													<td><strong>Señor(es):</strong>
-														Nombre de La empresa y Cía Ltda
+														{{documento.2}}
 													</td>
 													<td><strong>Rut:</strong>
-														7854526-1
+														{{documento.1|intcomma}}-{{documento.15}}
 													</td>
 												</tr>
 												<tr>
 													<td><strong>Giro:</strong>
-														Comercialización de Productos
+														{{documento.3}}
 													</td>
 													<td><strong>Fec. Emisión:</strong>
-														24-05-2021
+														{{documento.4}}
 													</td>
 												</tr>
 												<tr>
 													<td><strong>Dirección:</strong>
-														Calle nueva 1234
+														{{documento.5}}
 													</td>
 													<td><strong>Comuna:</strong>
-														La Florida
+														{{documento.6}}
 													</td>
 												<tr>
 													<td><strong>Fec. Vencimiento:</strong>
-														24-05-2021
+														{{documento.7}}
 													</td>
 													<td><strong>Forma Pago:</strong>
-														Efectivo
+														{{documento.8}}
 													</td>
 												</tr>
 								</tr>
@@ -96,66 +106,61 @@
 						</tr>
 						</table>
 
-						<table id="factura_detalle" >
+						<table id="factura_detalle">
 							<thead>
 								<tr>
 									<th width="50px">Cant.</th>
+									<th class="textleft" width="">Tipo Servicio</th>
 									<th class="textleft">Descripción</th>
-									<th class="textright" width="150px">Precio Unitario.</th>
-									<th class="textright" width="150px"> Precio Total</th>
+									<th class="textleft" width="80px">Precio Unitario</th>
+									<th class="textleft" width="80px"> Precio Total</th>
 								</tr>
-							</thead>							
+							</thead>
 							<tbody id="detalle_productos">
+								{% for sa in serv_ad %}
 								<tr>
-									<td class="textcenter">1</td>
-									<td>Plancha</td>
-									<td class="textright">516.67</td>
-									<td class="textright">516.67</td>
+									<td class="textcenter">{{sa.0}}</td>
+									<td>Servicio Adicional</td>
+									<td>{{sa.2}} {%if sa.3 == 0 %}- GRATIS{%endif%}</td>
+									<td class="textleft">${{sa.3|intcomma}}</td>
+									<td class="textleft">${{sa.4|intcomma}}</td>
 								</tr>
+								{% endfor %}
+								{% for comedor in detcomedor %}
 								<tr>
-									<td class="textcenter">1</td>
-									<td>Plancha</td>
-									<td class="textright">516.67</td>
-									<td class="textright">516.67</td>
+									<td class="textcenter">{{comedor.0}}</td>
+									<td>Servicio Comedor</td>
+									<td>{{comedor.1}}</td>
+									<td class="textleft">${{comedor.2|intcomma}}</td>
+									<td class="textleft">${{comedor.3|intcomma}}</td>
 								</tr>
+								{% endfor %}
+								{% for habitacion in habitaciones %}
 								<tr>
-									<td class="textcenter">1</td>
-									<td>Plancha</td>
-									<td class="textright">516.67</td>
-									<td class="textright">516.67</td>
+									<td class="textcenter">{{habitacion.0}}</td>
+									<td>Servicio Habitación</td>
+									<td>{{habitacion.1}}</td>
+									<td class="textleft">${{habitacion.2|intcomma}}</td>
+									<td class="textleft">${{habitacion.3|intcomma}}</td>
 								</tr>
-								<tr>
-									<td class="textcenter">1</td>
-									<td>Plancha</td>
-									<td class="textright">516.67</td>
-									<td class="textright">516.67</td>
-								</tr>
-								<tr>
-									<td class="textcenter">1</td>
-									<td>Plancha</td>
-									<td class="textright">516.67</td>
-									<td class="textright">516.67</td>
-								</tr>
-								<tr>
-									<td class="textcenter">1</td>
-									<td>Plancha</td>
-									<td class="textright">516.67</td>
-									<td class="textright">516.67</td>
-								</tr>
+								{% endfor %}
 							</tbody>
+
 							<tfoot id="detalle_totales">
 								<tr>
-									<td colspan="3" class="textright"><span>SUBTOTAL $.</span></td>
-									<td class="textright"><span>516.67</span></td>
+									<td colspan="4" class="textright"><span>MONTO NETO</span></td>
+									<td class="textleft"><span>${{doc_total.0|intcomma}}</span></td>
+
 								</tr>
 								<tr>
-									<td colspan="3" class="textright"><span>IVA (19%)</span></td>
-									<td class="textright"><span>516.67</span></td>
+									<td colspan="4" class="textright"><span>IVA (19%)</span></td>
+									<td class="textleft"><span>${{doc_total.1|intcomma}}</span></td>
 								</tr>
 								<tr>
-									<td colspan="3" class="textright"><span>TOTAL $.</span></td>
-									<td class="textright"><span>516.67</span></td>
+									<td colspan="4" class="textright"><span>TOTAL</span></td>
+									<td class="textleft"><span>${{doc_total.2|intcomma}}</span></td>
 								</tr>
+
 							</tfoot>
 						</table>
 					</div>
@@ -167,17 +172,17 @@
 	</div>
 	</div>
 	<!-- /Page Wrapper -->
-
-
-
-
 	</div>
 	<footer>
-		<p class="nota textcenter">Si usted tiene dudas sobre la Factura, póngase en contacto con nombre, teléfono y
+		<p class="nota textcenter">Si usted tiene dudas sobre el Documento</p>
+		<p class="nota textcenter"> póngase en contacto con nombre, teléfono y
 			correo electrónico a soporte@hostaldonaclarita.cl</p>
 	</footer>
 	<script>
 		window.print();
+		window.onmousemove = function () {
+			window.close();
+		}
 	</script>
 </body>
 

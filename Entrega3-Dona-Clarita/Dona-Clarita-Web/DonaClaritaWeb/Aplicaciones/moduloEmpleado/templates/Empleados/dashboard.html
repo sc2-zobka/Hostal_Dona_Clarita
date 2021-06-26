@@ -2,6 +2,7 @@
 {% load static %}
 {% block title %}Dashboard{% endblock%}
 {% block contenido-panel %}
+{% load humanize %}
 <!-- Page Wrapper -->
 <div class="page-wrapper">
 	<div class="content container-fluid">
@@ -49,12 +50,12 @@
 
 							</span>
 							<div class="dash-count">
-								<h3>$487.000</h3>
+								<h3>${{ingresos|intcomma}}</h3>
 							</div>
 						</div>
 						<div class="dash-widget-info">
 
-							<h6 class="text-muted">Ingresos Totales <br><strong class="text-danger">SIN PROGRAMAR</strong></h6>
+							<h6 class="text-muted">Ingresos Totales <br></h6>
 							<div class="progress progress-sm">
 								<div class="progress-bar bg-success w-50"></div>
 							</div>
@@ -126,6 +127,7 @@
 									</tr>
 								</thead>
 								<tbody>
+									{% if clientes_new%}
 									{% for cliente_new in clientes_new %}
 									<tr>
 										<td>
@@ -139,7 +141,15 @@
 										</td>
 										<td>{{cliente_new.2}}</td>
 									</tr>	
-									{% endfor %}								
+									{% endfor %}		
+									{% else %}
+									<tr>
+										<td colspan="2" class=" text-center" style="height: 100%; width: 100%;">
+												<a class=" text-danger" style="font-weight: bold;">Sin Información </a>
+										</td>
+										<td>{{empleado_new.2}}</td>
+									</tr>	
+									{% endif %}								
 								</tbody>
 							</table>
 						</div>
@@ -164,6 +174,7 @@
 									</tr>
 								</thead>
 								<tbody>
+									{% if empleados_new %}
 									{% for empleado_new in empleados_new %}
 									<tr>
 										<td>
@@ -176,8 +187,16 @@
 											</h2>
 										</td>
 										<td>{{empleado_new.2}}</td>
+									</tr>										
+									{% endfor %}		
+									{% else %}
+									<tr>
+										<td colspan="2" class=" text-center">
+												<a class=" text-danger" style="font-weight: bold;">Sin Información </a>
+										</td>
+										<td>{{empleado_new.2}}</td>
 									</tr>	
-									{% endfor %}			
+									{% endif %}	
 								</tbody>
 							</table>
 						</div>
@@ -187,6 +206,7 @@
 			</div>			
 		</div>
 		<br>
+		{% comment %}
 		<div class="row">
 			<div class="col-md-12 col-lg-6">
 
@@ -216,173 +236,56 @@
 				<!-- /Invoice Chart -->
 			</div>
 		</div>
+		{% endcomment %}
 		<br>
 		<div class="row">
 			<div class="col-md-12">
 				<!-- Recent Orders -->
-				<div class="card card-table">
-					<div class="card-header">
-						<h4 class="card-title">Listado de Reservas <strong class="text-danger"> SIN PROGRAMAR</strong></h4>
+				<div class="card">
+					<div class="card-header"><br>
+						<h4 class="card-title">Listado de Reservas Pendientes</h4>
 					</div>
-					<div class="card-body">
+					<div class="card-body">						
 						<div class="table-responsive">
-							<table class="table table-hover table-center mb-0">
+							<table class="datatable table table-hover table-center mb-0">
 								<thead>
 									<tr>
-										<th>Nombre Usuarios</th>
-										<th>Especialidad</th>
-										<th>Nombre Cliente</th>
-										<th>Fecha Atención</th>
-										<th>Estado</th>
-										<th class="text-right">Valor</th>
+										<th class="text-center">N° Reserva</th>
+										<th class="text-center" data-toggle="tooltip" data-placement="top" title="Orden de Compra" >O.C</th>
+										<th>Empresa</th>
+										<th class="text-center">Rut</th>
+										<th>Nombre</th>
+										<th class="text-center">Tipo Comedor</th>
+										<th class="text-center">Habitación</th>
+										<th class="text-center">Acciones</th>
 									</tr>
 								</thead>
 								<tbody>
+									{% for reserva in reservas %}
 									<tr>
-										<td>
-											<h2 class="table-avatar">
-												<a href="#!" class="avatar avatar-sm mr-2"><img
-														class="avatar-img rounded-circle"
-														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
-														alt="Imagen Usuario"></a>
-												<a href="#!">Nombre Usuarios</a>
-											</h2>
-										</td>
-										<td>Dental</td>
-										<td>
-											<h2 class="table-avatar">
-												<a href="#!" class="avatar avatar-sm mr-2"><img
-														class="avatar-img rounded-circle"
-														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
-														alt="Imagen Usuario"></a>
-												<a href="#!">Nombre Cliente </a>
-											</h2>
-										</td>
-										<td>9 May 2021 <span class="text-primary d-block">11.00 AM - 11.15 AM</span>
-										</td>
-										<td>
-											<span class="badge badge-pill bg-success inv-badge">Finalizada</span>
-										</td>
-										<td class="text-right">
-											$20.000
+										<td class="text-center">{{reserva.0}}</td>
+										<td class="text-center"  data-toggle="tooltip" data-placement="top" title="Orden de Compra" >{{reserva.1}}</td>
+										<td>{{reserva.2}}</td>
+										<td >{{reserva.3|intcomma}}-{{reserva.11}}</td>
+										<td>{{reserva.4}}</td>
+										<td class="text-center">{{reserva.5}}</td>
+										<td class="text-center">{{reserva.7}} - N° {{reserva.6}}</td>
+										<td class="text-center">
+											<div class="actions">
+												<a class="btn btn2 btn-sm bg-info" data-toggle="modal"
+													href="#Add_Specialities_details{{reserva.0}}">
+													<i class="fa fa-eye"></i> Ver
+												</a>
+												{% if reserva.10 == '0'%}
+												<a class="btn btn2 btn-sm bg-success" data-toggle="tooltip" href="{% url 'check-in' reserva.0%}"
+													title="Facturar Orden de Compra">
+													<i class="fa fa-check"></i> Check-In
+												</a>
+												{% endif %}
+											</div>
 										</td>
 									</tr>
-									<tr>
-										<td>
-											<h2 class="table-avatar">
-												<a href="#!" class="avatar avatar-sm mr-2"><img
-														class="avatar-img rounded-circle"
-														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
-														alt="Imagen Usuario"></a>
-												<a href="#!">Nombre Usuarios</a>
-											</h2>
-										</td>
-										<td>Dental</td>
-										<td>
-											<h2 class="table-avatar">
-												<a href="#!" class="avatar avatar-sm mr-2"><img
-														class="avatar-img rounded-circle"
-														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
-														alt="Imagen Usuario"></a>
-												<a href="#!">Nombre Cliente </a>
-											</h2>
-										</td>
-										<td>9 May 2021 <span class="text-primary d-block">11.00 AM - 11.15 AM</span>
-										</td>
-										<td>
-											<span class="badge badge-pill bg-danger inv-badge">Anulada</span>
-										</td>
-										<td class="text-right">
-											$20.000
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<h2 class="table-avatar">
-												<a href="#!" class="avatar avatar-sm mr-2"><img
-														class="avatar-img rounded-circle"
-														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
-														alt="Imagen Usuario"></a>
-												<a href="#!">Nombre Usuarios</a>
-											</h2>
-										</td>
-										<td>Dental</td>
-										<td>
-											<h2 class="table-avatar">
-												<a href="#!" class="avatar avatar-sm mr-2"><img
-														class="avatar-img rounded-circle"
-														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
-														alt="Imagen Usuario"></a>
-												<a href="#!">Nombre Cliente </a>
-											</h2>
-										</td>
-										<td>9 May 2021 <span class="text-primary d-block">11.00 AM - 11.15 AM</span>
-										</td>
-										<td>
-											<span class="badge badge-pill bg-warning inv-badge">Pendiente</span>
-										</td>
-										<td class="text-right">
-											$20.000
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<h2 class="table-avatar">
-												<a href="#!" class="avatar avatar-sm mr-2"><img
-														class="avatar-img rounded-circle"
-														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
-														alt="Imagen Usuario"></a>
-												<a href="#!">Nombre Usuarios</a>
-											</h2>
-										</td>
-										<td>Dental</td>
-										<td>
-											<h2 class="table-avatar">
-												<a href="#!" class="avatar avatar-sm mr-2"><img
-														class="avatar-img rounded-circle"
-														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
-														alt="Imagen Usuario"></a>
-												<a href="#!">Nombre Cliente </a>
-											</h2>
-										</td>
-										<td>9 May 2021 <span class="text-primary d-block">11.00 AM - 11.15 AM</span>
-										</td>
-										<td>
-											<span class="badge badge-pill bg-warning inv-badge">Pendiente</span>
-										</td>
-										<td class="text-right">
-											$20.000
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<h2 class="table-avatar">
-												<a href="#!" class="avatar avatar-sm mr-2"><img
-														class="avatar-img rounded-circle"
-														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
-														alt="Imagen Usuario"></a>
-												<a href="#!">Nombre Usuarios</a>
-											</h2>
-										</td>
-										<td>Dental</td>
-										<td>
-											<h2 class="table-avatar">
-												<a href="#!" class="avatar avatar-sm mr-2"><img
-														class="avatar-img rounded-circle"
-														src="{% static 'appADM/assets/img/doctors/doctor-thumb-01.jpg' %}"
-														alt="Imagen Usuario"></a>
-												<a href="#!">Nombre Cliente </a>
-											</h2>
-										</td>
-										<td>9 May 2021 <span class="text-primary d-block">11.00 AM - 11.15 AM</span>
-										</td>
-										<td>
-											<span class="badge badge-pill bg-warning inv-badge">Pendiente</span>
-										</td>
-										<td class="text-right">
-											$20.000
-										</td>
-									</tr>
+									{% endfor %}
 								</tbody>
 							</table>
 						</div>
@@ -396,7 +299,86 @@
 	</div>
 </div>
 <!-- /Page Wrapper -->
-
+{% for reserva in reservas %}
+<div class="modal fade" id="Add_Specialities_details{{reserva.0}}" aria-hidden="true" role="dialog">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="text-center modal-header">
+				{% if reserva.10 == '1'%}
+				<h5 class="modal-title text-center">Reserva N°{{reserva.0}} - <strong class="text-primary">Check-In Finalizado</strong> </h5>
+				{% else %}
+				<h5 class="modal-title text-center">Reserva N°{{reserva.0}} - <strong class="text-warning">Check-In Pendiente</strong> </h5>
+				{% endif %}
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="row form-row">
+						<div class="col-12 col-sm-4">
+							<div class="form-group">
+								<label>N° Ord. Compra</label>
+								<input type="text" class="form-control" placeholder="N° Orden Compra" value="{{reserva.1}}" disabled>
+							</div>
+						</div>
+						<div class="col-12 col-sm-8">
+							<div class="form-group">
+								<label>Razón Social</label>
+								<input type="text" class="form-control" placeholder="Razón social"  value="{{reserva.2}}" disabled>
+							</div>
+						</div>
+						<div class="col-12 col-sm-4">
+							<div class="form-group">
+								<label>Rut Huésped</label>
+								<input type="text" class="form-control" placeholder="N° Orden Compra" value="{{reserva.3|intcomma}}" disabled>
+							</div>
+						</div>
+						<div class="col-12 col-sm-8">
+							<div class="form-group">
+								<label>Nombre Huésped</label>
+								<input type="text" class="form-control" placeholder="Razón social"  value="{{reserva.4}}" disabled>
+							</div>
+						</div>						
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label>Inicio Estadia</label>
+								<input type="date" class="form-control"disabled value="{{reserva.8|date:'Y-m-d'}}">
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label>Fin de Estadia</label>
+								<input type="date" class="form-control" disabled value="{{reserva.9|date:'Y-m-d'}}">
+							</div>
+						</div>
+						<div class="col-12 col-sm-4">
+							<div class="form-group">
+								<label>Tipo Comedor</label>
+								<input type="text" class="form-control" placeholder="Cantidad de Huespedes" value="{{reserva.5}}" disabled>
+							</div>
+						</div>
+						<div class="col-12 col-sm-4">
+							<div class="form-group">
+								<label>Plato</label>
+								<input type="text" class="form-control" placeholder="Monto Total" value="{{reserva.11}}" disabled>
+							</div>
+						</div>
+						<div class="col-12 col-sm-4">
+							<div class="form-group">
+								<label>Habitación</label>
+								<input type="text" class="form-control" placeholder="Monto Total" value="{{reserva.7}} - N° {{reserva.6}}" disabled>
+							</div>
+						</div>
+					</div>
+				</form>
+				<hr>
+			</div>
+		</div>
+	</div>
+</div>
+{%endfor%}
+<!-- /ADD Modal -->
 {% endblock %}
 {% block js %}
 <script src="{% static 'appADM/assets/plugins/raphael/raphael.min.js' %}"></script>

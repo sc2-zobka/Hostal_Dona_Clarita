@@ -1,6 +1,6 @@
 {% extends 'appADM/base.html' %}
 {% load static %}
-{% block title %}Nuevo Empleado{% endblock%}
+{% block title %}Mi Perfil{% endblock%}
 {% block contenido-panel %}
 <!-- Page Wrapper -->
 <div class="page-wrapper">
@@ -10,10 +10,10 @@
 		<div class="page-header">
 			<div class="row">
 				<div class="col-sm-7">
-					<h3 class="page-title"><i class="fa fa-cog"></i> Configuración</h3>
+					<h3 class="page-title"><i class="fa fa-cog"></i> Mi Perfil</h3>
 					<ul class="breadcrumb">
 						<li class="breadcrumb-item"><a href="{% url 'dashboard-cli' %}">Inicio</a></li>
-						<li class="breadcrumb-item active">Configuración</li>
+						<li class="breadcrumb-item active">Mi Perfil</li>
 					</ul>
 				</div>
 				<div class="col-sm-5 ">
@@ -37,7 +37,7 @@
 					</div>
 					<div class="card-body">
 						<form name="form1" id="form1" action="#" method="POST"
-							onSubmit="javascript:return Rut(document.form1.rut.value)">
+							onSubmit="javascript:return Rut(document.form1.rut.value)" enctype="multipart/form-data">
 
 							{% csrf_token %}
 
@@ -60,7 +60,7 @@
 									<div class="form-group">
 										<label>Correo electrónico <strong class="text-danger">*</strong></label>
 										<input type="email" class="form-control" name="email"
-											placeholder="Ingrese Correo electrónico" value="{{ usuario.6 }}">
+											placeholder="Ingrese Correo electrónico" value="{{ correo }}">
 									</div>
 								</div>
 							</div>
@@ -114,7 +114,7 @@
 							<h5 class="card-title text-center">Información Adicional <br><button type="button" class="btn btn2 btn-info " data-toggle="popover" data-placement="top" title="¿Porqué la Región está Bloqueada?" data-content="La Región se Asigna Automáticamente al Seleccionar La Comuna y se ve reflejada al Guardar"><i class="fa fa-info-circle"></i></button></h5>
 							<hr>
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-md-4">
 									<div class="form-group">
 										<label>Región de Residencia <strong class="text-danger">*</strong></label>
 										<select name="reg_sel" id="reg_sel" class="cb-single form-control" disabled>
@@ -129,7 +129,7 @@
 										</select>
 									</div>
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-4">
 									<div class="form-group">
 										<label>Comuna de Residencia <strong class="text-danger">*</strong></label>
 										<select name="com_sel" id="com_sel" class="cb-single form-control">
@@ -144,13 +144,19 @@
 										</select>
 									</div>
 								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
+								<div class="col-md-4">
 									<div class="form-group">
 										<label>Dirección <strong class="text-danger">*</strong></label>
 										<input type="text" name="direccion" class="form-control"
 											placeholder="Ingrese Dirección" value="{{ direccion }}">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label>Foto de Perfil</label>
+										<input type="file" name="imagen" class="form-control">
 									</div>
 								</div>
 							</div>

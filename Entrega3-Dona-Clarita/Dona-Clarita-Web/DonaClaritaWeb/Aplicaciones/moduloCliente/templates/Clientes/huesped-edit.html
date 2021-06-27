@@ -106,12 +106,12 @@
 									<div class="form-group">
 										<label>Estado <strong class="text-danger">*</strong></label>
 										<select name="estado" id="estado" class="form-control cb-single">
-											{% if huesped.6 %}
-											<option value="1" selected>Activo</option>
+											{% if huesped.6  == '1'%}
+											<option value="1" selected>Activo (Actual)</option>
 											<option value="0">Inactivo</option>
 											{% else %}
 											<option value="1" >Activo</option>
-											<option value="0" selected>Inactivo</option>
+											<option value="0" selected>Inactivo (Actual)</option>
 											{% endif %}											
 										</select>
 									</div>

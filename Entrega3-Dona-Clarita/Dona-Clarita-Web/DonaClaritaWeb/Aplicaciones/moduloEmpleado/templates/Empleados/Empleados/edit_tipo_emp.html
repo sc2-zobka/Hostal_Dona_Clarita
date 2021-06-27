@@ -1,6 +1,6 @@
 {% extends 'appADM/base.html' %}
 {% load static %}
-{% block title %}Nuevo Empleado{% endblock%}
+{% block title %}Edición Tipo de Empleado{% endblock%}
 {% block contenido-panel %}
 <!-- Page Wrapper -->
 <div class="page-wrapper">
@@ -42,19 +42,19 @@
 												<div class="form-group">
 													<label>Cargo <strong class="text-danger">*</strong></label>
 													<input type="text" class="form-control" name="cargo"
-														placeholder="Ingrese Cargo de Empleado" value="{{tipo_e.2}}">
+														placeholder="Ingrese Cargo de Empleado" value="{{tipo_e.1}}">
 												</div>
 											</div>
 											<div class="col-md-6">
 												<div class="form-group">
 													<label>Estado <strong class="text-danger">*</strong></label>
 													<select name="estado" id="" class="cb-single form-control">
-														{% if tipo_e.1 %}
-														<option value="1" selected>Activo</option>
+														{% if tipo_e.2 %}
+														<option value="1" selected>Activo (Actual)</option>
 														<option value="0">Inactivo</option>
 														{% else %}
 														<option value="1" >Activo</option>
-														<option value="0" selected>Inactivo</option>
+														<option value="0" selected>Inactivo (Actual)</option>
 														{% endif %}
 													</select>
 												</div>

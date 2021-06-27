@@ -1,0 +1,194 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Nueva Habitación{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title"><i class="fa fa-plus-circle"></i> Nueva Habitación</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Nueva Habitación</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+			<div class="col-12">
+				<!-- General -->
+				<div class="card">
+					<div class="row">
+						<div class="col-xl-12 col-md-12 ">
+							<div class="card">
+								<div class="card-header text-center">
+									<hr>
+									<h4 class="card-title">Información de Nueva Habitación</h4>
+									<hr>
+									<h6 class="alert alert-info"><i class="fa fa-info-circle"></i>
+										<strong>ATENCIÓN:</strong> Campos Obligatorios se identifican con <strong
+											class="text-danger">*</strong></h6>
+								</div>
+								<div class="card-body">
+									<form action="#" method="POST" id="form1" enctype="multipart/form-data">
+										{% csrf_token %}
+										<div class="row">
+											<div class="col-xl-4 offset-xl-12">
+												<label>Tipo Habitación <strong class="text-danger">*</strong></label>
+												<div class="form-group">
+													<select class="cb-single form-control" name="tip_hab">
+														{% for tipo_habitacion in tipos_habitaciones %}
+														<option value="{{ tipo_habitacion.id }}">
+															{{ tipo_habitacion.descripcion }}</option>
+														{% endfor %}
+													</select>
+												</div>
+											</div>
+											<div class="col-xl-4 offset-xl-12">
+												<div class="form-group">
+													<label>N° Habitación <strong class="text-danger">*</strong></label>
+													<input type="number" class="form-control" name="nro_hab" min="1"
+														placeholder="Ingrese N° Habitación">
+												</div>
+											</div>
+											<div class="col-xl-4 offset-lg-12">
+												<div class="form-group">
+													<label>Precio <strong class="text-danger">*</strong></label>
+													<input type="number" class="form-control" name="precio" min="1"
+														placeholder="Ingrese Precio Habitación">
+												</div>
+											</div>
+										</div>
+										<div class="row">
+
+											<div class="col-xl-4 offset-lg-12">
+												<div class="form-group">
+													<label>Disponibilidad <strong class="text-danger">*</strong></label>
+													<select name="disp_sel" id="" class="cb-single form-control">
+														{% for estado in estados %}
+														<option value="{{ estado.id }}">{{ estado.descripcion }}
+														</option>
+														{% endfor %}
+													</select>
+												</div>
+											</div>
+											<div class="col-xl-4 offset-lg-12">
+												<div class="form-group">
+													<label>Estado <strong class="text-danger">*</strong></label>
+													<select name="estado" id="" class="cb-single form-control">
+														<option value="1">Activo</option>
+														<option value="0">Inactivo</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-xl-4 offset-lg-12">
+												<div class="form-group">
+													<label>Muestra Menú <strong class="text-danger">*</strong></label>
+													<select name="mues_sel" id="" class="cb-single form-control">
+														<option value="1">Sí</option>
+														<option value="0">No</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label>Descripción <strong class="text-danger">*</strong></label>
+													<textarea class="form-control" name="descripcion" cols="30" rows="5"
+														placeholder="Ingrese Descripción de Habitación..."></textarea>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label>Imagen <strong class="text-danger">*</strong></label>
+													<input class="form-control" type="file" name="imagen">
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-4"></div>
+											<div class="col-md-4">
+												<div class="form-group mb-0">
+													<button class="btn btn2 btn-info btn-block text-center"
+														type="submit"><i class="fa fa-save"></i> Guardar</button>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- /General -->
+				</div>
+			</div>
+			<br>
+		</div>
+	</div>
+	<!-- /Page Wrapper -->
+
+	{% block js %}
+	<script>
+		$(document).ready(function () {
+			$('.cb-single').select2();
+		});
+	</script>
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+	<script>
+		Swal.fire({
+			title: "Error en Validación",
+			text: "{{message}}",
+			icon: "error",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Gestión de Tipos de Habitaciones",
+			text: "{{message}}",
+			icon: "success",
+			timer: 5000,
+			timerProgressBar: true
+		})
+	</script>
+	{% endif %}
+	{% endfor %}
+	<script>
+		function eliminar(id) {
+			Swal.fire({
+					"title": "¿Estás seguro de esta acción?",
+					"text": "Esta acción no se puede deshacer",
+					"icon": "question",
+					"showCancelButton": true,
+					"confirmButtonText": "Si, Eliminar",
+					"cancelButtonText": "No, Cancelar",
+					"reverseButtons": true,
+					"confirmButtonColor": "#d44747"
+				})
+				.then(function (result) {
+					if (result.isConfirmed) {
+						window.location.href = "/dashboard/elim-habitacion/" + id + "/"
+					}
+				})
+		}
+	</script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+	<script src="{% static 'appADM/assets/js/traslate.js' %}"></script>
+	<script src="{% static 'appADM/assets/js/valida-habitacion.js' %}"></script>
+	{% endblock %}
+	{% endblock %}

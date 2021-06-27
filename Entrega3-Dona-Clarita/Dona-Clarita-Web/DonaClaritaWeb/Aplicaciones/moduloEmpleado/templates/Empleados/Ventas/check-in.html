@@ -1,6 +1,6 @@
 {% extends 'appADM/base.html' %}
 {% load static %}
-{% block title %}Ordenes de Pedidos{% endblock%}
+{% block title %} Check-In Reserva{% endblock%}
 {% block css-adm %}
 <link rel="stylesheet" href="{% static 'appADM/assets/css/oc.css' %}">
 {% endblock %}
@@ -19,7 +19,6 @@
 						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
 						<li class="breadcrumb-item"><a href="{% url 'oc-list' %}">Reservas</a></li>
 						<li class="breadcrumb-item active">Check-In Reserva N° {{huesped.0}}</li>
-
 					</ul>
 				</div>				
 			</div>

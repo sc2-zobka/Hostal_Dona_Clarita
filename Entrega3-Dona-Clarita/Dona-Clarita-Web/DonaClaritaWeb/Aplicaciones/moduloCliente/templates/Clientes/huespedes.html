@@ -1,6 +1,6 @@
 {% extends 'appADM/base.html' %}
 {% load static %}
-{% block title %}Listado de Empleados{% endblock%}
+{% block title %}{% if user.is_cliente %}Mis Trabajadores{% else %}Listado de Huéspedes{% endif %}{% endblock%}
 {% block contenido-panel %}
 <!-- Page Wrapper -->
 <div class="page-wrapper">
@@ -63,7 +63,7 @@
 										<td>{{ huesped.2 }}</td>
 										<td>{{ huesped.3 }} {{ huesped.4 }} {{ huesped.5 }}</td>
 										<td class="text-center">
-											{% if huesped.6 %}
+											{% if huesped.6 == '1' %}
 											<span class="badge badge-pill bg-success inv-badge">Activo</span>
 											{% else %}
 											<span class="badge badge-pill bg-danger inv-badge">Inactivo</span>
@@ -76,7 +76,7 @@
 												{% else %}
 												<a class="btn btn-sm bg-success-light" href="{% url 'edit-huesped' huesped.0 %}"  title="Editar Huésped" data-toggle="tooltip"><i class="fa fa-pencil"></i> Editar</a>
 												{% endif %}
-												{% if huesped.6 %}
+												{% if huesped.6 == '1' %}
 												<a href="#" class="btn btn-sm bg-danger-light" onClick="eliminar({{ huesped.0 }})" title="Eliminar Huésped" data-toggle="tooltip"><i class="fa fa-trash"></i> Eliminar</a>
 												{% endif %}
 											</div>

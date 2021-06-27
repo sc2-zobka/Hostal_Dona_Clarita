@@ -1,6 +1,6 @@
 {% extends 'appADM/base.html' %}
 {% load static %}
-{% block title %}Nuevo Empleado{% endblock%}
+{% block title %}Editar Orden de Pedido{% endblock%}
 {% block contenido-panel %}
 <!-- Page Wrapper -->
 <div class="page-wrapper">
@@ -10,7 +10,7 @@
 		<div class="page-header">
 			<div class="row">
 				<div class="col-sm-12">
-					<h3 class="page-title"><i class="fa fa-edit"></i> Edición Orden de Pedido N° 1234</h3>
+					<h3 class="page-title"><i class="fa fa-edit"></i> Edición Orden de Pedido N° {{ orden_pedido.0 }}</h3>
 					<ul class="breadcrumb">
 						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
 						<li class="breadcrumb-item"><a href="{% url 'ordenes-pedidos-list' %}">Ordenes de Pedido</a>
@@ -67,7 +67,7 @@
 												<div class="form-group">
 													<label>Fecha Emisión <strong class="text-danger">*</strong></label>
 													<input type="date" class="form-control" name="fec-emision"
-														value="{{ orden_pedido.3|date:"Y-m-d" }}">
+														value="{{ orden_pedido.3|date:'Y-m-d' }}">
 												</div>
 											</div>
 										</div>
@@ -134,7 +134,7 @@
 																	</td>
 																	<td class="text-center">
 																		<h2><input class="form-control text-center"
-																				type="number" name="cantidad" id=""
+																				type="number" name="cantidad" id="" min="0"
 																				style="width: 100px;" value="{{ detalle.4 }}">
 																			<input hidden name="detall-id" value="{{ detalle.5 }}"></h2>
 																	</td>
@@ -151,7 +151,7 @@
 													<div class="form-group">
 														<label>Observación</label>
 														<textarea class="form-control" name="observacion" id=""
-															cols="30" rows="2">{{ orden_pedido.6 }}</textarea>
+															cols="30" rows="2">{{ obs }}</textarea>
 													</div>
 												</div>
 											</div>
@@ -187,10 +187,37 @@
 	<!-- /Page Wrapper -->
 
 	{% block js %}
+
+{% if messages %}
+<div>
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
 	<script>
-		$(document).ready(function () {
-			$('.cb-single').select2();
-		});
+		Swal.fire({
+			title: "Error en Validación",
+			text: "{{message}}",
+			icon: "error"
+		})
 	</script>
+	{% elif message.tags  == 'warning'%}
+	<script>
+		Swal.fire({
+			title: "¡Atención!",
+			text: "{{message}}",
+			icon: "warning"
+		})
+	</script>	
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Gestión de Ordenes de Compra",
+			text: "{{message}}",
+			icon: "success"
+		})
+	</script>
+	{% endif %}
+	{% endfor %}
+</div>
+{% endif %}
 	{% endblock %}
 	{% endblock %}

@@ -2,6 +2,7 @@
 {% load static %}
 {% block title %}Dashboard{% endblock%}
 {% block contenido-panel %}
+{% load humanize %}
 <!-- Page Wrapper -->
 <div class="page-wrapper">
 	<div class="content container-fluid">
@@ -29,17 +30,24 @@
 					<div class="card-body text-center">
 						<h3 class="text-semibold mt-sm text-center">Bienvenido al Sistema de Gestión de Hostal Doña Clarita</h3>
 						<hr>
+						{%if user.is_cliente %}
 						<p class="text-center">A continuación podrás encontras distintos accesos directos que ofrecemos para ti. <br>
 							Además, al costado izquierdo podrás encontrar nuestro menú con muchas mas opciones</p>
+						{% else %}
+						<p class="text-center">Al costado izquierdo podrás encontrar nuestro menú con Todas las opciones que ofrecemos para ti</p>
+						{% endif %}
 					</div>
 				</section>
 			</div>
 	</div>
 	<br>
+	{%if user.is_cliente %}
 		<div class="row">
 			<div class="col-xl-3 col-sm-6 col-12">
 				<div class="card">
 					<div class="card-body">
+						<h6 class="text-muted">Total de Trabajadores</h6>
+						<hr>
 						<div class="dash-widget-header">
 							<span class="dash-widget-icon text-primary border-primary">
 								<i class="fa fa-users"></i>
@@ -49,9 +57,9 @@
 							</div>
 						</div>
 						<div class="dash-widget-info">
-							<h6 class="text-muted">Total de Trabajadores</h6>
-							<h6 class="text-muted text-left"><a href="#"><i class="fa fa-arrow-right"></i> Nuevo Trabajador</a></h6>
-							<h6 class="text-muted text-left"><a href="#"><i class="fa fa-arrow-right"></i> Cargar Trabajadores</a></h6>
+							<hr>						
+							<h6 class="text-muted text-left"><a href="{% url 'trabajador-new'%}"><i class="fa fa-arrow-right"></i> Nuevo Trabajador</a></h6>
+							<h6 class="text-muted text-left"><a href="{% url 'trabajadores-list'%}"><i class="fa fa-arrow-right"></i> Cargar Trabajadores</a></h6>
 						</div>
 					</div>
 				</div>
@@ -59,6 +67,8 @@
 			<div class="col-xl-3 col-sm-6 col-12">
 				<div class="card">
 					<div class="card-body">
+						<h6 class="text-muted">Total de Ordenes de Compra</h6>
+						<hr>
 						<div class="dash-widget-header">
 							<span class="dash-widget-icon text-warning border-warning">
 								<i class="fa fa-file-text"></i>
@@ -68,9 +78,9 @@
 							</div>
 						</div>
 						<div class="dash-widget-info">
-							<h6 class="text-muted">Total de Ordenes de Compra</h6>
-							<h6 class="text-muted text-left"><a href="#"><i class="fa fa-arrow-right"></i> Nueva Orden de Compra</a></h6>
-							<h6 class="text-muted text-left"><a href="#"><i class="fa fa-arrow-right"></i> Mis Ordenes de Compras</a></h6>
+							<hr>							
+							<h6 class="text-muted text-left"><a href="{% url 'oc-new'%}"><i class="fa fa-arrow-right"></i> Nueva Orden de Compra</a></h6>
+							<h6 class="text-muted text-left"><a href="{% url 'oc-list'%}"><i class="fa fa-arrow-right"></i> Mis Ordenes de Compras</a></h6>
 						</div>
 					</div>
 				</div>
@@ -78,43 +88,74 @@
 			<div class="col-xl-3 col-sm-6 col-12">
 				<div class="card">
 					<div class="card-body">
+						<h6 class="text-muted">Total de Documentos</h6>
+						<hr>
 						<div class="dash-widget-header">
 							<span class="dash-widget-icon text-info">
 								<i class="fa fa-money"></i>
 							</span>
 							<div class="dash-count">
-								<h3>15</h3>
+								<h3>{{cant_doc}}</h3>
 							</div>
 						</div>
-						<div class="dash-widget-info">
-							<h6 class="text-muted">Total de Facturas<strong class="text-danger"> SIN PROGRAMAR</strong></h6>
-							<h6 class="text-muted text-left"><a href="#"><i class="fa fa-arrow-right"></i> Mis Facturas</a></h6>
+						<div class="dash-widget-info">		
+							<hr>					
+							<h6 class="text-muted text-left"><a href="{% url 'facturas-cli'%}"><i class="fa fa-arrow-right"></i> Mis Documentos</a></h6>
 							<br>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-xl-3 col-sm-6 col-12">
-				<div class="card">
+				<div class="card">					
 					<div class="card-body">
+						<h6 class="text-muted">Total de Gastos</h6>
+					<hr>
 						<div class="dash-widget-header">
 							<span class="dash-widget-icon text-success">
 								<i class="fa fa-money"></i>
 							</span>
 							<div class="dash-count">
-								<h3>$487.000</h3>
+								<h3>${% if gastos is not None %}{{gastos|intcomma}}{% else %}0{% endif %}</h3>
 							</div>
 						</div>
 						<div class="dash-widget-info">
-							<h6 class="text-muted">Total de Gastos<strong class="text-danger"> SIN PROGRAMAR</strong></h6>
-							<br>
-							<br>
+							<hr>							
+							<h6 class="text-muted text-left">Facturas: ${% if total_facturas is not None %}{{total_facturas|intcomma}}{% else %}0{% endif %}</h6>
+							<h6 class="text-muted text-left">N. Créditos: ${% if total_notacredito is not None %}{{total_notacredito|intcomma}}{% else %}0{% endif %}</h6>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
+	{% elif user.is_proveedor %}
+	<div class="row">
+		<div class="col-xl-4 col-12"></div>
+		<a href="{% url  'ordenes-proveedor' %}">
+		<div class="col-xl-4 col-sm-6 col-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="dash-widget-header">
+						<span class="dash-widget-icon text-warning border-warning">
+							<i class="fa fa-file-text"></i>
+						</span>
+						<div class="dash-count">
+							<h5 class="text-muted">Pendientes: {{op_pendientes}} </h5>
+							<h5 class="text-muted">Totales: {{op_totales}}</h5>
+						</div>
+					</div>
+					<div class="dash-widget-info">
+						<h6 class="text-muted">Ordenes de Pedidos</h6>
+						<h6 class="text-muted text-left"><a href="{% url  'ordenes-proveedor' %}"><i class="fa fa-arrow-right"></i> Ver Ordenes</a></h6>
+					</div>
+				</div>
+			</div>
+		</div>
+	</a>
+		<div class="col-xl-4 col-sm-6 col-12"></div>
+	</div>
+	{% else%}
+	{%endif%}
 
 </div>
 <!-- /Page Wrapper -->

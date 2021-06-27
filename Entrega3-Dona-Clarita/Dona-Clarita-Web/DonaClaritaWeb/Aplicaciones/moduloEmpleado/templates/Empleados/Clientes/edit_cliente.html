@@ -1,6 +1,6 @@
 {% extends 'appADM/base.html' %}
 {% load static %}
-{% block title %}Nuevo Empleado{% endblock%}
+{% block title %}Edición de Cliente{% endblock%}
 {% block contenido-panel %}
 <!-- Page Wrapper -->
 <div class="page-wrapper">
@@ -71,12 +71,12 @@
 									<div class="form-group">
 										<label>Estado <strong class="text-danger">*</strong></label>
 										<select name="emp-sel" id="" class="form-control cb-single">
-											{% if cliente.estatus %}
-											<option value="1" selected>Activo</option>
+											{% if cliente.estatus == '1' %}
+											<option value="1" selected>Activo (Actual)</option>
 											<option value="0">Inactivo</option>
 											{% else %}
 											<option value="1">Activo</option>
-											<option value="0" selected>Inactivo</option>
+											<option value="0" selected>Inactivo (Actual)</option>
 											{% endif %}
 										</select>
 									</div>

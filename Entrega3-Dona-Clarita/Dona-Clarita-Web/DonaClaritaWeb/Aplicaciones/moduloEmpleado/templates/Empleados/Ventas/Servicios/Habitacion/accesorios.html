@@ -1,0 +1,188 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Gestión de Accesorios{% endblock%}
+
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title"><i class="fa fa-window-restore"></i> Gestión de Accesorios</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Gestión de Accesorios</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+			<div class="col-12">
+				<!-- General -->
+				<div class="card">
+					<div class="row">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-8">
+							<div class="card">
+								<div class="card-header text-center">
+									<hr>
+									<h4 class="card-title">Información de Accesorio</h4>
+									<hr>
+									<h6 class="alert alert-info"><i class="fa fa-info-circle"></i>
+										<strong>ATENCIÓN:</strong> Campos Obligatorios se identifican con <strong
+											class="text-danger">*</strong></h6>
+									{% if mensaje == 'error' %}
+										<div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+											<strong>Campos Vacios:</strong> Todos los Camposa son obligatorios
+											<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+									{% endif %}
+								</div>
+								<div class="card-body">
+									<form action="#" method="POST">
+										{% csrf_token %}
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Nombre <strong class="text-danger">*</strong></label>
+													<input type="text" class="form-control" name="nombre-acces"
+														placeholder="Ingrese Nombre de Accesorio">
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Estado <strong class="text-danger">*</strong></label>
+													<select name="est-sel" id="" class="form-control cb-simple">
+														<option value="1">Activo</option>
+														<option value="0">Inactivo</option>
+													</select>
+												</div>
+											</div>											
+										</div>
+										<hr>
+										<div class="row">
+											<div class="col-md-4"></div>
+											<div class="col-md-4">
+												<div class="form-group mb-0">
+													<button class="btn btn2 btn-info btn-block text-center"
+														type="submit"><i class="fa fa-save"></i> Guardar</button>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+								<hr>
+								<h4 class="page-title text-center">Listado de Accesorios</h4>
+								<hr>
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="datatable table table-hover table-center mb-0">
+											<thead>
+												<tr>													
+													<th>Nombre</th>
+													<th class="text-center">Estado</th>
+													<th class="text-center">Acciones</th>
+												</tr>
+											</thead>
+											<tbody>
+												{% for accesorio in accesorios %}
+												<tr>
+													<td>{{ accesorio.descripcion }}</td>
+													<td class="text-center">
+														{% if accesorio.estatus == '1' %}
+														<span class="badge badge-pill bg-success inv-badge">Activo</span>
+														{% else %}
+														<span class="badge badge-pill bg-danger inv-badge">Inactivo</span>
+														{% endif %}
+													</td>
+													<td class="text-center">
+														<div class="actions">
+															<a class="btn btn-sm bg-success-light" href="{% url 'edit-accesorio' accesorio.id %}">
+																<i class="fa fa-pencil"></i> Editar
+															</a>
+															{% if accesorio.estatus == '1'%}
+															<a class="btn btn-sm bg-danger-light" onClick="eliminar({{ accesorio.id }})" href="#">
+																<i class="fa fa-trash"></i> Eliminar
+															</a>
+															{% endif %}
+														</div>
+													</td>
+												</tr>
+												{% endfor %}
+											</tbody>
+										</table>
+									</div>
+								</div>								
+							</div>
+						</div>
+					</div>
+					<!-- /General -->
+				</div>
+			</div>
+			<br>
+		</div>
+	</div>
+	<!-- /Page Wrapper -->
+
+	{% block js %}
+	<script>
+		$(document).ready(function() {
+		$('.cb-multiple').select2();
+		$('.cb-simple').select2();
+	});
+	</script>
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+		<script>
+			Swal.fire({
+				title: "Error en Validación",
+				text: "{{message}}",
+				icon: "error",
+				timer: 5000,
+				timerProgressBar: true
+			})
+		</script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Gestión de Accesorios",
+				text: "{{message}}",
+				icon: "success",
+				timer: 5000,
+				timerProgressBar: true
+		})
+	</script>
+	{% endif %}
+	{% endfor %}
+
+	<script>
+		function eliminar(id) {
+			Swal.fire({
+				"title": "¿Estás seguro de esta acción?",
+            "text": "Esta acción no se puede deshacer",
+            "icon": "question",
+            "showCancelButton":true,
+            "confirmButtonText": "Si, Eliminar",
+            "cancelButtonText": "No, Cancelar",
+            "reverseButtons": true,
+            "confirmButtonColor":"#d44747"
+				})
+				.then(function(result) {
+					if (result.isConfirmed) {
+						window.location.href = "/dashboard/eliminar-accesorio/"+id+"/"
+					}
+				})
+		}
+	</script>
+	{% endblock %}
+	{% endblock %}

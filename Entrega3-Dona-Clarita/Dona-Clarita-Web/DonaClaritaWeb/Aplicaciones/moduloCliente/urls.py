@@ -11,8 +11,9 @@ urlpatterns = [
     path('dashboard/carga-trabajadores/', huesped_carga, name="trabajadores-carga"),    
     path('dashboard/ordenes-compra/', ordenes_compras, name="oc-list"),
     path('dashboard/nueva-orden-compra/', nueva_orden_compra, name="oc-new"),  
-    path('dashboard/facturas/', facturas_cli, name="facturas-cli"),  
-    path('dashboard/factura/', factura_print, name="factura-print"),  
-    path('dashboard/detalle-factura/', det_factura_cli, name="factura-view"),  
+    path('dashboard/mis-documentos/', facturas_cli, name="facturas-cli"),  
+    path('dashboard/documento/<id>/', factura_print, name="factura-print"),
+    path('dashboard/orden-compra/<id>/', print_orden_compra, name="oc-print"),
+    path('dashboard/opinion/<id>/', nueva_opinion, name="opinion")
 
 ]

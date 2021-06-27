@@ -45,7 +45,7 @@
 										<td>{{ cliente.3 }}</td>
 										<td>{{ cliente.4 }}</td>
 										<td class="text-center">
-											{% if cliente.5 == 1 %}
+											{% if cliente.5 == '1' %}
 											<span class="badge badge-pill bg-success inv-badge">Activo</span>
 											{% else %}
 											<span class="badge badge-pill bg-danger inv-badge">Inactivo</span>
@@ -55,13 +55,13 @@
 											<div class="actions">
 												<a class="btn btn2 btn-sm bg-danger" title="Restablecer Contraseña"
 													data-toggle="tooltip" href="{% url 'pass-cliente' cliente.0 %}">
-													<i class="fa fa-lock"></i> Pass
+													<i class="fa fa-lock"></i> Contraseña
 												</a>
 												<a class="btn btn-sm bg-success-light" title="Editar Cliente"
 													data-toggle="tooltip" href="{% url 'edit-cliente' cliente.0 %}">
 													<i class="fa fa-pencil"></i> Editar
 												</a>
-												{% if cliente.5 == 1 %}
+												{% if cliente.5 == '1' %}
 												<a href="#" title="Eliminar Cliente" data-toggle="tooltip"
 													onClick="eliminar({{ cliente.0 }})"
 													class="btn btn-sm bg-danger-light">

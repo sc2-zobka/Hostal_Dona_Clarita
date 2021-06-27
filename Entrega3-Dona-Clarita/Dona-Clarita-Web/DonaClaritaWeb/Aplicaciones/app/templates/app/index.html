@@ -1,84 +1,39 @@
 {% extends 'app/base.html' %}
-{% load static %} 
+{% load static %}
 {% block title %}Inicio{% endblock%}
 {% block banner %}
- <!-- ======= Intro Section ======= -->
- <div class="intro intro-carousel swiper-container position-relative">
 
-    <div class="swiper-wrapper">
+{% load humanize %}
 
-      <div class="swiper-slide carousel-item-a intro-item bg-image" style="background-image: url(static/app/assets/img/banner1.jpg)">
-        <div class="overlay overlay-a"></div>
-        <div class="intro-content display-table">
-          <div class="table-cell">
-            <div class="container">
-              <div class="row">
-                <div class="col-lg-8">
-                  <div class="intro-body">
-                    <p class="intro-title-top">
-                        Nombre de Pieza
-                      <br> 
-                    </p>
-                    <h1 class="intro-title mb-4">
-                      Bienvenido a <span class="color-b">Hostal Doña </span> Clarita
-                      <br> 
-                    </h1>
-                    <p class="intro-subtitle intro-price">
-                      <a href="#"><span class="price-a">Valor Noche | $ 30.000</span></a>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="swiper-slide carousel-item-a intro-item bg-image" style="background-image: url(static/app/assets/img/banner2.jpg)">
-        <div class="overlay overlay-a"></div>
-        <div class="intro-content display-table">
-          <div class="table-cell">
-            <div class="container">
-              <div class="row">
-                <div class="col-lg-8">
-                  <div class="intro-body">
-                    <p class="intro-title-top">
-                        Nombre de Pieza
-                      <br> 
-                    </p>
-                    <h1 class="intro-title mb-4">
-                      Bienvenido a <span class="color-b">Hostal Doña </span> Clarita
-                      <br> 
-                    </h1>
-                    <p class="intro-subtitle intro-price">
-                      <a href="#"><span class="price-a">Valor Noche | $ 30.000</span></a>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="swiper-slide carousel-item-a intro-item bg-image" style="background-image: url(static/app/assets/img/banner1.jpg)">
-        <div class="overlay overlay-a"></div>
-        <div class="intro-content display-table">
-          <div class="table-cell">
-            <div class="container">
-              <div class="row">
-                <div class="col-lg-8">
-                  <div class="intro-body">
-                    <p class="intro-title-top">
-                        Nombre de Pieza
-                      <br> 
-                    </p>
-                    <h1 class="intro-title mb-4">
-                      Bienvenido a <span class="color-b">Hostal Doña </span> Clarita
-                      <br> 
-                    </h1>
-                    <p class="intro-subtitle intro-price">
-                      <a href="#"><span class="price-a">Valor Noche | $ 30.000</span></a>
-                    </p>
-                  </div>
+<!-- ======= Intro Section ======= -->
+<div class="intro intro-carousel swiper-container position-relative">
+
+  <div class="swiper-wrapper">
+    {% for habitacion in habitaciones %}
+    <div class="swiper-slide carousel-item-a intro-item bg-image"
+      style="background-image: url(../../media/Habitaciones/{{habitacion.7}})">
+      <div class="overlay overlay-a"></div>
+      <div class="intro-content display-table">
+        <div class="table-cell">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-8">
+                <div class="intro-body">
+                  <p class="intro-title-top">
+                    Habitación 
+                    {{ habitacion.1 }}
+                    <br>
+                  </p>
+                  <h1 class="intro-title mb-4">
+                    Bienvenido a <span class="color-b">Hostal Doña </span> Clarita
+                    <br>
+                  </h1>
+                  <p class="intro-subtitle intro-price">
+                    <a href="#"><span class="price-a">Valor Noche | {{ habitacion.2|intcomma }} {{ codigo_moneda_p }}</span></a>
+                  </p>
+                  <p class="intro-subtitle intro-price">
+                    <a href="#"><span class="price-a">Valor Noche | {{ habitacion.3|intcomma }} {{ codigo_moneda_s }}</span></a>
+                  </p>
                 </div>
               </div>
             </div>
@@ -86,353 +41,342 @@
         </div>
       </div>
     </div>
-    <div class="swiper-pagination"></div>
-  </div><!-- End Intro Section -->
+    {% endfor %}
+  </div>
+  <div class="swiper-pagination"></div>
+</div><!-- End Intro Section -->
 
 {% endblock %}
 
 {% block contenido %}
 <section class="section-services section-t8">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="title-wrap d-flex justify-content-between">
-            <div class="title-box">
-              <h2 class="title-a">Nuestros Servicios</h2>
-            </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="title-wrap d-flex justify-content-between">
+          <div class="title-box">
+            <h2 class="title-a">Nuestros Servicios</h2>
           </div>
         </div>
-      </div>
-      <div class="row">
-      {% for servicio_adicional in servicios_adicionales %}
-        <div class="col-md-4">
-          <div class="card-box-c foo">
-            <div class="card-header-c d-flex">
-              <div class="card-box-ico">
-                <span class="bi bi-calendar4-week"></span>
-              </div>
-              <div class="card-title-c align-self-center">
-                <h2 class="title-b">{{ servicio_adicional.1 }}</h2>
-              </div>
-            </div>
-            <div class="card-body-c">
-              <p class="content-c">
-                {{ servicio_adicional.2 }}
-              </p>
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-        {% comment %} <div class="col-md-4">
-          <div class="card-box-c foo">
-            <div class="card-header-c d-flex">
-              <div class="card-box-ico">
-                <span class="bi bi-basket"></span>
-              </div>
-              <div class="card-title-c align-self-center">
-                <h2 class="title-c">Servicio 2</h2>
-              </div>
-            </div>
-            <div class="card-body-c">
-              <p class="content-c">
-                Nulla porttitor accumsan tincidunt. Curabitur aliquet quam id dui posuere blandit. Mauris blandit
-                aliquet elit, eget tincidunt
-                nibh pulvinar a.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card-box-c foo">
-            <div class="card-header-c d-flex">
-              <div class="card-box-ico">
-                <span class="bi bi-card-checklist"></span>
-              </div>
-              <div class="card-title-c align-self-center">
-                <h2 class="title-c">Servicio 3</h2>
-              </div>
-            </div>
-            <div class="card-body-c">
-              <p class="content-c">
-                Sed porttitor lectus nibh. Cras ultricies ligula sed magna dictum porta. Praesent sapien massa,
-                convallis a pellentesque
-                nec, egestas non nisi.
-              </p>
-            </div>
-          </div>
-        </div> {% endcomment %}
       </div>
     </div>
-  </section><!-- End Services Section -->
-
-  <!-- ======= Latest Properties Section ======= -->
-  <section class="section-property section-t8">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="title-wrap d-flex justify-content-between">
-            <div class="title-box">
-              <h2 class="title-a">Nuestras Habitaciones</h2>
+    <div class="row">
+      {%if servicios_adicionales%}
+      {% for servicio_adicional in servicios_adicionales %}
+      <div class="col-md-4">
+        <div class="card-box-c foo">
+          <div class="card-header-c d-flex">
+            <div class="card-box-ico">
+              <span class="bi bi-calendar4-week"></span>
             </div>
-            <div class="title-link">
-              <a href="{% url 'habitaciones' %}">Ver Todas
-                <span class="bi bi-chevron-right"></span>
-              </a>
+            <div class="card-title-c align-self-center">
+              <h2 class="title-b">{{ servicio_adicional.1 }}</h2>
+            </div>
+          </div>
+          <div class="card-body-c">
+            <p class="content-c">
+              {{ servicio_adicional.2 }}
+            </p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <div class="card-box-c foo">
+          <div class="card-header-c d-flex">
+            <div class="card-title-c align-self-center">
+              <h2 class="title-b text-center text-danger">No existe Información</h2>
             </div>
           </div>
         </div>
       </div>
+      {% endif %}
+    </div>
+  </div>
+</section><!-- End Services Section -->
 
-      <div id="property-carousel" class="swiper-container">
-        <div class="swiper-wrapper">
-         
+<!-- ======= Latest Properties Section ======= -->
+<section class="section-property section-t8">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="title-wrap d-flex justify-content-between">
+          <div class="title-box">
+            <h2 class="title-a">Nuestras Habitaciones</h2>
+          </div>
+          <div class="title-link">
+            <a href="{% url 'habitaciones' %}">Ver Todas
+              <span class="bi bi-chevron-right"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="property-carousel" class="swiper-container">
+      <div class="swiper-wrapper">
+        {% if habitaciones %}
         {% for habitacion in habitaciones %}
-          <div class="carousel-item-b swiper-slide">
-            <div class="card-box-a card-shadow">
-              <div class="img-box-a">
-                {% if habitacion.4 %}
-                <img src="../../media/Habitaciones/{{habitacion.4}}" alt="Imagen habitacion" class="img-a img-fluid">
-                {% else %}
-                <img src="{% static 'appADM/assets/img/noimagen.png' %}" alt="Imagen habitacion" class="img-a img-fluid">
-                {% endif %}
-              </div>
-              <div class="card-overlay">
-                <div class="card-overlay-a-content">
-                  <div class="card-header-a">
-                    <h2 class="card-title-a">
-                        <a href="{% url 'det-habitacion' %}">Habitación
-                        <br>{{ habitacion.1 }}</a>
-                    </h2>
+        <div class="carousel-item-b swiper-slide">
+          <div class="card-box-a card-shadow">
+            <div class="img-box-a">
+              {% if habitacion.7 %}
+              <img src="../../media/Habitaciones/{{habitacion.7}}" alt="Imagen habitacion" class="img-a img-fluid">
+              {% else %}
+              <img src="{% static 'appADM/assets/img/noimagen.png' %}" alt="Imagen habitacion" class="img-a img-fluid">
+              {% endif %}
+            </div>
+            <div class="card-overlay">
+              <div class="card-overlay-a-content">
+                <div class="card-header-a">
+                  <h2 class="card-title-a">
+                    <a href="{% url 'det-habitacion' %}">Habitación
+                      <br>N° {{ habitacion.1 }}</a>
+                  </h2>
+                </div>
+                <div class="card-body-a">
+                  <div class="price-box d-flex">
+                    <span class="price-a">Valor Noche | {{ habitacion.2|intcomma }} {{ codigo_moneda_p }}</span>
                   </div>
-                  <div class="card-body-a">
-                    <div class="price-box d-flex">
-                      <span class="price-a">Valor Noche  | $ {{ habitacion.2 }}</span>
-                    </div>
-                    <a href="{% url 'det-habitacion' %}" class="link-a">Ver más
-                      <span class="bi bi-chevron-right"></span>
-                    </a>
+                  <div class="price-box d-flex">
+                    <span class="price-a">Valor Noche | {{ habitacion.3|intcomma }} {{ codigo_moneda_s }}</span>
                   </div>
-                  <div class="card-footer-a">
-                    <ul class="card-info d-flex justify-content-around">
-                      <li>
-                        <h4 class="card-info-title">Camas</h4>
-                        <span>${{ habitacion.2 }}</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Baños</h4>
-                        <span>1</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Comida</h4>
-                        <span>Si</span>
-                      </li>
-                    </ul>
-                  </div>
+                  <a href="{% url 'det-habitacion' %}" class="link-a">Ver más
+                    <span class="bi bi-chevron-right"></span>
+                  </a>
+                </div>
+                <div class="card-footer-a">
+                  <ul class="card-info d-flex justify-content-around">
+                    <li>
+                      <h4 class="card-info-title">Camas</h4>
+                      <span>${{ habitacion.2 }}</span>
+                    </li>
+                    <li>
+                      <h4 class="card-info-title">Baños</h4>
+                      <span>1</span>
+                    </li>
+                    <li>
+                      <h4 class="card-info-title">Comida</h4>
+                      <span>Si</span>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
-          </div><!-- End carousel item -->
+          </div>
+        </div><!-- End carousel item -->
+        {% endfor %}
+        {% else %}
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          <div class="card-box-c foo">
+            <div class="card-header-c d-flex">
+              <div class="card-title-c align-self-center">
+                <h2 class="title-b text-center text-danger">No existe Información</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="propery-carousel-pagination carousel-pagination"></div>
+
+  </div>
+</section><!-- End Latest Properties Section -->
+
+<!-- ======= Latest News Section ======= -->
+<section class="section-news section-t8">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="title-wrap d-flex justify-content-between">
+          <div class="title-box">
+            <h2 class="title-a">Novedades</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="news-carousel" class="swiper-container">
+      <div class="swiper-wrapper">
+
+        <div class="carousel-item-c swiper-slide">
+          <div class="card-box-b card-shadow news-box">
+            <div class="img-box-b">
+              <img src="{% static 'app/assets/img/banner1.jpg' %}" alt="Imagen Novedad" class="img-a img-fluid">
+            </div>
+            <div class="card-overlay">
+              <div class="card-header-b">
+                <div class="card-category-b">
+                  <a href="#" class="category-b">Casino</a>
+                </div>
+                <div class="card-title-b">
+                  <h2 class="title-2">
+                    <a>Nombre de Novedad</a>
+                  </h2>
+                </div>
+                <div class="card-date">
+                  <span class="date-b">19 Mayo 2021</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- End carousel item -->
+
+        <div class="carousel-item-c swiper-slide">
+          <div class="card-box-b card-shadow news-box">
+            <div class="img-box-b">
+              <img src="{% static 'app/assets/img/banner2.jpg' %}" alt="Imagen Novedad" class="img-a img-fluid">
+            </div>
+            <div class="card-overlay">
+              <div class="card-header-b">
+                <div class="card-category-b">
+                  <a href="#" class="category-b">Habitaciones</a>
+                </div>
+                <div class="card-title-b">
+                  <h2 class="title-2">
+                    <a>Nombre de Novedad</a>
+                  </h2>
+                </div>
+                <div class="card-date">
+                  <span class="date-b">19 Mayo 2021</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- End carousel item -->
+
+        <div class="carousel-item-c swiper-slide">
+          <div class="card-box-b card-shadow news-box">
+            <div class="img-box-b">
+              <img src="{% static 'app/assets/img/banner1.jpg' %}" alt="Imagen Novedad" class="img-a img-fluid">
+            </div>
+            <div class="card-overlay">
+              <div class="card-header-b">
+                <div class="card-category-b">
+                  <a href="#" class="category-b">Ofertas</a>
+                </div>
+                <div class="card-title-b">
+                  <h2 class="title-2">
+                    <a>Nombre de Novedad</a>
+                  </h2>
+                </div>
+                <div class="card-date">
+                  <span class="date-b">19 Mayo 2021</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- End carousel item -->
+
+        <div class="carousel-item-c swiper-slide">
+          <div class="card-box-b card-shadow news-box">
+            <div class="img-box-b">
+              <img src="{% static 'app/assets/img/banner2.jpg' %}" alt="Imagen Novedad" class="img-a img-fluid">
+            </div>
+            <div class="card-overlay">
+              <div class="card-header-b">
+                <div class="card-category-b">
+                  <a href="#" class="category-b">Servicio</a>
+                </div>
+                <div class="card-title-b">
+                  <h2 class="title-2">
+                    <a>Nombre de Novedad</a>
+                  </h2>
+                </div>
+                <div class="card-date">
+                  <span class="date-b">19 Mayo 2021</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- End carousel item -->
+
+      </div>
+    </div>
+
+    <div class="news-carousel-pagination carousel-pagination"></div>
+  </div>
+</section><!-- End Latest News Section -->
+
+<!-- ======= Testimonials Section ======= -->
+<section class="section-testimonials section-t8 nav-arrow-a">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="title-wrap d-flex justify-content-between">
+          <div class="title-box">
+            <h2 class="title-a">Clientes Felices</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="testimonial-carousel" class="swiper-container">
+      <div class="swiper-wrapper">
+        {% for opinion in opiniones %}
+        <div class="carousel-item-a swiper-slide">
+          <div class="testimonials-box">
+            <div class="row">
+              <div class="col-sm-12 col-md-6">
+                <div class="testimonial-img">
+                  <img src="{% static 'app/assets/img/banner2.jpg' %}" alt="Imagen opinión" class="img-fluid">
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-6">
+                <div class="testimonial-ico">
+                  <i class="bi bi-chat-quote-fill"></i>
+                </div>
+                <div class="testimonials-content">
+                  <p class="testimonial-text">
+                    {{ opinion.0 }}
+                  </p>
+                </div>
+                <div class="testimonial-author-box">
+                  <img src="{% static 'app/assets/img/minius.jpg' %}" alt="" class="testimonial-avatar">
+                  <h5 class="testimonial-author">{{ opinion.1 }}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- End carousel item -->
         {% endfor %}
 
-         
-        </div>
-      </div>
-      <div class="propery-carousel-pagination carousel-pagination"></div>
-
-    </div>
-  </section><!-- End Latest Properties Section -->
-  
-  <!-- ======= Latest News Section ======= -->
-  <section class="section-news section-t8">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="title-wrap d-flex justify-content-between">
-            <div class="title-box">
-              <h2 class="title-a">Novedades</h2>
+        {% comment %} <div class="carousel-item-a swiper-slide">
+          <div class="testimonials-box">
+            <div class="row">
+              <div class="col-sm-12 col-md-6">
+                <div class="testimonial-img">
+                  <img src="{% static 'app/assets/img/banner1.jpg' %}" alt="Imagen Habitación" class="img-fluid">
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-6">
+                <div class="testimonial-ico">
+                  <i class="bi bi-chat-quote-fill"></i>
+                </div>
+                <div class="testimonials-content">
+                  <p class="testimonial-text">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, cupiditate ea nam praesentium
+                    debitis hic ber quibusdam
+                    voluptatibus officia expedita corpori.
+                  </p>
+                </div>
+                <div class="testimonial-author-box">
+                  <img src="{% static 'app/assets/img/minius2.jpg' %}" alt="" class="testimonial-avatar" width="60">
+                  <h5 class="testimonial-author">Nombre Apellido</h5>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </div><!-- End carousel item --> {% endcomment %}
+
       </div>
-
-      <div id="news-carousel" class="swiper-container">
-        <div class="swiper-wrapper">
-
-          <div class="carousel-item-c swiper-slide">
-            <div class="card-box-b card-shadow news-box">
-              <div class="img-box-b">
-                <img src="{% static 'app/assets/img/banner1.jpg' %}" alt="Imagen Novedad" class="img-a img-fluid">
-              </div>
-              <div class="card-overlay">
-                <div class="card-header-b">
-                  <div class="card-category-b">
-                    <a href="#" class="category-b">Casino</a>
-                  </div>
-                  <div class="card-title-b">
-                    <h2 class="title-2">
-                      <a>Nombre de Novedad</a>
-                    </h2>
-                  </div>
-                  <div class="card-date">
-                    <span class="date-b">19 Mayo 2021</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div><!-- End carousel item -->
-
-          <div class="carousel-item-c swiper-slide">
-            <div class="card-box-b card-shadow news-box">
-              <div class="img-box-b">
-                <img src="{% static 'app/assets/img/banner2.jpg' %}" alt="Imagen Novedad" class="img-a img-fluid">
-              </div>
-              <div class="card-overlay">
-                <div class="card-header-b">
-                  <div class="card-category-b">
-                    <a href="#" class="category-b">Habitaciones</a>
-                  </div>
-                  <div class="card-title-b">
-                    <h2 class="title-2">
-                      <a>Nombre de Novedad</a>
-                    </h2>
-                  </div>
-                  <div class="card-date">
-                    <span class="date-b">19 Mayo 2021</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div><!-- End carousel item -->
-
-          <div class="carousel-item-c swiper-slide">
-            <div class="card-box-b card-shadow news-box">
-              <div class="img-box-b">
-                <img src="{% static 'app/assets/img/banner1.jpg' %}" alt="Imagen Novedad" class="img-a img-fluid">
-              </div>
-              <div class="card-overlay">
-                <div class="card-header-b">
-                  <div class="card-category-b">
-                    <a href="#" class="category-b">Ofertas</a>
-                  </div>
-                  <div class="card-title-b">
-                    <h2 class="title-2">
-                      <a>Nombre de Novedad</a>
-                    </h2>
-                  </div>
-                  <div class="card-date">
-                    <span class="date-b">19 Mayo 2021</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div><!-- End carousel item -->
-
-          <div class="carousel-item-c swiper-slide">
-            <div class="card-box-b card-shadow news-box">
-              <div class="img-box-b">
-                <img src="{% static 'app/assets/img/banner2.jpg' %}" alt="Imagen Novedad" class="img-a img-fluid">
-              </div>
-              <div class="card-overlay">
-                <div class="card-header-b">
-                  <div class="card-category-b">
-                    <a href="#" class="category-b">Servicio</a>
-                  </div>
-                  <div class="card-title-b">
-                    <h2 class="title-2">
-                      <a>Nombre de Novedad</a>
-                    </h2>
-                  </div>
-                  <div class="card-date">
-                    <span class="date-b">19 Mayo 2021</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div><!-- End carousel item -->
-
-        </div>
-      </div>
-
-      <div class="news-carousel-pagination carousel-pagination"></div>
     </div>
-  </section><!-- End Latest News Section -->
+    <div class="testimonial-carousel-pagination carousel-pagination"></div>
 
-  <!-- ======= Testimonials Section ======= -->
-  <section class="section-testimonials section-t8 nav-arrow-a">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="title-wrap d-flex justify-content-between">
-            <div class="title-box">
-              <h2 class="title-a">Clientes Felices</h2>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="testimonial-carousel" class="swiper-container">
-        <div class="swiper-wrapper">
-
-          <div class="carousel-item-a swiper-slide">
-            <div class="testimonials-box">
-              <div class="row">
-                <div class="col-sm-12 col-md-6">
-                  <div class="testimonial-img">
-                    <img src="{% static 'app/assets/img/banner2.jpg' %}" alt="Imagen Habitación" class="img-fluid">
-                  </div>
-                </div>
-                <div class="col-sm-12 col-md-6">
-                  <div class="testimonial-ico">
-                    <i class="bi bi-chat-quote-fill"></i>
-                  </div>
-                  <div class="testimonials-content">
-                    <p class="testimonial-text">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, cupiditate ea nam praesentium
-                      debitis hic ber quibusdam
-                      voluptatibus officia expedita corpori.
-                    </p>
-                  </div>
-                  <div class="testimonial-author-box">
-                    <img src="{% static 'app/assets/img/minius.jpg' %}" alt="" class="testimonial-avatar">
-                    <h5 class="testimonial-author">Nombre Apellido</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div><!-- End carousel item -->
-
-          <div class="carousel-item-a swiper-slide">
-            <div class="testimonials-box">
-              <div class="row">
-                <div class="col-sm-12 col-md-6">
-                  <div class="testimonial-img">
-                    <img src="{% static 'app/assets/img/banner1.jpg' %}" alt="Imagen Habitación" class="img-fluid">
-                  </div>
-                </div>
-                <div class="col-sm-12 col-md-6">
-                  <div class="testimonial-ico">
-                    <i class="bi bi-chat-quote-fill"></i>
-                  </div>
-                  <div class="testimonials-content">
-                    <p class="testimonial-text">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, cupiditate ea nam praesentium
-                      debitis hic ber quibusdam
-                      voluptatibus officia expedita corpori.
-                    </p>
-                  </div>
-                  <div class="testimonial-author-box">
-                    <img src="{% static 'app/assets/img/minius2.jpg' %}" alt="" class="testimonial-avatar" width="60">
-                    <h5 class="testimonial-author">Nombre Apellido</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div><!-- End carousel item -->
-
-        </div>
-      </div>
-      <div class="testimonial-carousel-pagination carousel-pagination"></div>
-
-    </div>
-  </section><!-- End Testimonials Section -->
+  </div>
+</section><!-- End Testimonials Section -->
 {% endblock %}

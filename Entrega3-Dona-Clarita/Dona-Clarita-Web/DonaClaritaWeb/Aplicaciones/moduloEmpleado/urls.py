@@ -7,7 +7,7 @@ from Aplicaciones.moduloEmpleado.views import  dashboard,\
                    nuevo_servicio_ad, servicios_ad, edit_servicioad, eliminar_servicioad,\
                    huespedes, nuevo_huesped, huesped_carga,edit_huesped, eliminar_huesped, \
                    productos, nuevo_producto,edit_producto, eliminar_producto, tipo_producto, edit_tipo_producto, eliminar_tipo_producto,  categoria, edit_categoria, eliminar_categoria,\
-                   nueva_ordenPedido, ordenes_pedido, edit_ordenPedido, check_ordenPedido, anular_ordenPedido, rechazar_ordenPedido, \
+                   nueva_ordenPedido, ordenes_pedido, edit_ordenPedido, check_ordenPedido, anular_ordenPedido, rechazar_ordenPedido,print_pedidos,\
                    comentarios,  documentos, orden_compra_views, facturarOC, notaCredito, reservas, check_in
 
 
@@ -93,6 +93,8 @@ urlpatterns = [
     path('dashboard/check-orden-pedido/<id>/', check_ordenPedido, name="check-orden-pedido"),
     path('dashboard/anular-orden-pedido/<id>/', anular_ordenPedido, name="anular-orden-pedido"),
     path('dashboard/rechazar-orden-pedido/<id>/', rechazar_ordenPedido, name="rechazar-orden-pedido"),
+    path('dashboard/orden-pedido/<id>/', print_pedidos, name="print-pedidos"),
+
     # path('dashboard/recepcionar-orden-pedido/<id>/<obs>/', recepcionar_ordenPedido, name="recepcionar-orden-pedido"),
 
 

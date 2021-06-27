@@ -15,7 +15,7 @@
                     <a href="{% url 'dashboard' %}"><i class="fa fa-home"></i> <span>Inicio</span></a>
                 </li>
                 <!--#*** Sección Cliente ***#-->
-                {% if request.path == '/dashboard/clientes/' or request.path == '/dashboard/edit-cliente/' %}
+                {% if request.path == '/dashboard/clientes/' or '/dashboard/edit-cliente/' in request.path or '/dashboard/pass-cliente/' in request.path  %}
                 <li class=" active">
                     {% else %}
                 <li>
@@ -24,7 +24,7 @@
                 </li>
                 <!--#*** Sección Empleados ***#-->
                 <li>
-                    {% if request.path == '/dashboard/nuevo-empleado/' or request.path == '/dashboard/edit-empleado/' or request.path == '/dashboard/empleados/' or request.path == '/dashboard/tipo-empleado/'%}
+                    {% if request.path == '/dashboard/nuevo-empleado/' or  '/dashboard/edit-empleado/' in  request.path  or  '/dashboard/pass-empleado/' in  request.path or request.path == '/dashboard/empleados/' or request.path == '/dashboard/tipo-empleado/' or '/dashboard/edit-tipo-empleado/' in  request.path%}
                     <a href="#" class="subdrop"><i class="fa fa-users"></i> <span>Empleados</span> <span
                             class="menu-arrow"></span></a>
                     <ul style="display: block;">
@@ -40,14 +40,14 @@
                                         style="font-size: 15px;"></i><span> Listado Empleados</span></a></li>
                             <li><a href="{% url 'tipo-empleado' %}"><i class="fa fa-address-card"
                                         style="font-size: 15px;"></i><span> Tipo Empleado</span></a></li>
-                            {% elif request.path == '/dashboard/empleados/'  or request.path == '/dashboard/edit-empleado/' %}
+                            {% elif request.path == '/dashboard/empleados/'  or '/dashboard/edit-empleado/' in  request.path or '/dashboard/pass-empleado/' in  request.path%}
                             <li><a href="{% url 'empleado-new' %}"><i class="fa fa-plus-circle"
                                         style="font-size: 15px;"></i><span> Nuevo Empleado</span></a></li>
                             <li class="active"><a href="{% url 'empleados-list' %}"><i class="fa fa-list-ol"
                                         style="font-size: 15px;"> </i><span> Listado Empleados</span></a></li>
                             <li><a href="{% url 'tipo-empleado' %}"><i class="fa fa-address-card"
                                         style="font-size: 15px;"></i><span> Tipo Empleado</span></a></li>
-                            {% elif request.path == '/dashboard/tipo-empleado/' %}
+                            {% elif request.path == '/dashboard/tipo-empleado/' or '/dashboard/edit-tipo-empleado/' in  request.path %}
                             <li><a href="{% url 'empleado-new' %}"><i class="fa fa-plus-circle"
                                         style="font-size: 15px;"></i><span> Nuevo Empleado</span></a></li>
                             <li><a href="{% url 'empleados-list' %}"><i class="fa fa-list-ol"
@@ -67,7 +67,7 @@
                 </li>
                 <!--#*** Sección Proveedores ***#-->
                 <li>
-                    {% if request.path == '/dashboard/nuevo-proveedor/' or request.path == '/dashboard/proveedores/' %}
+                    {% if request.path == '/dashboard/nuevo-proveedor/' or request.path == '/dashboard/proveedores/' or '/dashboard/edit-proveedor/' in  request.path or '/dashboard/pass-proveedor/' in  request.path%}
                     <a href="#" class="subdrop"><i class="fa fa-id-card-o"></i> <span>Proveedores</span> <span
                             class="menu-arrow"></span></a>
                     <ul style="display: block;">
@@ -81,7 +81,7 @@
                                         style="font-size: 15px;"> </i><span> Nuevo Proveedor</span></a></li>
                             <li><a href="{% url 'proveedores-list' %}"><i class="fa fa-list-ol"
                                         style="font-size: 15px;"></i><span> List. Proveedores</span></a></li>
-                            {% elif request.path == '/dashboard/proveedores/' %}
+                            {% elif request.path == '/dashboard/proveedores/' or '/dashboard/edit-proveedor/' in  request.path or '/dashboard/pass-proveedor/' in  request.path%}
                             <li><a href="{% url 'proveedor-new' %}"><i class="fa fa-plus-circle"
                                         style="font-size: 15px;"></i><span> Nuevo Proveedor</span></a></li>
                             <li class="active"><a href="{% url 'proveedores-list' %}"><i class="fa fa-list-ol"
@@ -96,7 +96,7 @@
                 </li>
                 <!--#*** Sección Huéspedes ***#-->
                 <li>
-                    {% if request.path == '/dashboard/nuevo-huesped/' or request.path == '/dashboard/huespedes/' or request.path == '/dashboard/carga-huespedes/' %}
+                    {% if request.path == '/dashboard/nuevo-huesped/' or request.path == '/dashboard/huespedes/' or request.path == '/dashboard/carga-huespedes/' or '/dashboard/edit-huesped/' in  request.path%}
                     <a href="#" class="subdrop"><i class="fa fa-male"></i> <span>Huéspedes</span> <span
                             class="menu-arrow"></span></a>
                     <ul style="display: block;">
@@ -112,7 +112,7 @@
                                         style="font-size: 15px;"></i><span> Listado Huéspedes</span></a></li>
                             <li><a href="{% url 'huesped-carga' %}"><i class="fa fa-upload"
                                         style="font-size: 15px;"></i><span> Carga Huéspedes</span></a></li>
-                            {% elif request.path == '/dashboard/huespedes/' %}
+                            {% elif request.path == '/dashboard/huespedes/' or '/dashboard/edit-huesped/' in  request.path %}
                             <li><a href="{% url 'huesped-new' %}"><i class="fa fa-plus-circle"
                                         style="font-size: 15px;"></i><span> Nuevo Huésped</span></a></li>
                             <li class="active"><a href="{% url 'huespedes-list' %}"><i class="fa fa-list-ol"
@@ -138,7 +138,7 @@
                 </li>
                 <!--#*** Sección Habitaciones ***#-->
                 <li>
-                    {% if request.path == '/dashboard/nueva-habitacion/' or request.path == '/dashboard/habitaciones/' or request.path == '/dashboard/edit-habitacion/' or request.path == '/dashboard/tipo-habitacion/' or request.path == '/dashboard/edit-tipo-habitacion/'  or request.path == '/dashboard/accesorios/' or request.path == '/dashboard/edit-accesorio/' %}
+                    {% if request.path == '/dashboard/nueva-habitacion/' or request.path == '/dashboard/habitaciones/' or request.path == '/dashboard/tipo-habitacion/'  or request.path == '/dashboard/accesorios/'  or '/dashboard/edit-habitacion' in  request.path or '/dashboard/edit-tipo-habitacion/' in  request.path or '/dashboard/edit-accesorio/' in  request.path%}
                     <a href="#" class="subdrop"><i class="fa fa-building"></i> <span>Servicio Habitación</span> <span
                             class="menu-arrow"></span></a>
                     <ul style="display: block;">
@@ -156,7 +156,7 @@
                                         style="font-size: 15px;"></i><span> Tipo Habitación</span></a></li>
                             <li><a href="{% url 'accesorios-new' %}"><i class="fa fa-list-ol"
                                         style="font-size: 15px;"></i><span> Accesorios</span></a></li>
-                            {% elif request.path == '/dashboard/habitaciones/' or request.path == '/dashboard/edit-habitacion/' %}
+                            {% elif request.path == '/dashboard/habitaciones/' or '/dashboard/edit-habitacion' in  request.path %}
                             <li><a href="{% url 'habitacion-new' %}"><i class="fa fa-plus-circle"
                                         style="font-size: 15px;"> </i><span> Nueva Habitación</span></a></li>
                             <li class="active"><a href="{% url 'habitaciones-list' %}"><i class="fa fa-list-ol"
@@ -165,7 +165,7 @@
                                         style="font-size: 15px;"></i><span> Tipo Habitación</span></a></li>
                             <li><a href="{% url 'accesorios-new' %}"><i class="fa fa-list-ol"
                                         style="font-size: 15px;"></i><span> Accesorios</span></a></li>
-                            {% elif request.path == '/dashboard/tipo-habitacion/' %}
+                            {% elif request.path == '/dashboard/tipo-habitacion/' or '/dashboard/edit-tipo-habitacion/' in  request.path %}
                             <li><a href="{% url 'habitacion-new' %}"><i class="fa fa-plus-circle"
                                         style="font-size: 15px;"> </i><span> Nueva Habitación</span></a></li>
                             <li><a href="{% url 'habitaciones-list' %}"><i class="fa fa-list-ol"
@@ -174,14 +174,14 @@
                                         style="font-size: 15px;"></i><span> Tipo Habitación</span></a></li>
                             <li><a href="{% url 'accesorios-new' %}"><i class="fa fa-list-ol"
                                         style="font-size: 15px;"></i><span> Accesorios</span></a></li>
-                            {% elif request.path == '/dashboard/accesorios/' or request.path == '/dashboard/edit-accesorio/' %}
+                            {% elif request.path == '/dashboard/accesorios/' or '/dashboard/edit-accesorio/' in  request.path %}
                             <li><a href="{% url 'habitacion-new' %}"><i class="fa fa-plus-circle"
                                         style="font-size: 15px;"> </i><span> Nueva Habitación</span></a></li>
                             <li><a href="{% url 'habitaciones-list' %}"><i class="fa fa-list-ol"
                                         style="font-size: 15px;"></i><span> List. Habitaciones</span></a></li>
                             <li><a href="{% url 'tipo-habitacion' %}"><i class="fa fa-list-ol"
                                         style="font-size: 15px;"></i><span> Tipo Habitación</span></a></li>
-                            <li  class="active"><a href="{% url 'accesorios-new' %}"><i class="fa fa-list-ol"
+                            <li class="active"><a href="{% url 'accesorios-new' %}"><i class="fa fa-list-ol"
                                         style="font-size: 15px;"></i><span> Accesorios</span></a></li>
                             {% else %}
                             <li><a href="{% url 'habitacion-new' %}"><i class="fa fa-plus-circle"
@@ -196,7 +196,7 @@
                         </ul>
                 </li>
                 <li>
-                    {% if request.path == '/dashboard/nuevo-empleado/' or request.path == '/dashboard/listado-empleados/' %}
+                    {% if request.path == '/dashboard/nuevo-plato/' or request.path == '/dashboard/platos/' or '/dashboard/edit-plato/' in  request.path or '/dashboard/tipo-comedor/' in  request.path or '/dashboard/edit-tipo-comedor/' in  request.path%}
                     <a href="#" class="subdrop"><i class="fa fa-cutlery"></i> <span>Servicio Comedor</span> <span
                             class="menu-arrow"></span></a>
                     <ul style="display: block;">
@@ -205,19 +205,26 @@
                                 class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             {% endif %}
-                            {% if request.path == '/dashboard/nuevo-empleado/' %}
+                            {% if request.path == '/dashboard/nuevo-plato/' %}
                             <li class="active"><a href="{% url 'plato-new' %}"><i class="fa fa-plus-circle"
                                         style="font-size: 15px;"> </i><span> Nuevo Plato</span></a></li>
                             <li><a href="{% url 'platos-list' %}"><i class="fa fa-list-ol"
                                         style="font-size: 15px;"></i><span> Listado Platos</span></a></li>
                             <li><a href="{% url 'tipo-comedor' %}"><i class="fa fa-list-ol"
                                         style="font-size: 15px;"></i><span> Tipo Comedor</span></a></li>
-                            {% elif request.path == '/dashboard/listado-empleados/' %}
+                            {% elif request.path == '/dashboard/platos/' or '/dashboard/edit-plato/' in  request.path%}
                             <li><a href="{% url 'plato-new' %}"><i class="fa fa-plus-circle"
                                         style="font-size: 15px;"></i><span> Nuevo Plato</span></a></li>
                             <li class="active"><a href="{% url 'platos-list' %}"><i class="fa fa-list-ol"
                                         style="font-size: 15px;"> </i><span> Listado Platos</span></a></li>
                             <li><a href="{% url 'tipo-comedor' %}"><i class="fa fa-list-ol"
+                                        style="font-size: 15px;"></i><span> Tipo Comedor</span></a></li>
+                            {% elif request.path == '/dashboard/tipo-comedor/' or '/dashboard/edit-tipo-comedor/' in  request.path%}
+                            <li><a href="{% url 'plato-new' %}"><i class="fa fa-plus-circle"
+                                        style="font-size: 15px;"></i><span> Nuevo Plato</span></a></li>
+                            <li><a href="{% url 'platos-list' %}"><i class="fa fa-list-ol" style="font-size: 15px;">
+                                    </i><span> Listado Platos</span></a></li>
+                            <li class="active"><a href="{% url 'tipo-comedor' %}"><i class="fa fa-list-ol"
                                         style="font-size: 15px;"></i><span> Tipo Comedor</span></a></li>
                             {% else %}
                             <li><a href="{% url 'plato-new' %}"><i class="fa fa-plus-circle"
@@ -230,7 +237,7 @@
                         </ul>
                 </li>
                 <li>
-                    {% if request.path == '/dashboard/nuevo-servicio/' or request.path == '/dashboard/listado-servicios/' %}
+                    {% if request.path == '/dashboard/nuevo-servicio/' or request.path == '/dashboard/servicios/'  or '/dashboard/edit-servicio/' in  request.path%}
                     <a href="#" class="subdrop"><i class="fa fa-hotel"></i> <span>Servicio Adicional</span> <span
                             class="menu-arrow"></span></a>
                     <ul style="display: block;">
@@ -244,7 +251,7 @@
                                         style="font-size: 15px;"> </i><span> Nuevo Servicio</span></a></li>
                             <li><a href="{% url 'servicios-list' %}"><i class="fa fa-list-ol"
                                         style="font-size: 15px;"></i><span> Listado Servicios</span></a></li>
-                            {% elif request.path == '/dashboard/listado-servicios/' %}
+                            {% elif request.path == '/dashboard/servicios/' or '/dashboard/edit-servicio/' in  request.path %}
                             <li><a href="{% url 'servicio-new' %}"><i class="fa fa-plus-circle"
                                         style="font-size: 15px;"></i><span> Nuevo Servicio</span></a></li>
                             <li class="active"><a href="{% url 'servicios-list' %}"><i class="fa fa-list-ol"
@@ -261,7 +268,7 @@
                     <span>Menú 3era Entrega</span>
                 </li>
                 <li>
-                    {% if request.path == '/dashboard/nuevo-producto/' or request.path == '/dashboard/listado-productos/' %}
+                    {% if request.path == '/dashboard/nuevo-producto/' or request.path == '/dashboard/productos/' or '/dashboard/edit-producto/' in  request.path or request.path == '/dashboard/nueva-categoria/' or '/dashboard/edit-categoria/' in  request.path or request.path == '/dashboard/tipo-producto/' or '/dashboard/edit-tipo-producto/' in  request.path%}
                     <a href="#" class="subdrop"><i class="fa fa-cubes"></i> <span>Productos</span> <span
                             class="menu-arrow"></span></a>
                     <ul style="display: block;">
@@ -279,7 +286,7 @@
                                         style="font-size: 15px;"></i><span> Categoria</span></a></li>
                             <li><a href="{% url 'tipo-producto' %}"><i class="fa fa-list-ol"
                                         style="font-size: 15px;"></i><span> Tipo Producto</span></a></li>
-                            {% elif request.path == '/dashboard/listado-productos/' %}
+                            {% elif request.path == '/dashboard/productos/' or '/dashboard/edit-producto/' in  request.path %}
                             <li><a href="{% url 'producto-new' %}"><i class="fa fa-plus-circle"
                                         style="font-size: 15px;"></i><span> Nuevo Producto</span></a></li>
                             <li class="active"><a href="{% url 'productos-list' %}"><i class="fa fa-list-ol"
@@ -287,6 +294,24 @@
                             <li><a href="{% url 'categoria-new' %}"><i class="fa fa-list-ol"
                                         style="font-size: 15px;"></i><span> Categoria</span></a></li>
                             <li><a href="{% url 'tipo-producto' %}"><i class="fa fa-list-ol"
+                                        style="font-size: 15px;"></i><span> Tipo Producto</span></a></li>
+                            {% elif request.path == '/dashboard/nueva-categoria/' or '/dashboard/edit-categoria/' in  request.path%}
+                            <li><a href="{% url 'producto-new' %}"><i class="fa fa-plus-circle"
+                                        style="font-size: 15px;"></i><span> Nuevo Producto</span></a></li>
+                            <li><a href="{% url 'productos-list' %}"><i class="fa fa-list-ol" style="font-size: 15px;">
+                                    </i><span> Listado Productos</span></a></li>
+                            <li class="active"><a href="{% url 'categoria-new' %}"><i class="fa fa-list-ol"
+                                        style="font-size: 15px;"></i><span> Categoria</span></a></li>
+                            <li><a href="{% url 'tipo-producto' %}"><i class="fa fa-list-ol"
+                                        style="font-size: 15px;"></i><span> Tipo Producto</span></a></li>
+                            {% elif request.path == '/dashboard/tipo-producto/' or '/dashboard/edit-tipo-producto/' in  request.path %}
+                            <li><a href="{% url 'producto-new' %}"><i class="fa fa-plus-circle"
+                                        style="font-size: 15px;"></i><span> Nuevo Producto</span></a></li>
+                            <li><a href="{% url 'productos-list' %}"><i class="fa fa-list-ol" style="font-size: 15px;">
+                                    </i><span> Listado Productos</span></a></li>
+                            <li><a href="{% url 'categoria-new' %}"><i class="fa fa-list-ol"
+                                        style="font-size: 15px;"></i><span> Categoria</span></a></li>
+                            <li class="active"><a href="{% url 'tipo-producto' %}"><i class="fa fa-list-ol"
                                         style="font-size: 15px;"></i><span> Tipo Producto</span></a></li>
                             {% else %}
                             <li><a href="{% url 'producto-new' %}"><i class="fa fa-plus-circle"
@@ -311,7 +336,7 @@
                 </li>
 -->
                 <li>
-                    {% if request.path == '/dashboard/nuevo-servicio/' or request.path == '/dashboard/listado-servicios/' %}
+                    {% if request.path == '/dashboard/nueva-orden-pedido/' or request.path == '/dashboard/ordenes-pedidos/' or '/dashboard/edit-orden-pedido/' in  request.path %}
                     <a href="#" class="subdrop"><i class="fa fa-clipboard"></i> <span>Ordenes Pedidos</span> <span
                             class="menu-arrow"></span></a>
                     <ul style="display: block;">
@@ -320,13 +345,13 @@
                                 class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             {% endif %}
-                            {% if request.path == '/dashboard/nuevo-servicio/' %}
+                            {% if request.path == '/dashboard/nueva-orden-pedido/' %}
                             <li class="active"><a href="{% url 'orden-pedido-new' %}"><i class="fa fa-plus-circle"
                                         style="font-size: 15px;"> </i><span> Nueva O. Pedido</span></a></li>
                             <li><a href="{% url 'ordenes-pedidos-list' %}"><i class="fa fa-list-ol"
                                         style="font-size: 15px;"></i><span> Listado O. Pedidos</span></a></li>
 
-                            {% elif request.path == '/dashboard/listado-servicios/' %}
+                            {% elif request.path == '/dashboard/ordenes-pedidos/' or '/dashboard/edit-orden-pedido/' in  request.path %}
                             <li><a href="{% url 'orden-pedido-new' %}"><i class="fa fa-plus-circle"
                                         style="font-size: 15px;"> </i><span> Nueva O. Pedido</span></a></li>
                             <li class="active"><a href="{% url 'ordenes-pedidos-list' %}"><i class="fa fa-list-ol"
@@ -341,46 +366,63 @@
                             {% endif %}
                         </ul>
                 </li>
-                
+
                 {% if request.path == '/dashboard/ordenes-compras/' %}
                 <li class=" active">
                     {% else %}
                 <li>
                     {% endif %}
-                    <a href="{% url 'oc-list-views' %}"><i class="fa fa-money"></i> <span>Ord. De Compras</span></a>
-                </li> 
+                    <a href="{% url 'oc-list-views' %}"><i class="fa fa-file-text"></i> <span>Ord. De Compras</span></a>
+                </li>
                 {% if request.path == '/dashboard/reservas/' %}
                 <li class=" active">
                     {% else %}
                 <li>
                     {% endif %}
                     <a href="{% url 'reservas' %}"><i class="fa fa fa-check"></i> <span>Reservas (Check-In)</span></a>
-                </li>      
+                </li>
                 {% if request.path == '/dashboard/documentos-tributarios/' %}
                 <li class=" active">
                     {% else %}
                 <li>
                     {% endif %}
-                    <a href="{% url 'ventas' %}"><i class="fa fa-money"></i> <span>Doc. Tributarios</span></a>
-                </li>                                          
-                <li class="submenu">
-                    <a href="#"><i class="fa fa-cogs"></i> <span>Configuraciones</span> <span
+                    <a href="{% url 'ventas' %}"><i class="fa fa-file-text-o"></i> <span>Doc. Tributarios</span></a>
+                </li>
+
+
+                <li>
+                {% if request.path == '/dashboard/config-empresa/' or request.path == '/dashboard/tipo-moneda/' %}
+                <a href="#" class="subdrop"><i class="fa fa-clipboard"></i> <span>Configuraciones</span> <span
+                        class="menu-arrow"></span></a>
+                <ul style="display: block;">
+                    {% else %}
+                    <a href="#"><i class="fa fa-clipboard"></i> <span>Configuraciones</span> <span
                             class="menu-arrow"></span></a>
                     <ul style="display: none;">
+                        {% endif %}
+                        {% if request.path == '/dashboard/config-empresa/'  %}
+                        <li class="active"><a href="{% url 'config' %}"><i class="fa fa-wrench"></i> Config. Empresa</a>
+                        </li>
+                        <li><a href="{% url 'tipo-moneda' %}"><i class="fa fa-usd"></i> Monedas</a></li>
+                        {% elif request.path == '/dashboard/tipo-moneda/' %}
+                        <li><a href="{% url 'config' %}"><i class="fa fa-wrench"></i> Config. Empresa</a></li>
+                        <li class="active"><a href="{% url 'tipo-moneda' %}"><i class="fa fa-usd"></i> Monedas</a></li>
+                        {% else %}
                         <li><a href="{% url 'config' %}"><i class="fa fa-wrench"></i> Config. Empresa</a></li>
                         <li><a href="{% url 'tipo-moneda' %}"><i class="fa fa-usd"></i> Monedas</a></li>
+                        {% endif %}
                     </ul>
-                </li>
-                <li class="submenu">
-                    <a href="#"><i class="fe fe-document"></i> <span>Informes</span> <span
-                            class="menu-arrow"></span></a>
-                    <ul style="display: none;">
-                        <li><a href="{% url 'dashboard' %}">Nombre del Informe</a></li>
-                    </ul>
-                </li>
+                    </li>
+                    <li class="submenu">
+                        <a href="#"><i class="fe fe-document"></i> <span>Informes</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            <li><a href="{% url 'dashboard' %}">Nombre del Informe</a></li>
+                        </ul>
+                    </li>
 
 
-            </ul>
+                </ul>
         </div>
     </div>
 </div>

@@ -1,0 +1,207 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Editar Habitación{% endblock%}
+{% block contenido-panel %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title"><i class="fa fa-edit"></i> Editar Habitación</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Editar Habitación</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+			<div class="col-12">
+				<!-- General -->
+				<div class="card">
+					<div class="row">
+						<div class="col-xl-12 col-md-12 ">
+							<div class="card">
+								<div class="card-header text-center">
+									<hr>
+									<h4 class="card-title">Información de Habitación</h4>
+									<hr>
+									<h6 class="alert alert-info"><i class="fa fa-info-circle"></i>
+										<strong>ATENCIÓN:</strong> Campos Obligatorios se identifican con <strong
+											class="text-danger">*</strong></h6>
+								</div>
+								<div class="card-body">
+									<form action="#" method="POST" id="form1" enctype="multipart/form-data">
+										{% csrf_token %}
+										<div class="row">
+											<div class="col-xl-4 offset-xl-12">
+												<label>Tipo Habitación <strong class="text-danger">*</strong></label>
+												<div class="form-group">													
+													<select  class="cb-single form-control" name="tip-hab">
+														{% for th in tipos_habitaciones %}
+															{% if tipo_habitacion.0 == th.0 %}
+															<option value="{{ th.0 }}" selected>{{ th.1 }} (Actual)</option>
+															{% else %}
+															<option value="{{ th.0 }}">{{ th.1 }}</option>
+															{% endif %}
+														{% endfor %}
+													  </select>
+												</div>
+											</div>											
+											<div class="col-xl-4 offset-xl-12">
+												<div class="form-group">
+													<label>N° Habitación <strong class="text-danger">*</strong></label>
+													<input type="number" class="form-control" name="nro_hab" min="1"
+														placeholder="Ingrese N° Habitación" value="{{ habitacion_db.1 }}" disabled>
+												</div>
+											</div>	
+											<div class="col-xl-4 offset-lg-12">
+												<div class="form-group">
+													<label>Precio <strong class="text-danger">*</strong></label>
+													<input type="number" class="form-control" name="precio" min="1"
+														placeholder="Ingrese Precio Habitación" value="{{ habitacion_db.2 }}">
+												</div>
+											</div>																											
+										</div>
+										<div class="row">
+											
+											<div class="col-xl-4 offset-lg-12">
+												<div class="form-group">
+													<label>Disponibilidad <strong class="text-danger">*</strong></label>													
+													<select name="disp_sel" id="" class="cb-single form-control">
+
+														{% for estado in estados %}
+															{% if estado_habitacion.0 == estado.0 %}
+															<option value="{{ estado.0 }}" selected>{{ estado.1 }} (Actual)</option>
+															{% else %}
+															<option value="{{ estado.0 }}">{{ estado.1 }}</option>
+															{% endif %}
+														{% endfor %}
+													</select>
+												</div>
+											</div>	
+											<div class="col-xl-4 offset-lg-12" >
+												<div class="form-group">
+													<label>Estado <strong class="text-danger">*</strong></label>
+													<select name="estado" id="" class="cb-single form-control">
+														
+														{% if habitacion_db.6 == '1' %}
+															<option value="1" selected>Activa (Actual)</option>
+															<option value="0">Inactiva</option>
+														{% else %}
+															<option value="1">Activa</option>
+															<option value="0" selected>Inactiva (Actual)</option>
+														{% endif %}
+													</select>
+												</div>
+											</div>	
+											<div class="col-xl-4 offset-lg-12">
+												<div class="form-group">
+													<label>Muestra Menú <strong class="text-danger">*</strong></label>
+													<select name="mues_sel" id="" class="cb-single form-control">
+														{% if habitacion_db.7 == '1' %}
+															<option class="text-center" value="1" selected>Sí (Actual)</option>
+															<option class="text-center" value="0">No</option>
+														{% else %}
+															<option class="text-center" value="1">Sí</option>
+															<option class="text-center" value="0" selected>No (Actual)</option>
+														{% endif %}
+													</select>
+												</div>
+											</div>																							
+										</div>
+										<div class="row">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label>Descripción <strong class="text-danger">*</strong></label>
+													<textarea class="form-control" name="descripcion" cols="30" rows="5"
+														placeholder="Ingrese Descripción de Habitación...">{{ habitacion_db.3 }}</textarea>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label>Imagen</label>
+													<input class="form-control" type="file" name="image">
+												</div>
+											</div>
+										</div>									
+										<div class="row">
+											<div class="col-md-4"></div>
+											<div class="col-md-2">
+												<div class="form-group mb-0">
+													<a class="btn btn2 btn-danger btn-block text-center"
+														href="{% url 'habitaciones-list' %}"><i class="fa fa-reply"></i> Volver</a>
+												</div>
+											</div>
+											&nbsp;
+											<div class="col-md-2">
+												<div class="form-group mb-0">
+													<button class="btn btn2 btn-info btn-block text-center"
+														type="submit"><i class="fa fa-edit"></i> Modificar</button>
+												</div>
+											</div>
+										</div>
+										<hr>
+										{% if habitacion_db.8 %}
+										<p class="text-center">Imagen Actual <a class="link text-info"
+												href="../../../media/Habitaciones/{{habitacion_db.8}}"
+												target="_blank">{{ habitacion_db.8 }}</a></p>
+										{% else %}
+										<p class="text-center">Imagen Actual: <strong class="text-danger"> No Posee
+												Imagen</strong></p>
+										{% endif %}
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- /General -->
+				</div>
+			</div>
+			<br>
+		</div>
+	</div>
+	<!-- /Page Wrapper -->
+	
+	{% block js %}
+	<script>
+		$(document).ready(function() {
+		$('.cb-single').select2();
+	});
+	</script>
+
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+		<script>
+			Swal.fire({
+				title: "Error en Validación",
+				text: "{{message}}",
+				icon: "error",
+				timer: 5000,
+				timerProgressBar: true
+			})
+		</script>
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Gestión de Habitaciones",
+				text: "{{message}}",
+				icon: "success",
+				timer: 5000,
+				timerProgressBar: true
+		})
+	</script>
+	{% endif %}
+	{% endfor %}
+	<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+	<script src="{% static 'appADM/assets/js/traslate.js' %}"></script>
+	<script src="{% static 'appADM/assets/js/valida-habitacion.js' %}"></script>
+	{% endblock %}
+	{% endblock %}

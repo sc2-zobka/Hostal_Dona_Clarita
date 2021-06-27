@@ -9,13 +9,16 @@
 		<!-- Page Header -->
 		<div class="page-header">
 			<div class="row">
-				<div class="col-sm-12">
-					<h3 class="page-title">Ordenes de Pedidos</h3>
+				<div class="col-sm-7">
+					<h3 class="page-title"><i class="fa fa-list-ol"></i> Ordenes de Pedidos</h3>
 					<ul class="breadcrumb">
-						<li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
 						<li class="breadcrumb-item active">Ordenes de Pedidos</li>
 					</ul>
 				</div>
+				<div class="col-sm-5 col">
+					<a href="{% url 'orden-pedido-new' %}" class="btn btn2 btn-primary float-right mt-2"><i class="fa fa-plus"></i> Nueva Orden de Pedido</a>
+				</div>				
 			</div>
 		</div>
 		<!-- /Page Header -->
@@ -29,7 +32,7 @@
 							<table class="datatable table table-hover table-center mb-0">
 								<thead>
 									<tr>
-										<th>N° Pedido</th>										
+										<th>N° Pedido</th>
 										<th>Nombre Proveedor</th>
 										<th>Fec. Emisión</th>
 										<th>Fec. Recepción</th>
@@ -42,7 +45,7 @@
 								<tbody>
 									{% for pedido in pedidos %}
 									<tr>
-										<td><a href="#">{{ pedido.0 }}</a></td>										
+										<td><a href="#">{{ pedido.0 }}</a></td>
 										<td>
 											<h2 class="table-avatar">
 												<a href="#">{{ pedido.1 }}</a>
@@ -53,60 +56,74 @@
 										<td>{{ pedido.4 }}</td>
 										<td class="text-center">
 											{% if pedido.5 == 'ENVIADA' %}
-											<span class="badge badge-pill bg-success inv-badge">Enviada</span>
+											<span class="badge badge-pill bg-success inv-badge"
+												title="Enviada a Proveedor" data-toggle="tooltip">Enviada</span>
 											{% elif pedido.5 == 'ANULADA' %}
-											<span class="badge badge-pill bg-danger inv-badge">Anulada</span>
+											<span class="badge badge-pill bg-danger inv-badge"
+												title="Anulada por Empleado" data-toggle="tooltip">Anulada</span>
 											{% elif pedido.5 == 'PENDIENTE RECEPCION' %}
-											<span class="badge badge-pill bg-success inv-badge">Pendiente recepción</span>
+											<span class="badge badge-pill bg-success inv-badge"
+												title="Pendiente de Recepción" data-toggle="tooltip">Pendiente
+												recepción</span>
 											{% elif pedido.5 == 'RECHAZADO' %}
-											<span class="badge badge-pill bg-danger inv-badge">Rechazado</span>
+											<span class="badge badge-pill bg-danger inv-badge"
+												title="Rechazada por Empleado" data-toggle="tooltip">Rechazada</span>
+											{% elif pedido.5 == 'RECHAZA PROVEEDOR' %}
+											<span class="badge badge-pill bg-danger inv-badge"
+												title="Rechazada por Proveedor" data-toggle="tooltip">Rechaza
+												Proveedor</span>
 											{% elif pedido.5 == 'RECEPCIONADO' %}
-											<span class="badge badge-pill bg-success inv-badge">Recepcionado</span>
+											<span class="badge badge-pill bg-success inv-badge"
+												title="Recepcionada por Empleado"
+												data-toggle="tooltip">Recepcionada</span>
 											{% endif %}
 										</td>
-										<td class="text-center">{% if pedido.6 is None %}-{% else %}{{ pedido.6 }}{% endif %}</td>
+										<td class="text-center">
+											{% if pedido.6 is None %}-{% else %}{{ pedido.6 }}{% endif %}</td>
 										<td class="text-center">
 											<div class="actions">
 												{% if pedido.5 == 'ENVIADA' %}
 												<a title="Editar Pedido" data-toggle="tooltip"
-													class="btn btn-sm bg-primary-light"
+													class="btn btn2 btn-sm bg-info"
 													href="{% url 'edit-orden-pedido' pedido.0 %}">
 													<i class="fa fa-edit"></i> Editar
 												</a>
-												<a title="Imprimir Pedido" data-toggle="tooltip"
-													class="btn btn2 btn-sm bg-primary" href="#">
-													<i class="fa fa-print"></i> Imprimir
-												</a>
 												<a title="Anular Pedido" data-toggle="tooltip"
-													class="btn btn-sm bg-danger-light" href="#" onClick="anular({{ pedido.0 }})">
+													class="btn btn2 btn-sm bg-danger" href="#"
+													onClick="anular({{ pedido.0 }})">
 													<i class="fa fa-ban"></i> Anular
-												<a/>
+												</a>
 												{% elif pedido.5 == 'ANULADA' %}
 												<a title="Imprimir Pedido" data-toggle="tooltip"
-													class="btn btn2 btn-sm bg-primary" href="#">
+													class="btn btn2 btn-sm bg-primary" href="{% url 'print-pedidos' pedido.0 %}" target="_blank">
 													<i class="fa fa-print"></i> Imprimir
 												</a>
 												{% elif pedido.5 == 'PENDIENTE RECEPCION' %}
-												<a title="Editar Pedido" data-toggle="tooltip"
-													class="btn btn-sm bg-primary-light"
-													href="{% url 'edit-orden-pedido' pedido.0 %}">
-													<i class="fa fa-edit"></i> Editar
+												<a title="Imprimir Pedido" data-toggle="tooltip"
+													class="btn btn2 btn-sm bg-primary" href="{% url 'print-pedidos' pedido.0 %}" target="_blank">
+													<i class="fa fa-print"></i> Imprimir
 												</a>
 												<a title="Recepcionar Pedido" data-toggle="tooltip"
-													class="btn btn2 btn-sm bg-success-light"
+													class="btn btn2 btn-sm bg-success"
 													href="{% url 'check-orden-pedido' pedido.0 %}">
 													<i class="fa fa-clipboard"></i> Recepcionar
 												</a>
 												{% elif pedido.5 == 'RECHAZADO' %}
 												<a title="Imprimir Pedido" data-toggle="tooltip"
-													class="btn btn2 btn-sm bg-primary" href="#">
+													class="btn btn2 btn-sm bg-primary" href="{% url 'print-pedidos' pedido.0 %}" target="_blank">
+													<i class="fa fa-print"></i> Imprimir
+												</a>
+												{% elif pedido.5 == 'RECHAZA PROVEEDOR' %}
+												<a title="Imprimir Pedido" data-toggle="tooltip"
+													class="btn btn2 btn-sm bg-primary" href="{% url 'print-pedidos' pedido.0 %}" target="_blank">
 													<i class="fa fa-print"></i> Imprimir
 												</a>
 												{% elif pedido.5 == 'RECEPCIONADO' %}
 												<a title="Imprimir Pedido" data-toggle="tooltip"
-													class="btn btn2 btn-sm bg-primary" href="#">
+													class="btn btn2 btn-sm bg-primary" href="{% url 'print-pedidos' pedido.0 %}" target="_blank">
 													<i class="fa fa-print"></i> Imprimir
 												</a>
+
 												{% endif %}
 											</div>
 										</td>
@@ -143,7 +160,7 @@
 			text: "{{message}}",
 			icon: "warning"
 		})
-	</script>	
+	</script>
 	{% else %}
 	<script>
 		Swal.fire({
@@ -156,6 +173,7 @@
 	{% endfor %}
 </div>
 {% endif %}
+
 <script>
 	function recepcionar(id) {
 		Swal.fire({

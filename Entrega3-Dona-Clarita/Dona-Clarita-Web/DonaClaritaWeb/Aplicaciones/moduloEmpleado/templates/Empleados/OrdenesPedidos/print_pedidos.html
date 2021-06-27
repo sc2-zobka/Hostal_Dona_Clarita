@@ -10,6 +10,9 @@
 	<!-- Main CSS -->
 
 	<link rel="stylesheet" href="{% static 'appADM/assets/css/factura.css' %}">
+	<script>
+		window.print();
+	</script>
 </head>
 
 <body>
@@ -180,12 +183,7 @@
 		<p class="nota textcenter"> póngase en contacto con nombre, teléfono y
 			correo electrónico a soporte@hostaldonaclarita.cl</p>
 	</footer>
-	<script>
-		window.print();
-		window.onmousemove = function () {
-			window.close();
-		}
-	</script>
+
 </body>
 
 </html>

@@ -1,0 +1,162 @@
+{% extends 'appADM/base.html' %}
+{% load static %}
+{% block title %}Informes{% endblock%}
+{% block css-adm %}
+<link rel="stylesheet" href="{% static 'appADM/assets/css/oc.css' %}">
+
+{% endblock %}
+{% block contenido-panel %}
+
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title"><i class="fa fa-file-text"></i> Informes</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Inicio</a></li>
+						<li class="breadcrumb-item active">Informes</li>
+
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+		<div class="row">
+			<div class="col-md-12">
+
+				<div class="container mt-5">
+					<div class="row d-flex justify-content-center align-items-center">
+						<div class="col-1"></div>
+						<div class="col-xl-8 col-md-12">
+							<div class="ms-panel ms-panel-fh">
+								<div class="ms-panel-header">
+									<h6>Informes Hostal Doña Clarita</h6>
+								</div>
+								<div class="ms-panel-body">
+									<form class="ms-form-wizard ms-wizard-pill style2-wizard" method="POST" id="form1">
+										{% csrf_token%}
+										<div class="ms-wizard-step">
+											<br>
+											<div class="form-row">
+												<div class="col-md-12">
+													<div class="form-group">
+														
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-4">
+													<div class="form-group">
+														<label>Informes <strong class="text-danger">*</strong></label>
+														<select name="informe" id="select" onchange="seleccion()"
+															class="cb-single form-control">
+															<option value="" selecte>Seleccionar informe...</option>
+
+															<option value="op1">Usuarios</option>
+															<option value="op2">Ventas</option>
+															<option value="op3">Ordenes de Compras</option>
+														</select>
+													</div>
+												</div>
+												<div class="col-md-4">
+													<div class="form-group">
+														<label>Fecha Desde </label>
+														<input type="date" class="form-control" name="fecha_d" disabled
+															id="fecha_d" max="{% now 'Y-m-d'%}">
+													</div>
+												</div>
+												<div class="col-md-4">
+													<div class="form-group">
+														<label>Fecha hasta </label>
+														<input type="date" class="form-control" name="fecha_h" disabled
+															id="fecha_h" max="{% now 'Y-m-d'%}">
+													</div>
+												</div>
+											</div>
+											<hr>
+											<div class="row">
+												<div class="col-md-4"></div>
+												<div class="col-md-4">
+													<div class="form-group mb-0">
+														<button class="btn btn2 btn-info btn-block text-center"
+															type="submit" > Generar <i class="fa fa-print"></i>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="col-1"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	function seleccion() {
+		var sel_val = document.getElementById('select').value;
+		if (sel_val == "op1") {
+			document.getElementById("fecha_d").disabled = true
+	    	document.getElementById("fecha_h").disabled = true	
+		}
+		else if(sel_val == "op2") {
+			document.getElementById("fecha_d").disabled = false
+			document.getElementById("fecha_h").disabled = false
+		}
+		else if(sel_val == "op3") {
+			document.getElementById("fecha_d").disabled = false
+			document.getElementById("fecha_h").disabled = false
+		}else{
+			document.getElementById("fecha_d").disabled = true
+	    	document.getElementById("fecha_h").disabled = true		
+		}
+	}
+	/*
+	    		document.getElementById("chk1").onchange = function(){
+	    			if (document.getElementById("myCheck").disabled && document.getElementById("myCheck2").disabled ){
+	    				document.getElementById("myCheck").disabled = true
+	    				document.getElementById("myCheck2").disabled = true
+
+	    			}else{
+	    				document.getElementById("myCheck").disabled = true
+	    				document.getElementById("myCheck2").disabled = true
+
+	    			}
+	    		}*/
+</script>
+<!-- /Page Wrapper -->
+{% block js %}
+{% if messages %}
+<div>
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+	<script>
+		Swal.fire({
+			title: "Error al Generar",
+			text: "{{message}}",
+			icon: "error"
+		})
+	</script>
+	{% elif message.tags  == 'warning'%}
+	<script>
+		Swal.fire({
+			title: "¡Atención!",
+			text: "{{message}}",
+			icon: "warning"
+		})
+	</script>
+	{% endif %}
+	{% endfor %}
+</div>
+{% endif %}
+<script src="{% static 'appADM/assets/js/jquery.steps.min.js' %}"></script>
+{% endblock %}
+{% endblock %}

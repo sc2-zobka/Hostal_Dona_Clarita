@@ -513,7 +513,7 @@ def nueva_orden_compra(request):
                                                         #
                                                         fecha_emision_get = date.today()
                                                         fecha_emision = fecha_emision_get.strftime(
-                                                            "%d-%m-%Y")
+                                                            "%Y-%m-%d")
 
                                                         #
                                                         # Obtener ID de Cliente

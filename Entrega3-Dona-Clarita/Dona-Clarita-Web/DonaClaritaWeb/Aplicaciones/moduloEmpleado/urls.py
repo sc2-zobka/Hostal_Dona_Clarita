@@ -8,7 +8,7 @@ from Aplicaciones.moduloEmpleado.views import  dashboard,\
                    huespedes, nuevo_huesped, huesped_carga,edit_huesped, eliminar_huesped, \
                    productos, nuevo_producto,edit_producto, eliminar_producto, tipo_producto, edit_tipo_producto, eliminar_tipo_producto,  categoria, edit_categoria, eliminar_categoria,\
                    nueva_ordenPedido, ordenes_pedido, edit_ordenPedido, check_ordenPedido, anular_ordenPedido, rechazar_ordenPedido,print_pedidos,\
-                   comentarios,  documentos, orden_compra_views, facturarOC, notaCredito, reservas, check_in
+                   comentarios,  documentos, orden_compra_views, facturarOC, notaCredito, reservas, check_in, informes, informe_print
 
 
 
@@ -101,6 +101,10 @@ urlpatterns = [
 
 
     path('dashboard/comentarios/', comentarios, name="comentarios"),
+    path('dashboard/informes/', informes, name="informes"),
+    path('dashboard/informe/<str:op>/', informe_print, name="informe-print"),
+    path('dashboard/informe/<str:op>/<str:fd>/<str:fh>/', informe_print, name="informe-print"),
+    path('dashboard/informe/<str:op>/', informe_print, name="informe-print"),
     path('dashboard/documentos-tributarios/', documentos, name="ventas"),
     path('dashboard/ordenes-compras/', orden_compra_views, name="oc-list-views"),
     path('dashboard/facturar-oc/<id>/', facturarOC, name="facturar-oc"),

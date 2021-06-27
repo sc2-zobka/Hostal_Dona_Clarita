@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+{% load humanize %}
+
+<head>
+	<meta charset="UTF-8">
+	<title>INFORME DE 
+		{%if usuarios %} USUARIOS 
+		{% elif resultado %}VENTAS DESDE {{fechaD|date:'d/m/Y'}} HASTA {{fechaH|date:'d/m/Y'}}
+		{% elif ordenes_compras %}ORDENES DE COMPRAS DESDE {{fechaD|date:'d/m/Y'}} HASTA {{fechaH|date:'d/m/Y'}}
+		{%endif%} - Hostal Doña Clarita</title>
+	{% load static %}
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'appADM/assets/img/favicondc.PNG' %}" media="all">
+	<!-- Main CSS -->
+
+	<link rel="stylesheet" href="{% static 'appADM/assets/css/factura.css' %}">
+
+</head>
+
+<body>
+	<!-- Page Wrapper -->
+	<div class="page-wrapper">
+		<div class="content container-fluid">
+			<div class="row">
+				<div class="col-md-12 ">
+					<div class="card">
+
+						<!--Imagen de anulado solo estado anulado -->
+						<div id="page_pdf">
+							<table id="factura_head">
+								<tr>
+									<td class="logo_factura">
+										<div>
+											<img src="{% static 'appADM/assets/img/logodcblue.png' %}" width="200">
+										</div>
+									</td>
+
+									<td class="info_empresa">
+										<br>
+										<div>
+											<span class="h2"><strong>HOSTAL DOÑA CLARITA</strong></span>
+											{% if usuarios %}
+											<h3><strong>INFORME DE USUARIOS</strong></h3>
+											{% elif resultado %}
+											<h3><strong>INFORME DE VENTAS <br> DESDE {{fechaD|date:'d/m/Y'}} HASTA {{fechaH|date:'d/m/Y'}}</strong></h3>
+											{% elif ordenes_compras %}
+											<h3><strong>INFORME DE ORDENES DE COMPRAS <br> DESDE {{fechaD|date:'d/m/Y'}} HASTA {{fechaH|date:'d/m/Y'}}</strong></h3>
+											{% endif %}
+										</div>
+									</td>
+									<td class="info_factura">
+
+									</td>
+								</tr>
+							</table>
+						</div>
+						</table>
+						{% if usuarios %}
+						<table id="factura_detalle">
+							<thead>
+								<tr>
+									<th scope="col" class="textleft" width="20px">#</th>
+									<th class="textleft" width="150px">NOMBRE DE USUARIO</th>
+									<th class="textleft" width="auto">CORREO ELECTRÓNICO</th>
+									<th class="textleft" width="80px">ESTADO</th>
+									<th class="textleft" width="150px">FECHA DE CREACIÓN</th>
+								</tr>
+							</thead>
+							<tbody id="detalle_productos">
+								{% for usuario in usuarios %}
+								<tr>
+									<td>{{ usuario.0 }}</td>
+									<td class="textleft">{{usuario.1}}</td>
+									<td>{{usuario.2}}</td>
+									<td class="textleft">{{usuario.3}}</td>
+									<td class="textleft">{{usuario.4}}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+							<tfoot id="detalle_totales">
+								<tr>
+									<td colspan="4" class="textright"><span>TOTAL USUARIOS:</span></td>
+									<td class="textleft"><span>{{usuarios_tt}}</span></td>
+								</tr>
+
+							</tfoot>
+						</table>
+						{% elif resultado%}
+						<table id="factura_detalle">
+							<thead>
+								<tr>
+									<th scope="col" class="textleft" width="20px">#</th>
+									<th class="textleft" width="50px">TIPO DOCUMENTO</th>
+									<th class="textcenter" width="50px">NRO. DOC</th>
+									<th class="textcenter" width="50px">FEC. EMISION</th>
+									<th class="textcenter" width="50px">OC. REF</th>
+									<th class="textcenter" width="50px">FEC. ANULA</th>
+									<th class="textcenter" width="50px">DOC. ANULADO</th>
+
+								</tr>
+							</thead>
+							<tbody id="detalle_productos">
+								{% for doc in resultado %}
+								<tr>
+									<td>{{ doc.0 }}</td>
+									<td class="textleft">{{doc.2}}</td>
+									<td class="textcenter">{{doc.3}}</td>
+									<td class="textcenter">{{doc.4}}</td>
+									<td class="textcenter">{{doc.5}}</td>
+									<td class="textcenter">{{doc.6}}</td>
+									<td class="textcenter">{{doc.7}}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+							<tfoot id="detalle_totales">
+								<tr>
+									<td colspan="6" class="textright"><span>TOTAL DOCUMENTOS:</span></td>
+									<td class="textleft"><span>{{doc_tt}}</span></td>
+								</tr>
+								<tr>
+									<td colspan="6" class="textright"><span>MONTO FACTURAS:</span></td>
+									<td class="textleft"><span>${{facturas.1|intcomma}} - Cant: {{facturas.0}}</span></td>
+								</tr>
+								<tr>
+									<td colspan="6" class="textright"><span>MONTO NOTA CREDITOS:</span></td>
+									<td class="textleft"><span>${{notacreditos.1|intcomma}} - Cant: {{notacreditos.0}}</span></td>
+								</tr>
+								<tr>
+									<td colspan="6" class="textright"><span>INGRESOS TOTALES:</span></td>
+									<td class="textleft"><span>${{totalIng|intcomma}}</span></td>
+								</tr>
+							</tfoot>
+						</table>
+						{% elif ordenes_compras %}
+						<table id="factura_detalle">
+							<thead>
+								<tr>
+									<th scope="col" class="textleft" width="20px">#</th>
+									<th class="textleft" width="40px">NRO. OC.</th>
+									<th class="textcenter" width="50px">RUT EMPRESA</th>
+									<th class="textleft" width="100px">RAZÓN SOCIAL</th>
+									<th class="textcenter" width="50px">FEC. EMISIÓN</th>
+									<th class="textcenter" width="50px">CANT HUESPED</th>
+									<th class="textcenter" width="50px">MONTO TOTAL</th>
+								</tr>
+							</thead>
+							<tbody id="detalle_productos">
+								{% for oc in ordenes_compras %}
+								<tr>
+									<td>{{ oc.0 }}</td>
+									<td class="textleft">{{oc.1}}</td>
+									<td class="textcenter">{{oc.2|intcomma}}-{{oc.3}}</td>
+									<td class="textleft">{{oc.4}}</td>
+									<td class="textcenter">{{oc.5}}</td>
+									<td class="textcenter">{{oc.7}}</td>
+									<td class="textcenter">${{oc.6|intcomma}}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+							<tfoot id="detalle_totales">
+								<tr>
+									<td colspan="6" class="textright"><span>TOTAL DOCUMENTOS:</span></td>
+									<td class="textleft"><span>{{doc_tt.0}}</span></td>
+								</tr>
+								<tr>
+									<td colspan="6" class="textright"><span>MONTO TOTAL:</span></td>
+									<td class="textleft"><span>${{doc_tt.1|intcomma}}</span></td>
+								</tr>
+								
+							</tfoot>
+						</table>
+						{% endif %}
+					</div>
+				</div>
+				<br>
+				<br>
+			</div>
+		</div>
+	</div>
+	</div>
+	<!-- /Page Wrapper -->
+	</div>
+	<footer>
+		<p class="nota textcenter">Si usted tiene dudas sobre el Documento</p>
+		<p class="nota textcenter"> póngase en contacto con nombre, teléfono y
+			correo electrónico a soporte@hostaldonaclarita.cl</p>
+	</footer>
+	<script>
+		window.print();
+		window.onmousemove = function () {
+			window.location = "{% url 'informes' %}";
+		}
+	</script>
+</body>
+
+</html>

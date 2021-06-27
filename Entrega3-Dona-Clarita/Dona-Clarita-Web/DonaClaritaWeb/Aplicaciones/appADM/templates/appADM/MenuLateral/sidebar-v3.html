@@ -413,15 +413,14 @@
                         {% endif %}
                     </ul>
                     </li>
-                    <li class="submenu">
-                        <a href="#"><i class="fe fe-document"></i> <span>Informes</span> <span
-                                class="menu-arrow"></span></a>
-                        <ul style="display: none;">
-                            <li><a href="{% url 'dashboard' %}">Nombre del Informe</a></li>
-                        </ul>
+
+                    {% if request.path == '/dashboard/informes/' %}
+                    <li class=" active">
+                        {% else %}
+                    <li>
+                        {% endif %}
+                        <a href="{% url 'informes' %}"><i class="fe fe-document"></i> <span>Informes</span></a>
                     </li>
-
-
                 </ul>
         </div>
     </div>

@@ -32,7 +32,7 @@
             }
         }
         
-        if (cont == 0 && cont2 == 0) {
+        if (!unico && (cont == 0 && cont2 == 0)) {
             Swal.fire({
                 title: "Campos Sin Seleccionar",
                 text: "Debe Seleccionar la cantidad de: " + huesped +
@@ -42,7 +42,7 @@
                 timerProgressBar: true
             })
             return;
-        } else if (cont > huesped || cont2 > huesped) {
+        } else if (!unico && (cont > huesped || cont2 > huesped)) {
             Swal.fire({
                 title: "Supera el Máximo Permitido",
                 text: "La Cantidad Máxima es de: " + huesped +
@@ -51,7 +51,7 @@
                 timer: 5000,
                 timerProgressBar: true
             })
-        } else if (cont == huesped && cont2 == 0) {
+        } else if (!unico && (cont == huesped && cont2 == 0)) {
             Swal.fire({
                 title: "Servicio de Comedor Sin Seleccionar",
                 text: "Debe Seleccionar la cantidad de: " + huesped + " Servicio(s)",
@@ -60,7 +60,7 @@
                 timerProgressBar: true
             })
             return;
-        } else if (cont2 == huesped && cont == 0) {
+        } else if (!unico && (cont2 == huesped && cont == 0)) {
             Swal.fire({
                 title: "Trabajadores Sin Seleccionar",
                 text: "Debe Seleccionar la cantidad de: " + huesped + " Trabajador(es)",
@@ -69,7 +69,7 @@
                 timerProgressBar: true
             })
             return;
-        } else if (cont2 < huesped) {
+        } else if (!unico && (cont2 < huesped)) {
             Swal.fire({
                 title: "Cantidad de Servicio Comedor Incompleta",
                 text: "A Seleccionado solo " + cont2 + " Servicio(s) de " + huesped + "",
@@ -78,7 +78,7 @@
                 timerProgressBar: true
             })
             return;
-        } else if (cont < huesped) {
+        } else if (!unico && (cont < huesped)) {
             Swal.fire({
                 title: "Cantidad de Trabajadores Incompleta",
                 text: "A Seleccionado solo " + cont + " Trabajador(es) de " + huesped + "",

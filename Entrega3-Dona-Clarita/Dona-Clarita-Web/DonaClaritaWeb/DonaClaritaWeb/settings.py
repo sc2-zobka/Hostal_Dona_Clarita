@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'Aplicaciones.moduloCliente',
     'Aplicaciones.moduloProveedor',
     'import_export',
+
 ]
 
 MIDDLEWARE = [
@@ -81,24 +82,10 @@ WSGI_APPLICATION = 'DonaClaritaWeb.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.oracle",
-#         "NAME": "127.0.0.1:1521/xe",
-#         "USER": "portafolio",
-#         "PASSWORD": "123",
-#         "TEST": {
-#             "USER": "default_test",
-#             "TBLSPACE": "default_test_tbls",
-#             "TBLSPACE_TMP": "default_test_tbls_tmp",
-#         },
-#     }
-# }
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.oracle",
-        "NAME": "127.0.0.1:1521/xepdb1",
+        "NAME": "127.0.0.1:1521/xe",
         "USER": "portafolio",
         "PASSWORD": "123",
         "TEST": {
@@ -108,6 +95,20 @@ DATABASES = {
         },
     }
 }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.oracle",
+#         "NAME": "127.0.0.1:1521/xepdb1",
+#         "USER": "portafolio",
+#         "PASSWORD": "123",
+#         "TEST": {
+#             "USER": "default_test",
+#             "TBLSPACE": "default_test_tbls",
+#             "TBLSPACE_TMP": "default_test_tbls_tmp",
+#         },
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

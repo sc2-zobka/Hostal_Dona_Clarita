@@ -116,13 +116,13 @@
 								<i class="fa fa-money"></i>
 							</span>
 							<div class="dash-count">
-								<h3>${% if gastos is not None %}{{gastos|intcomma}}{% else %}0{% endif %}</h3>
+								<h3>${{gastos|intcomma}}</h3>
 							</div>
 						</div>
 						<div class="dash-widget-info">
 							<hr>							
-							<h6 class="text-muted text-left">Facturas: ${% if total_facturas is not None %}{{total_facturas|intcomma}}{% else %}0{% endif %}</h6>
-							<h6 class="text-muted text-left">N. Créditos: ${% if total_notacredito is not None %}{{total_notacredito|intcomma}}{% else %}0{% endif %}</h6>
+							<h6 class="text-muted text-left">Facturas: ${{total_facturas|intcomma}}</h6>
+							<h6 class="text-muted text-left">N. Créditos: ${{total_notacredito|intcomma}}</h6>
 						</div>
 					</div>
 				</div>

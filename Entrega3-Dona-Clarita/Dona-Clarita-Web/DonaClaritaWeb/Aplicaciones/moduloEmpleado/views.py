@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import FileSystemStorage
 from Aplicaciones.appADM.resources import HuespedResource
 from tablib import Dataset
+import cx_Oracle
 # Create your views here.
 
 
@@ -24,19 +25,26 @@ def dashboard(request):
     clientes_new = ''
     reservas = ''
     ingresos = 0
-
+    facturas = 0
+    notacreditos = 0
     with connection.cursor() as cursor:
         try:
             cursor.execute("""SELECT COUNT(*) TT FROM AUTH_USER""")
             usuarios = cursor.fetchall()
-            cursor.execute("""
-                SELECT SUM(D.MONTO_TOTAL)TT
-                FROM ORDEN_COMPRA OC
-                JOIN CLIENTE C ON OC.ID_CLIENTE = C.ID_CLIENTE
-                JOIN DOCUMENTO D ON OC.ID_ORDEN_DE_COMPRA = D.ID_ORDEN_DE_COMPRA
-                WHERE D.CODIGO_SII = 33
+            cursor.execute(f"""
+            SELECT  SUM(MONTO_TOTAL) TTFE
+                FROM DOCUMENTO WHERE CODIGO_SII = 33
             """)
-            ingresos = cursor.fetchone()[0]
+            facturas = cursor.fetchone()[0]
+            
+            cursor.execute(f"""
+            SELECT SUM(MONTO_TOTAL) TTFE
+                FROM DOCUMENTO WHERE CODIGO_SII = 61
+                                   
+            """)                        
+            notacreditos = cursor.fetchone()[0]
+            
+            ingresos = facturas-notacreditos
             cursor.execute(
                 """SELECT COUNT(*) TT FROM CLIENTE WHERE ID_TIPO_CLIENTE = 1""")
             clientes = cursor.fetchall()
@@ -80,7 +88,6 @@ def dashboard(request):
         except Exception as e:
             print(e)
             pass
-    print('imprimo reserva', reservas)
     data = {
         'usuarios': usuarios,
         'ingresos':ingresos,
@@ -2840,6 +2847,7 @@ def tipo_producto(request):
         if len(nombre_tipo) > 0 and len(estado) > 0:
             with connection.cursor() as cursor:
                 try:
+                    nombre_tipo = nombre_tipo.strip()
                     cursor.execute(
                         "SELECT COUNT(*)TT FROM TIPO_PRODUCTO WHERE DESCRIPCION LIKE %s", [nombre_tipo])
                     validaExistencia = cursor.fetchone()
@@ -2887,6 +2895,7 @@ def edit_tipo_producto(request, id):
         if len(nombre_tipo) > 0 and len(estado) > 0:
             with connection.cursor() as cursor:
                 try:
+                    nombre_tipo = nombre_tipo.strip()
                     cursor.execute(
                         "SELECT COUNT(*)TT FROM TIPO_PRODUCTO WHERE DESCRIPCION LIKE %s and ID_TIPO_PRODUCTO != %s", [nombre_tipo, id])
                     validaExistencia = cursor.fetchone()
@@ -3285,22 +3294,6 @@ def check_ordenPedido(request, id):
     detalle_orden_pedido_db = None
     n_detalles = None
 
-    import cx_Oracle
-
-    try:
-        conn = cx_Oracle.connect('PORTAFOLIO/123@//localhost:1521/xepdb1')
-        output = conn.cursor()
-        cursor = conn.cursor()
-        cursor.callproc('prueba', ['2021-06-01','2021-06-25', output])
-        resultado = output.fetchall()
-        print(resultado)
-    except Exception as e:
-        print(e)
-    else:
-        print('ejecutado')
-    finally:
-        conn.close()
-
     with connection.cursor() as cursor:
         try:
             cursor.execute("SELECT ID_ESTATUS_ORDEN_PEDIDO FROM ESTATUS_ORDEN_PEDIDO " \
@@ -3328,8 +3321,6 @@ def check_ordenPedido(request, id):
             if request.method == 'POST':
                 observacion = request.POST["observacion"]
 
-                print('entro')
-
                 #
                 # Insertar INSERT a Recepcion Orden de Pedido y ejecutar Trigger
                 #
@@ -3343,8 +3334,6 @@ def check_ordenPedido(request, id):
                         now = datetime.now()
                         print(now)
 
-                        # cursor.execute("UPDATE ORDEN_PEDIDO SET ID_ESTATUS_ORDEN_PEDIDO = %s " \
-                        #     "WHERE ID_ORDEN_PEDIDO = %s", [estatus_db[0], id])
                         if observacion is not None and observacion != '':
                             cursor.execute("INSERT INTO RECEPCION_ORDEN_PEDIDO (FECHA_ENTREGA, ID_ORDEN_PEDIDO, ID_ESTATUS_RECEP, OBSERVACION) " \
                                 "VALUES (%s, %s, %s, %s)", [now, id, estatus_db[0], observacion])
@@ -3757,3 +3746,142 @@ def print_pedidos(request, id):
     return render(request, 'Empleados/OrdenesPedidos/print_pedidos.html', data)
 def comentarios(request):
     return render(request, 'Empleados/comentarios.html')
+
+def informes(request):
+
+    informe = ''
+    fecha_d = ''
+    fecha_h = ''
+    if request.method == 'POST':
+        informe = request.POST['informe']
+        try:
+            fecha_d = request.POST['fecha_d']
+            fecha_h = request.POST['fecha_h']
+        except:    
+            pass
+        if informe == '':
+            messages.warning(request, 'Debe Seleccionar un Informe para Continuar')
+        else:
+            if informe == 'op1':
+               return redirect('informe-print',informe) 
+            if informe == 'op2' and len(fecha_d)< 1 or len(fecha_h)<1:
+                messages.warning(request, 'Debe Seleccionar las Fechas para Continuar')
+            else:                     
+                return redirect('informe-print',informe,fecha_d,fecha_h)                  
+            
+            if informe == 'op3' and len(fecha_d)< 1 or len(fecha_h)<1:    
+                messages.warning(request, 'Debe Seleccionar las Fechas para Continuar')
+            else:
+                return redirect('informe-print',informe,fecha_d,fecha_h) 
+              
+            
+    data = {
+        'informe':informe
+    }
+    return render(request, 'Empleados/Informes/informe.html', data)
+
+def informe_print(request, op, fd=None, fh=None):
+    usuarios = ''
+    usuarios_tt = 0
+    resultado = ''
+    formato = ''
+    fechaD = ''
+    fechaH = ''
+    ordenes_compras = ''
+    doc_tt = ''
+    facturas = 0
+    notacreditos = 0
+    totalIng = 0
+    with connection.cursor() as cursor:
+            try:    
+                if op == "op1":
+                    cursor.execute("""
+                    SELECT ROW_NUMBER() OVER (ORDER BY AU.USERNAME)TT,AU.USERNAME AS "USUARIO", AU.EMAIL AS "EMAIL",
+                    CASE
+                        WHEN AU.IS_ACTIVE  = '1' THEN 'ACTIVO'
+                        ELSE 'INACTIVO'
+                    END AS "ESTADO",
+                    TO_CHAR(AU.DATE_JOINED, 'DD-MM-YYYY hh24:mi') AS "FEC CREADO"
+                    FROM AUTH_USER AU
+                    """)
+                    usuarios = cursor.fetchall()
+                    cursor.execute("SELECT COUNT(*) FROM AUTH_USER")
+                    usuarios_tt = cursor.fetchone()[0]
+                    if not usuarios:
+                        messages.error(request, 'No se encontró Detalles de Usuarios a Mostrar')
+                        return redirect('informes') 
+                elif op == "op2" and fd != None and fh != None:
+                    try:
+                        conn = cx_Oracle.connect('PORTAFOLIO/123@//localhost:1521/xe')
+                        output = conn.cursor()
+                        cursor = conn.cursor()
+                        cursor.callproc('sp_buscarVentas', [fd,fh, output])
+                        resultado = output.fetchall()
+                        cursor.execute(f"SELECT COUNT(*) FROM DOCUMENTO  WHERE TO_CHAR(FECHA_EMISION,'YYYY-MM-DD') BETWEEN '{fd}' AND '{fh}' ")
+                        doc_tt = cursor.fetchone()[0]
+                        cursor.execute(f"""
+                        SELECT COUNT(*)CANTFE, SUM(MONTO_TOTAL) TTFE
+                            FROM DOCUMENTO WHERE CODIGO_SII = 33
+                            AND TO_CHAR(FECHA_EMISION,'YYYY-MM-DD') BETWEEN '{fd}' AND '{fh}' 
+                        """)
+                        facturas = cursor.fetchone()
+                      
+                        cursor.execute(f"""
+                        SELECT COUNT(*)CANTFE, SUM(MONTO_TOTAL) TTFE
+                            FROM DOCUMENTO WHERE CODIGO_SII = 61
+                            AND TO_CHAR(FECHA_EMISION,'YYYY-MM-DD') BETWEEN '{fd}' AND '{fh}'                             
+                        """)                        
+                        notacreditos = cursor.fetchone()
+                        totalIng = (facturas[1] - notacreditos[1])
+                        formato = '%Y-%m-%d'
+                        fechaD = datetime.strptime(fd,formato )
+                        fechaH = datetime.strptime(fh,formato )
+                        print(resultado)
+                        if not resultado:
+                            messages.error(request, 'No existe Detalle de Ventas en Rango de Fecha Buscado')
+                            return redirect('informes') 
+                    except Exception as e:
+                        print(e)
+                    else:
+                        print('ejecutado')
+                    finally:
+                        conn.close()
+                elif op == "op3" and fd != None and fh != None:
+                    cursor.execute(f"""
+                    SELECT ROW_NUMBER() OVER (ORDER BY TO_CHAR(OC.FECHA_EMISION, 'DD-MM-YYYY'))TT, OC.ID_ORDEN_DE_COMPRA AS "NRO_OC", 
+                        C.RUT_EMPRESA, C.DV, C.RAZON_SOCIAL,
+                        TO_CHAR(OC.FECHA_EMISION, 'DD-MM-YYYY') AS FEC_EMISION, NVL(OC.MONTO_TOTAL,0), 
+                        OC.CANT_HUESPED
+                    FROM ORDEN_COMPRA OC
+                    JOIN CLIENTE C ON OC.ID_CLIENTE = C.ID_CLIENTE
+                    WHERE  TO_CHAR(OC.FECHA_EMISION, 'YYYY-MM-DD') BETWEEN '{fd}' AND '{fh}'
+                    """)
+                    ordenes_compras = cursor.fetchall()
+                    cursor.execute(f"SELECT COUNT(*) TT, SUM(MONTO_TOTAL) MONTOTT FROM ORDEN_COMPRA  WHERE TO_CHAR(FECHA_EMISION,'YYYY-MM-DD') BETWEEN '{fd}' AND '{fh}' ")
+                    doc_tt = cursor.fetchone()
+                    print(doc_tt)
+                    formato = '%Y-%m-%d'
+                    fechaD = datetime.strptime(fd,formato )
+                    fechaH = datetime.strptime(fh,formato )
+                    if not ordenes_compras:
+                            messages.error(request, 'No existe Ordenes de Compra en Rango de Fecha Buscado')
+                            return redirect('informes')                         
+                else:
+                    messages.error(request, 'La Opción de Informe ingresada No existe')
+                    return redirect('informes') 
+            except Exception as e:
+                print(e)
+                pass    
+    data = {
+        'usuarios':usuarios,
+        'usuarios_tt':usuarios_tt,
+        'resultado':resultado,
+        'doc_tt':doc_tt,
+        'fechaD':fechaD,
+        'fechaH':fechaH,
+        'ordenes_compras':ordenes_compras,
+        'facturas':facturas,
+        'notacreditos':notacreditos,
+        'totalIng':totalIng
+    }                    
+    return render(request, 'Empleados/Informes/print_informe.html',data)

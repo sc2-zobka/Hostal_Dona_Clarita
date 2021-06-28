@@ -63,9 +63,9 @@
 										<td class="text-center">{{producto.6}}</td>
 										<td class="text-center">{{producto.7}}</td>
 										{% if producto.8 %}
-										{% if producto.8|date:"d-m-Y" < now %}
+										{% if producto.8|date:"Y-m-d" < now %}
 										<td class="text-center text-danger"><strong>VENCIDO</strong></td>
-										{% elif producto.8|date:"d-m-Y" == now %}
+										{% elif producto.8|date:"Y-m-d" == now %}
 										<td class="text-center text-danger"><strong>VENCE HOY</strong></td>
 										{% else%}
 										<td class="text-center">{{producto.8|date:"d-m-Y"}}</td>

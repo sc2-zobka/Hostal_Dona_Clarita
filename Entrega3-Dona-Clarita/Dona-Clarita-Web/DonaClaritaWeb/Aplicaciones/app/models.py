@@ -235,7 +235,7 @@ class Huesped(models.Model):
     rut = models.BigIntegerField()
     dv = models.CharField(max_length=1)
     nombre = models.CharField(max_length=100)
-    apelldio_p = models.CharField(max_length=50)
+    apellido_p = models.CharField(max_length=50)
     apellido_m = models.CharField(max_length=50)
     email = models.CharField(max_length=50, blank=True, null=True)
     telefono = models.BigIntegerField(blank=True, null=True)

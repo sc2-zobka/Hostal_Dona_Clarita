@@ -95,7 +95,7 @@
 												<tr>
 													<td>{{tc.1}}</td>
 													<td>{{tc.3}}</td>
-													{% if tc.2 %}
+													{% if tc.2 == "1" %}
 													<td class="text-center">
 														<span class="badge badge-pill bg-success inv-badge">Activo</span>
 													</td>
@@ -106,10 +106,10 @@
 													{% endif %}
 													<td class="text-center">
 														<div class="actions">
-															<a class="btn btn-sm bg-success-light" href="{% url 'edit-tipo-comedor'   tc.0%}">
+															<a class="btn btn-sm bg-success-light" href="{% url 'edit-tipo-comedor' tc.0 %}">
 																<i class="fa fa-pencil"></i> Editar
 															</a>
-															{% if tc.2 %}
+															{% if tc.2 == "1" %}
 															<a class="btn btn-sm bg-danger-light" href="#" onClick="eliminar({{ tc.0 }})" >
 																<i class="fa fa-trash"></i> Eliminar
 															</a>
@@ -118,7 +118,6 @@
 													</td>
 												</tr>
 												{% endfor%}
-												
 											</tbody>
 										</table>
 									</div>

@@ -4,7 +4,7 @@ urlpatterns = [
     path('', index, name="index"),
     path('acerca-de/', acercade, name="acercade"),
     path('habitaciones/', habitaciones, name="habitaciones"),
-    path('det-habitacion/', det_habitacion, name="det-habitacion"),
+    path('det-habitacion/<str:id>/', det_habitacion, name="det-habitacion"),
     path('contacto/', contacto, name="contacto"),
 
 ]

@@ -43,7 +43,7 @@
 									<tr>
 										<td>
 											<h2 class="table-avatar">
-												{% if servicio.5 %}
+												{% if servicio.5 is not None %}
 												<a class="avatar avatar-sm mr-2">
 													<img class="avatar-img" src="../../media/servAD/{{servicio.5}}"
 														alt="Imagen Plato">
@@ -63,7 +63,7 @@
 										{% else %}
 										<td class="text-center">${{servicio.3}}</td>
 										{% endif %}
-										{% if servicio.4 %}
+										{% if servicio.4 == "1" %}
 										<td class="text-center">
 											<span class="badge badge-pill bg-success-light inv-badge">Sí</span>
 										</td>
@@ -72,7 +72,7 @@
 											<span class="badge badge-pill bg-danger-light inv-badge">No</span>
 										</td>
 										{% endif %}
-										{% if servicio.6 %}
+										{% if servicio.6 == "1" %}
 										<td class="text-center">
 											<span class="badge badge-pill bg-success inv-badge">Activo</span>
 										</td>
@@ -84,10 +84,10 @@
 										<td class="text-center">
 											<div class="actions">
 												<a class="btn btn-sm bg-success-light"
-													href="{% url 'edit-servicio'   servicio.0%}">
+													href="{% url 'edit-servicio' servicio.0 %}">
 													<i class="fa fa-pencil"></i> Editar
 												</a>
-												{% if servicio.6 %}
+												{% if servicio.6 == "1" %}
 												<a href="#" onClick="eliminar({{ servicio.0 }})"
 													class="btn btn-sm bg-danger-light">
 													<i class="fa fa-trash"></i> Eliminar

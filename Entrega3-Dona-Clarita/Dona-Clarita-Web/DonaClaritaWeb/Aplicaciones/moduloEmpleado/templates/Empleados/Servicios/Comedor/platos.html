@@ -63,7 +63,7 @@
 										</td>
 										<td class="text-center">{{plato.2}}</td>
 										<td class="text-center">{{plato.3}}</td>
-										{% if plato.5 %}
+										{% if plato.5 == "1" %}
 										<td class="text-center">
 											<span class="badge badge-pill bg-success inv-badge">Activo</span>
 										</td>	
@@ -78,7 +78,7 @@
 													href="{% url 'edit-plato'   plato.0%}">
 													<i class="fa fa-pencil"></i> Editar
 												</a>
-												{% if plato.5 %}
+												{% if plato.5 == "1" %}
 												<a   href="#"  onClick="eliminar({{ plato.0 }})" 
 													class="btn btn-sm bg-danger-light">
 													<i class="fa fa-trash"></i> Eliminar

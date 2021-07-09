@@ -10,13 +10,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import FileSystemStorage
 from Aplicaciones.appADM.resources import HuespedResource
 from tablib import Dataset
+from django.contrib.auth.decorators import login_required
 import cx_Oracle
 # Create your views here.
 
 
 # ***Módulo:Empleados*** Opción: inicio
 
-
+@login_required
 def dashboard(request):
     clientes = ''
     hab_disponible = ''
@@ -102,7 +103,7 @@ def dashboard(request):
 
 # ***Módulo:Empleados*** Opción: clientes
 
-
+@login_required
 def clientes(request):
     clientes = ''
     idTipoCliente = ''
@@ -124,7 +125,7 @@ def clientes(request):
 
     return render(request, 'Empleados/Clientes/clientes.html', data)
 
-
+@login_required
 def eliminar_cliente(request, id):
     with connection.cursor() as cursor:
         try:
@@ -136,7 +137,7 @@ def eliminar_cliente(request, id):
     messages.success(request, "Eliminado correctamente")
     return redirect(to="clientes-list")
 
-
+@login_required
 def edit_clientes(request, id):
     usuario = ''
     comuna = ''
@@ -237,7 +238,7 @@ def edit_clientes(request, id):
     }
     return render(request, 'Empleados/Clientes/edit_cliente.html', data)
 
-
+@login_required
 def cliente_pass(request, id):
     cliente = ''  # Usuario vacio en caso de que no se cargue usuario
     idTipoCliente = ''
@@ -295,7 +296,7 @@ def cliente_pass(request, id):
     return render(request, 'Empleados/Clientes/pass_cliente.html', data)
 # ***Módulo:Empleados*** Opción: empleados
 
-
+@login_required
 def nuevo_empleado(request):
     fec_nac = ''
     validaUs = 0
@@ -395,8 +396,8 @@ def nuevo_empleado(request):
                                     # Inserción de Datos en Tabla Usuarios
                                     print('entro a insert US')
                                     cursor.execute(f"""                                
-                                           INSERT INTO AUTH_USER (PASSWORD, IS_SUPERUSER,USERNAME, FIRST_NAME, LAST_NAME, EMAIL, IS_STAFF, IS_ACTIVE, DATE_JOINED, IS_CLIENTE, IS_EMPLEADO, IS_PROVEEDOR)
-                                                   VALUES('{pwdEncriptado}', '0',{vrutSinDv}, '{nombre}', '{apellido_p}', '{email}', '0', '{estado}', '{now}', 0 , 1 , 0  )
+                                           INSERT INTO AUTH_USER (PASSWORD, IS_SUPERUSER, USERNAME, FIRST_NAME, LAST_NAME, EMAIL, IS_STAFF, IS_ACTIVE, DATE_JOINED, IS_CLIENTE, IS_EMPLEADO, IS_PROVEEDOR)
+                                                   VALUES('{pwdEncriptado}', '0', {vrutSinDv}, '{nombre}', '{apellido_p}', '{email}', '0', '{estado}', '{now}', 0 , 1 , 0)
                                     """)
                                     print('salgo a insert US')
                                     cursor.execute(
@@ -438,7 +439,7 @@ def nuevo_empleado(request):
     }
     return render(request, 'Empleados/Empleados/empleado.html', data)
 
-
+@login_required
 def edit_empleado(request, id):
     with connection.cursor() as cursor:
         try:
@@ -570,7 +571,8 @@ def edit_empleado(request, id):
                             print(fecha_nac_obj)
                         cursor.execute(f"""UPDATE EMPLEADO SET ESTATUS = '{estado}', NOMBRES = '{nombre}', APELLIDO_P = '{apellido_p}',
                                             APELLIDO_M = '{apellido_m}',  RUT_EMPLEADO = '{vrutSinDv}', DV = '{dv}', CELULAR = '{fono}',
-                                            NACIMIENTO = '{fecha_nac_obj}', PEDIDOS = '{ge_pedido}', COMUNA_ID = '{com_sel}', ID_TIPO = '{tipo_e}'
+                                            NACIMIENTO = '{fecha_nac_obj}', PEDIDOS = '{ge_pedido}', COMUNA_ID = '{com_sel}', ID_TIPO = '{tipo_e}',
+                                            DIRECCION = '{direccion}', NACIONALIDAD = '{nacionalidad}'
                                             WHERE ID_EMPLEADO = {id}
                                             """)
                         messages.success(
@@ -593,7 +595,7 @@ def edit_empleado(request, id):
     }
     return render(request, 'Empleados/Empleados/edit_empleado.html', data)
 
-
+@login_required
 def empleados(request):
     trabajadores = ''
     with connection.cursor() as cursor:
@@ -616,7 +618,7 @@ def empleados(request):
     }
     return render(request, 'Empleados/Empleados/empleados.html', data)
 
-
+@login_required
 def eliminar_empleado(request, id):
     with connection.cursor() as cursor:
         try:
@@ -633,7 +635,7 @@ def eliminar_empleado(request, id):
     messages.success(request, "El Empleado fue Eliminado correctamente")
     return redirect(to="empleados-list")
 
-
+@login_required
 def empleado_pass(request, id):
     with connection.cursor() as cursor:
         try:
@@ -686,7 +688,7 @@ def empleado_pass(request, id):
     }
     return render(request, 'Empleados/Empleados/pass_empleado.html', data)
 
-
+@login_required
 def tipo_empleado(request):
     tipo_empleados = ''
     nombre_tipo = ''
@@ -733,7 +735,7 @@ def tipo_empleado(request):
 
     return render(request, 'Empleados/Empleados/tipo_empleado.html', data)
 
-
+@login_required
 def editar_tipoEmpleado(request, id):
     tipo_e = ''
     with connection.cursor() as cursor:
@@ -778,7 +780,7 @@ def editar_tipoEmpleado(request, id):
     }
     return render(request, 'Empleados/Empleados/edit_tipo_emp.html', data)
 
-
+@login_required
 def eliminar_tipoEmpleado(request, id):
     with connection.cursor() as cursor:
         try:
@@ -936,7 +938,7 @@ def nuevo_proveedor(request):
 
     return render(request, 'Empleados/Proveedores/proveedor.html', data)
 
-
+@login_required
 def edit_proveedor(request, id):
     celular = ''
     with connection.cursor() as cursor:
@@ -1033,7 +1035,7 @@ def edit_proveedor(request, id):
     }
     return render(request, 'Empleados/Proveedores/edit_proveedor.html', data)
 
-
+@login_required
 def eliminar_proveedor(request, id):
     with connection.cursor() as cursor:
         try:
@@ -1051,7 +1053,7 @@ def eliminar_proveedor(request, id):
     messages.success(request, "El Empleado fue Eliminado correctamente")
     return redirect(to="proveedores-list")
 
-
+@login_required
 def proveedores(request):
     proveedores = ''
     with connection.cursor() as cursor:
@@ -1075,7 +1077,7 @@ def proveedores(request):
     }
     return render(request, 'Empleados/Proveedores/proveedores.html', data)
 
-
+@login_required
 def proveedor_pass(request, id):
     with connection.cursor() as cursor:
         try:
@@ -1128,7 +1130,7 @@ def proveedor_pass(request, id):
     return render(request, 'Empleados/Proveedores/pass_proveedor.html', data)
 # ***Módulo:Empleados*** Opción: huéspedes
 
-
+@login_required
 def huespedes(request):
     huespedes_list = ''
     idUsuario = ''
@@ -1160,7 +1162,7 @@ def huespedes(request):
 
     return render(request, 'Clientes/huespedes.html', data)
 
-
+@login_required
 def nuevo_huesped(request):
     cliente_m = None
     clientes_list = None
@@ -1267,7 +1269,7 @@ def nuevo_huesped(request):
 
     return render(request, 'Clientes/huesped-new.html', data)
 
-
+@login_required
 def edit_huesped(request, id):
     edit = 'editado'
     fnac = ''
@@ -1331,12 +1333,12 @@ def edit_huesped(request, id):
     }
     return render(request, 'Clientes/huesped-edit.html', data)
 
-
+@login_required
 def eliminar_huesped(request, id):
     with connection.cursor() as cursor:
         try:
             cursor.execute(
-                "UPDATE HUESPED SET ESTADO = %s WHERE id_HUESPED = %s", [0, id])
+                "UPDATE HUESPED SET ESTADO = %s WHERE ID_HUESPED = %s", [0, id])
         except Exception as e:
             print(e)
             pass
@@ -1346,6 +1348,7 @@ def eliminar_huesped(request, id):
 
 
 @csrf_exempt
+@login_required
 def huesped_carga(request):
     #template = loader.get_template('export/importar.html')
     mensaje = ''
@@ -1454,7 +1457,7 @@ def huesped_carga(request):
 
 # ***Módulo:Empleados*** Opción: servicios habitaciones
 
-
+@login_required
 def nueva_habitacion(request):
     imagen = ''
     nom = ''
@@ -1555,7 +1558,7 @@ def nueva_habitacion(request):
 
     return render(request, 'Empleados/Servicios/Habitacion/habitacion.html', data)
 
-
+@login_required
 def edit_habitacion(request, id):
     imagen = ''
     nom = ''
@@ -1568,10 +1571,9 @@ def edit_habitacion(request, id):
     tipo_habitacion = ''
     estados_hab_db = ''
     estado_habitacion = ''
+
     with connection.cursor() as cursor:
         try:
-
-           
             #HABITACIÓN A MODIFICAR
             cursor.execute(f"""SELECT ID_HABITACION AS "0", NUMERO_HABITACION AS "1", PRECIO AS "2", DESCRIPCION AS "3", 
                            ID_ESTADO_HABITACION  AS "4", 
@@ -1579,20 +1581,26 @@ def edit_habitacion(request, id):
                            FROM HABITACION WHERE ID_HABITACION ={id}""")
             habitacion_db = cursor.fetchone()
 
-            cursor.execute("SELECT * FROM TIPO_HABITACION WHERE ESTADO = 1")
+            cursor.execute("""
+                SELECT ID_TIPO_HABITACION AS "0", DESCRIPCION AS "1", ESTADO AS "2", CAPACIDAD AS "3" FROM TIPO_HABITACION WHERE ESTADO = 1 
+            """)
             tipos_habitacion_db = cursor.fetchall()
 
-            cursor.execute("SELECT * FROM ESTADO_HABITACION")
+            cursor.execute("""
+                SELECT ID_ESTADO_HABITACION AS "0", DESCRIPCION AS "1" FROM ESTADO_HABITACION
+                """)
             estados_hab_db = cursor.fetchall()
 
 
             if habitacion_db[5] is not None:
-                cursor.execute(
-                    "SELECT * FROM TIPO_HABITACION WHERE ID_TIPO_HABITACION = %s", [habitacion_db[5]])
+                cursor.execute(f"""
+                    SELECT ID_TIPO_HABITACION AS "0", DESCRIPCION AS "1", ESTADO AS "2", CAPACIDAD AS "3" FROM TIPO_HABITACION WHERE ID_TIPO_HABITACION = {habitacion_db[5]}
+                """)
                 tipo_habitacion = cursor.fetchone()
             if habitacion_db[4] is not None:
-                cursor.execute(
-                    "SELECT * FROM ESTADO_HABITACION WHERE ID_ESTADO_HABITACION = %s", [habitacion_db[4]])
+                cursor.execute(f"""
+                    SELECT ID_ESTADO_HABITACION AS "0", DESCRIPCION AS "1" FROM ESTADO_HABITACION WHERE ID_ESTADO_HABITACION = {habitacion_db[4]}
+                """)
                 estado_habitacion = cursor.fetchone()
 
 
@@ -1671,7 +1679,7 @@ def edit_habitacion(request, id):
     }
     return render(request, 'Empleados/Servicios/Habitacion/edit_habitacion.html', data)
 
-
+@login_required
 def elim_habitacion(request, id):
     with connection.cursor() as cursor:
         try:
@@ -1684,7 +1692,7 @@ def elim_habitacion(request, id):
 
     return redirect('habitaciones-list')
 
-
+@login_required
 def habitaciones(request):
     habitaciones_list =''
     with connection.cursor() as cursor:
@@ -1708,7 +1716,7 @@ def habitaciones(request):
 
     return render(request, 'Empleados/Servicios/Habitacion/habitaciones.html', data)
 
-
+@login_required
 def tipo_habitacion(request):
     tipo_habitaciones = ''
     accesorios =''
@@ -1787,7 +1795,7 @@ def tipo_habitacion(request):
                 request, 'Complete los Campos Obligatorios para Continuar, estos se identifican con (*)')
     return render(request, 'Empleados/Servicios/Habitacion/tipo_habitacion.html', data)
 
-
+@login_required
 def edit_tipo_hab(request, id):
     accesorios = []
     accesorios_list = []
@@ -1801,7 +1809,7 @@ def edit_tipo_hab(request, id):
                     request, 'El Tipo de Habitación que desea editar No Existe o fue eliminado')
                 return redirect('tipo-habitacion')
             tipo_habitacion = TipoHabitacion()
-            tipo_habitacion.id = id
+            tipo_habitacion.id_tipo_habitacion = id
             tipo_habitacion.descripcion = tipo_hab_db[0]
             tipo_habitacion.estado = tipo_hab_db[1]
             tipo_habitacion.capacidad = tipo_hab_db[2]
@@ -1811,7 +1819,8 @@ def edit_tipo_hab(request, id):
                 "SELECT ID_ACCESORIO FROM HABITACION_ACCESORIO WHERE ID_TIPO_HABITACION = %s", [id])
             accesorios_hab_db = cursor.fetchall()
             accesorios = []
-
+            print("accesorios habitacion")
+            print(accesorios_hab_db)
             for accesorio in accesorios_hab_db:
                 cursor.execute(
                     "SELECT ID_ACCESORIO, DESCRIPCION FROM ACCESORIO WHERE ID_ACCESORIO = %s", [accesorio[0]])
@@ -1819,7 +1828,7 @@ def edit_tipo_hab(request, id):
                 print(accesorios_db)
 
                 accesorio_m = Accesorio()
-                accesorio_m.id = accesorios_db[0]
+                accesorio_m.id_accesorio = accesorios_db[0]
                 accesorio_m.descripcion = accesorios_db[1]
 
                 accesorios.append(accesorio_m)
@@ -1830,7 +1839,7 @@ def edit_tipo_hab(request, id):
 
             for accesorio in accesorios_db_list:
                 accesorio_m = Accesorio()
-                accesorio_m.id = accesorio[0]
+                accesorio_m.id_accesorio = accesorio[0]
                 accesorio_m.descripcion = accesorio[1]
 
                 accesorios_list.append(accesorio_m)
@@ -1838,6 +1847,10 @@ def edit_tipo_hab(request, id):
         except Exception as e:
             print(e)
             pass
+    print(accesorios_list)
+
+    if len(accesorios) == 0:
+        accesorios.append(Accesorio())
 
     data = {
         'tipo_habitacion': tipo_habitacion,
@@ -1886,7 +1899,7 @@ def edit_tipo_hab(request, id):
 
     return render(request, 'Empleados/Servicios/Habitacion/edit_tipo_hab.html', data)
 
-
+@login_required
 def elim_tipo_hab(request, id):
     with connection.cursor() as cursor:
         try:
@@ -1900,19 +1913,20 @@ def elim_tipo_hab(request, id):
 
     return redirect('tipo-habitacion')
 
-
+@login_required
 def accesorios(request):
     accesorios = ''
     with connection.cursor() as cursor:
         try:
-            cursor.execute(
-                "SELECT ID_ACCESORIO, DESCRIPCION, ESTATUS FROM ACCESORIO")
+            cursor.execute("""
+                SELECT ID_ACCESORIO AS "0", DESCRIPCION AS "1", ESTATUS AS "2" FROM ACCESORIO
+            """)
             accesorios_db = cursor.fetchall()
             accesorios = []
 
             for accesorio in accesorios_db:
                 accesorios_m = Accesorio()
-                accesorios_m.id = accesorio[0]
+                accesorios_m.id_accesorio = accesorio[0]
                 accesorios_m.descripcion = accesorio[1]
                 accesorios_m.estatus = accesorio[2]
 
@@ -1953,7 +1967,7 @@ def accesorios(request):
 
     return render(request, 'Empleados/Servicios/Habitacion/accesorios.html', data)
 
-
+@login_required
 def edit_accesorios(request, id):
     with connection.cursor() as cursor:
         try:
@@ -2004,7 +2018,7 @@ def edit_accesorios(request, id):
 
     return render(request, 'Empleados/Servicios/Habitacion/edit_accesorio.html', data)
 
-
+@login_required
 def eliminar_accesorios(request, id):
     with connection.cursor() as cursor:
         try:
@@ -2018,7 +2032,7 @@ def eliminar_accesorios(request, id):
 
 # ***Módulo:Empleados*** Opción: servicios comedor
 
-
+@login_required
 def nuevo_plato(request):
     imagen = ''
     nom = ''
@@ -2100,7 +2114,7 @@ def nuevo_plato(request):
 
     return render(request, 'Empleados/Servicios/Comedor/plato.html', data)
 
-
+@login_required
 def edit_plato(request, id):
     imagen = ''
     nom = ''
@@ -2214,7 +2228,7 @@ def edit_plato(request, id):
 
     return render(request, 'Empleados/Servicios/Comedor/edit-plato.html', data)
 
-
+@login_required
 def eliminar_platos(request, id):
     with connection.cursor() as cursor:
         try:
@@ -2226,7 +2240,7 @@ def eliminar_platos(request, id):
     messages.success(request, "Eliminado correctamente")
     return redirect('platos-list')
 
-
+@login_required
 def platos(request):
     platos = ''
     with connection.cursor() as cursor:
@@ -2246,14 +2260,14 @@ def platos(request):
     }
     return render(request, 'Empleados/Servicios/Comedor/platos.html', data)
 
-
+@login_required
 def tipo_comedor(request):
     nombre_tipo = ''
     estado = ''
     tipo_comedor = ''
     with connection.cursor() as cursor:
         try:
-            cursor.execute("""SELECT * FROM TIPO_COMEDOR """)
+            cursor.execute("""SELECT ID_TIPO_COMEDOR AS "0", DESCRIPCION AS "1", ESTADO AS "2", PRECIO AS "3" FROM TIPO_COMEDOR """)
             tipo_comedor = cursor.fetchall()
 
         except Exception as e:
@@ -2290,12 +2304,12 @@ def tipo_comedor(request):
 
     return render(request, 'Empleados/Servicios/Comedor/tipo_comedor.html', data)
 
-
+@login_required
 def edit_tipo_comedor(request, id):
     tipo_c = ''
     with connection.cursor() as cursor:
         try:
-            cursor.execute(f"SELECT * FROM TIPO_COMEDOR WHERE ID_TIPO_COMEDOR = {id}")
+            cursor.execute(f"""SELECT ID_TIPO_COMEDOR AS "0", DESCRIPCION AS "1", ESTADO AS "2", PRECIO AS "3" FROM TIPO_COMEDOR WHERE ID_TIPO_COMEDOR = {id}""")
             tipo_c = cursor.fetchone()
             if not tipo_c:
                 messages.error(
@@ -2335,7 +2349,7 @@ def edit_tipo_comedor(request, id):
     }
     return render(request, 'Empleados/Servicios/Comedor/edit_tipo_comedor.html', data)
 
-
+@login_required
 def eliminar_tipo_comedor(request, id):
     with connection.cursor() as cursor:
         try:
@@ -2349,7 +2363,7 @@ def eliminar_tipo_comedor(request, id):
 
 # ***Módulo:Empleados*** Opción: servicios adicionales
 
-
+@login_required
 def nuevo_servicio_ad(request):
     imagen = ''
     nom = ''
@@ -2423,15 +2437,18 @@ def nuevo_servicio_ad(request):
 
     return render(request, 'Empleados/Servicios/Adicional/servicio-ad.html', data)
 
-
+@login_required
 def servicios_ad(request):
     servicios = ''
     with connection.cursor() as cursor:
         try:
             cursor.execute("""
-                    SELECT * FROM SERVICIO_ADICIONAL
+                    SELECT ID_SERVICIO AS "0", NOMBRE AS "1", DESCRIPCION AS "2", PRECIO AS "3", MOSTRAR_INICIO AS "4", IMAGEN AS "5", 
+                    ESTADO AS "6" 
+                    FROM SERVICIO_ADICIONAL
                 """)
             servicios = cursor.fetchall()
+            print(servicios)
 
         except Exception as e:
             print(e)
@@ -2442,7 +2459,7 @@ def servicios_ad(request):
     }
     return render(request, 'Empleados/Servicios/Adicional/servicios-ad.html', data)
 
-
+@login_required
 def edit_servicioad(request, id):
     imagen = ''
     nom = ''
@@ -2540,7 +2557,7 @@ def edit_servicioad(request, id):
 
     return render(request, 'Empleados/Servicios/Adicional/edit-servicio-ad.html', data)
 
-
+@login_required
 def eliminar_servicioad(request, id):
     with connection.cursor() as cursor:
         try:
@@ -2554,6 +2571,7 @@ def eliminar_servicioad(request, id):
 
 
 # ***Módulo:Empleados*** Opción: servicios productos
+@login_required
 def nuevo_producto(request):
     proveedor = ''
     proveedor2 = ''
@@ -2668,7 +2686,7 @@ def nuevo_producto(request):
 
     return render(request, 'Empleados/Productos/producto.html', data)
 
-
+@login_required
 def edit_producto(request,id):
     #Variables de Data del Producto
     data_producto =''
@@ -2777,6 +2795,7 @@ def edit_producto(request,id):
     }    
     return render(request, 'Empleados/Productos/edit_producto.html', data)
 
+@login_required
 def eliminar_producto(request, id):
     with connection.cursor() as cursor:
         try:
@@ -2788,7 +2807,7 @@ def eliminar_producto(request, id):
     messages.success(request, "Producto Eliminado correctamente")
     return redirect('productos-list')
 
-
+@login_required
 def productos(request):
     productos = ''
     i = 0
@@ -2830,7 +2849,7 @@ def productos(request):
     }
     return render(request, 'Empleados/Productos/productos.html', data)
 
-
+@login_required
 def tipo_producto(request):
     nombre_tipo = ''
     estado = ''
@@ -2875,6 +2894,7 @@ def tipo_producto(request):
 
     return render(request, 'Empleados/Productos/tipo_producto.html', data)
 
+@login_required
 def edit_tipo_producto(request, id):
 
     with connection.cursor() as cursor:
@@ -2921,7 +2941,7 @@ def edit_tipo_producto(request, id):
     }
     return render(request, 'Empleados/Productos/edit_tipo_prod.html', data)
 
-
+@login_required
 def eliminar_tipo_producto(request, id):
     with connection.cursor() as cursor:
         try:
@@ -2933,7 +2953,7 @@ def eliminar_tipo_producto(request, id):
     messages.success(request, "Eliminado correctamente")
     return redirect('tipo-producto')
 
-
+@login_required
 def categoria(request):
     categoria = ''
     estado = ''
@@ -2976,7 +2996,7 @@ def categoria(request):
     }
     return render(request, 'Empleados/Productos/categoria.html', data)
 
-
+@login_required
 def edit_categoria(request, id):
 
     with connection.cursor() as cursor:
@@ -3022,7 +3042,7 @@ def edit_categoria(request, id):
     }
     return render(request, 'Empleados/Productos/edit_categoria.html', data)
 
-
+@login_required
 def eliminar_categoria(request, id):
     with connection.cursor() as cursor:
         try:
@@ -3036,7 +3056,7 @@ def eliminar_categoria(request, id):
 
 
 # ***Módulo:Empleados*** Opción: ordenes pedidos
-
+@login_required
 def nueva_ordenPedido(request):
     mensaje = ''
     idProveedor = ''
@@ -3183,7 +3203,7 @@ def nueva_ordenPedido(request):
 
     return render(request, 'Empleados/OrdenesPedidos/orden_pedido.html', data)
 
-
+@login_required
 def ordenes_pedido(request):
     ordenes_pedido_db = None
 
@@ -3215,7 +3235,7 @@ def ordenes_pedido(request):
 
     return render(request, 'Empleados/OrdenesPedidos/ordenes_pedido.html', data)
 
-
+@login_required
 def edit_ordenPedido(request, id):
     orden_pedido_db = None
     detalle_orden_pedido_db = None
@@ -3289,6 +3309,7 @@ def edit_ordenPedido(request, id):
 
     return render(request, 'Empleados/OrdenesPedidos/edit_orden_pedido.html', data)
 
+@login_required
 def check_ordenPedido(request, id):
     orden_pedido_db = None
     detalle_orden_pedido_db = None
@@ -3360,6 +3381,7 @@ def check_ordenPedido(request, id):
 
     return render(request, 'Empleados/OrdenesPedidos/check_rec_pedidos.html', data)
 
+@login_required
 def anular_ordenPedido(request, id):
     with connection.cursor() as cursor:
         try:
@@ -3378,6 +3400,7 @@ def anular_ordenPedido(request, id):
 
     return redirect('ordenes-pedidos-list')
 
+@login_required
 def rechazar_ordenPedido(request, id):
     with connection.cursor() as cursor:
         try:
@@ -3397,6 +3420,7 @@ def rechazar_ordenPedido(request, id):
     return redirect('ordenes-pedidos-list')
 
 #CAMBIAR FORMATO DE FECHA AL PASAR A PRODUCTIVO (ORACLE)
+@login_required
 def documentos(request):
     docs = ''
     
@@ -3429,6 +3453,7 @@ def documentos(request):
 
     return render(request, 'Empleados/Ventas/ventas.html',data)
 
+@login_required
 def facturarOC(request, id):
     fechaEmision = ''
     with connection.cursor() as cursor:
@@ -3467,6 +3492,7 @@ def facturarOC(request, id):
     return redirect('oc-list-views') 
 
 #Anular Factura
+@login_required
 def notaCredito(request, id):
     fechaEmision = ''
     with connection.cursor() as cursor:
@@ -3528,7 +3554,7 @@ def notaCredito(request, id):
     
     return redirect('ventas') 
 
-    
+@login_required
 def orden_compra_views(request):
     ordenes_compras = ''
     ids = ''
@@ -3559,6 +3585,7 @@ def orden_compra_views(request):
 
     return render(request, 'Empleados/Ventas/oc-views.html', data)
 
+@login_required
 def reservas(request):
     fdesde = ''
     fhasta = ''
@@ -3582,7 +3609,7 @@ def reservas(request):
                             SELECT R.ID_RESERVA AS "0", DOC.id_orden_de_compra AS "1", CL.razon_social AS "2", (H.rut ||'-'|| H.dv) AS "3 RUT",
                             (H.nombre ||' '|| H.apellido_p) AS "4 NOMBRE",TC.descripcion AS "5",HA.numero_habitacion AS "6",
                             THA.descripcion AS "7",  DOC.inicio_estadia AS "8 INI. ESTADIA", DOC.final_estadia AS "9 FIN. ESTADIA", 
-                            R.check_in AS "10"
+                            R.check_in AS "10", tc.precio AS "11" 
                             FROM RESERVA R
                             JOIN DETALLE_ORDEN_COMPRA DOC ON R.ID_DETALLE_ORDEN_DE_COMPRA = DOC.ID_DETALLE_ORDEN_DE_COMPRA
                             JOIN ORDEN_COMPRA OC ON DOC.ID_ORDEN_DE_COMPRA = OC.ID_ORDEN_DE_COMPRA
@@ -3608,6 +3635,7 @@ def reservas(request):
 
     return render(request, 'Empleados/Ventas/reservas.html', data)
 
+@login_required
 def check_in(request,id):
     huesped = ''
     platos = ''
@@ -3686,7 +3714,7 @@ def check_in(request,id):
     return render(request, 'Empleados/Ventas/check-in.html', data)
 
 
-
+@login_required
 def print_pedidos(request, id):
     datos_empresa = ''
     orden_pedido_db = ''
@@ -3744,9 +3772,12 @@ def print_pedidos(request, id):
         'total_op':total_op
     }
     return render(request, 'Empleados/OrdenesPedidos/print_pedidos.html', data)
+
+@login_required
 def comentarios(request):
     return render(request, 'Empleados/comentarios.html')
 
+@login_required
 def informes(request):
 
     informe = ''
@@ -3780,6 +3811,7 @@ def informes(request):
     }
     return render(request, 'Empleados/Informes/informe.html', data)
 
+@login_required
 def informe_print(request, op, fd=None, fh=None):
     usuarios = ''
     usuarios_tt = 0

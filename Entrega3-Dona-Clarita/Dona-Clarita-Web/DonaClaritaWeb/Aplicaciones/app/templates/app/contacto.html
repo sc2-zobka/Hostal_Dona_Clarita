@@ -39,7 +39,7 @@
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
-                    <input type="text" name="name" class="form-control form-control-lg form-control-a" placeholder="Nombre de Contacto" >
+                    <input required type="text" name="name" class="form-control form-control-lg form-control-a" placeholder="Nombre de Contacto" >
                   </div>
                 </div>
                 <div class="col-md-6 mb-3">
@@ -49,17 +49,17 @@
                 </div>
                 <div class="col-md-12 mb-3">
                   <div class="form-group">
-                    <input name="email" type="email" class="form-control form-control-lg form-control-a" placeholder="Correo electrónico" >
+                    <input required name="email" type="email" class="form-control form-control-lg form-control-a" placeholder="Correo electrónico" >
                   </div>
                 </div>                    
                 <div class="col-md-12 mb-3">
                   <div class="form-group">
-                    <input type="text" name="subject" class="form-control form-control-lg form-control-a" placeholder="Asunto" >
+                    <input required type="text" name="subject" class="form-control form-control-lg form-control-a" placeholder="Asunto" >
                   </div>
                 </div>
                 <div class="col-md-12">
                   <div class="form-group">
-                    <textarea name="message" class="form-control" name="message" cols="45" rows="8" placeholder="Ingrese su Mensaje..." ></textarea>
+                    <textarea required name="message" class="form-control" name="message" cols="45" rows="8" placeholder="Ingrese su Mensaje..." ></textarea>
                   </div>
                 </div>
                 <div class="col-md-12 my-3">
@@ -166,4 +166,39 @@
     </div>
   </div>
 </section><!-- End Contact Single-->
+{% endblock %}
+
+{% block js %}
+{{ messages }}
+{% if messages %}
+<div>
+	{% for message in messages %}
+	{% if message.tags  == 'error'%}
+	<script>
+		Swal.fire({
+			title: "Error en Validación",
+			text: "{{message}}",
+			icon: "error"
+		})
+	</script>
+	{% elif message.tags  == 'warning'%}
+	<script>
+		Swal.fire({
+			title: "¡Atención!",
+			text: "{{message}}",
+			icon: "warning"
+		})
+	</script>	
+	{% else %}
+	<script>
+		Swal.fire({
+			title: "Información de contacto",
+			text: "{{message}}",
+			icon: "success"
+		})
+	</script>
+	{% endif %}
+	{% endfor %}
+</div>
+{% endif %}
 {% endblock %}

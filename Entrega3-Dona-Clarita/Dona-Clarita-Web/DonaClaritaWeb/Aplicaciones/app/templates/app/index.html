@@ -132,7 +132,7 @@
               <div class="card-overlay-a-content">
                 <div class="card-header-a">
                   <h2 class="card-title-a">
-                    <a href="{% url 'det-habitacion' %}">Habitación
+                    <a href="{% url 'det-habitacion' habitacion.0 %}">Habitación
                       <br>N° {{ habitacion.1 }}</a>
                   </h2>
                 </div>
@@ -143,7 +143,7 @@
                   <div class="price-box d-flex">
                     <span class="price-a">Valor Noche | {{ habitacion.3|intcomma }} {{ codigo_moneda_s }}</span>
                   </div>
-                  <a href="{% url 'det-habitacion' %}" class="link-a">Ver más
+                  <a href="{% url 'det-habitacion' habitacion.0 %}" class="link-a">Ver más
                     <span class="bi bi-chevron-right"></span>
                   </a>
                 </div>

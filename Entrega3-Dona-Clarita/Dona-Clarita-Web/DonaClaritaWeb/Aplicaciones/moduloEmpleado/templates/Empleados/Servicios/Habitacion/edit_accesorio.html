@@ -51,7 +51,7 @@
 												<div class="form-group">
 													<label>Estado <strong class="text-danger">*</strong></label>
 													<select name="acces-sel" id="" class="form-control cb-simple">
-														{% if accesorio.estatus %}
+														{% if accesorio.estatus == "1" %}
 															<option value="1" selected>Activo</option>
 															<option value="0">Inactivo</option>
 														{% else %}

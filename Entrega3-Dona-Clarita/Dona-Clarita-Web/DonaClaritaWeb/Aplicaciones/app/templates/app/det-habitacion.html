@@ -1,6 +1,9 @@
 {% extends 'app/base.html' %}
 {% load static %}
 {% block title %}Nombre Habitación{% endblock%}
+
+{% load humanize %}
+
 {% block contenido %}
      <!-- ======= Intro Single ======= -->
      <section class="intro-single">
@@ -37,10 +40,7 @@
             <div id="property-single-carousel" class="swiper-container">
               <div class="swiper-wrapper">
                 <div class="carousel-item-b swiper-slide">
-                  <img src="{% static 'app/assets/img/banner2.jpg' %}" alt="Nombre habitacion" class="imgdet">
-                </div>
-                <div class="carousel-item-b swiper-slide">
-                  <img src="{% static 'app/assets/img/banner1.jpg' %}" alt="Nombre habitacion" class="imgdet">
+                  <img src="../../media/Habitaciones/{{habitacion.7}}" alt="Nombre habitacion" class="imgdet">
                 </div>
               </div>
             </div>
@@ -56,10 +56,11 @@
                 <div class="property-price d-flex justify-content-center foo">
                   <div class="card-header-c d-flex">
                     <div class="card-box-ico">
-                      <span class="bi bi-cash">$</span>
+                      <span class="bi bi-cash"></span>
                     </div>
                     <div class="card-title-c align-self-center">
-                      <h5 class="title-c">15000</h5>
+                      <h5 class="title-c">$ {{ habitacion.2|intcomma }} {{ codigo_moneda_p }}</h5>
+                      <h5 class="title-c">$ {{ habitacion.3|intcomma }} {{ codigo_moneda_s }}</h5>
                     </div>
                   </div>
                 </div>
@@ -68,22 +69,13 @@
                 <div class="row">
                   <div class="col-sm-12">
                     <div class="title-box-d">
-                      <h3 class="title-d">Descripción Habitación 1</h3>
+                      <h3 class="title-d">Descripción Habitación {{ habitacion.1 }}</h3>
                     </div>
                   </div>
                 </div>
                 <div class="property-description">
                   <p class="description color-text-b">
-                    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit
-                    neque, auctor sit amet
-                    aliquam vel, ullamcorper sit amet ligula. Cras ultricies ligula sed magna dictum porta.
-                    Curabitur aliquet quam id dui posuere blandit. Mauris blandit aliquet elit, eget tincidunt
-                    nibh pulvinar quam id dui posuere blandit.
-                  </p>
-                  <p class="description color-text-b no-margin">
-                    Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget
-                    malesuada. Quisque velit nisi,
-                    pretium ut lacinia in, elementum id enim. Donec sollicitudin molestie malesuada.
+                    {{ habitacion.4 }}
                   </p>
                 </div>                
                 </div>
@@ -147,7 +139,7 @@
                   <div class="card-overlay-a-content">
                     <div class="card-header-a">
                       <h2 class="card-title-a">
-                        <a href="{% url 'det-habitacion' %}">Nombre
+                        <a href="{% url 'det-habitacion' habitacion.0 %}">Nombre
                           <br> Habitación</a>
                       </h2>
                     </div>
@@ -189,7 +181,7 @@
                   <div class="card-overlay-a-content">
                     <div class="card-header-a">
                       <h2 class="card-title-a">
-                        <a href="{% url 'det-habitacion' %}">Nombre
+                        <a href="{% url 'det-habitacion' habitacion.0 %}">Nombre
                           <br> Habitación</a>
                       </h2>
                     </div>
@@ -231,7 +223,7 @@
                   <div class="card-overlay-a-content">
                     <div class="card-header-a">
                       <h2 class="card-title-a">
-                        <a href="{% url 'det-habitacion' %}">Nombre
+                        <a href="{% url 'det-habitacion' habitacion.0 %}">Nombre
                           <br> Habitación</a>
                       </h2>
                     </div>
@@ -273,7 +265,7 @@
                   <div class="card-overlay-a-content">
                     <div class="card-header-a">
                       <h2 class="card-title-a">
-                        <a href="{% url 'det-habitacion' %}">Nombre
+                        <a href="{% url 'det-habitacion' habitacion.0 %}">Nombre
                           <br> Habitación</a>
                       </h2>
                     </div>

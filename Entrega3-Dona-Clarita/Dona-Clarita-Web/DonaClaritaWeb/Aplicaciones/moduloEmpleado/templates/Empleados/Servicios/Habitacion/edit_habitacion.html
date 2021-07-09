@@ -44,10 +44,10 @@
 												<div class="form-group">													
 													<select  class="cb-single form-control" name="tip-hab">
 														{% for tipo_habitacion in tipos_habitaciones %}
-															{% if habitacion_m.tipo_habitacion.id == tipo_habitacion.id %}
-															<option value="{{ tipo_habitacion.id }}" selected>{{ tipo_habitacion.descripcion }}</option>
+															{% if habitacion_db.0 == tipo_habitacion.0 %}
+															<option value="{{ tipo_habitacion.0 }}" selected>{{ tipo_habitacion.1 }}</option>
 															{% else %}
-															<option value="{{ tipo_habitacion.id }}">{{ tipo_habitacion.descripcion }}</option>
+															<option value="{{ tipo_habitacion.0 }}">{{ tipo_habitacion.1 }}</option>
 															{% endif %}
 														{% endfor %}
 													  </select>
@@ -57,14 +57,14 @@
 												<div class="form-group">
 													<label>N° Habitación <strong class="text-danger">*</strong></label>
 													<input type="number" class="form-control" name="nro_hab" min="1"
-														placeholder="Ingrese N° Habitación" value="{{ habitacion.numero_habitacion }}" disabled>
+														placeholder="Ingrese N° Habitación" value="{{ habitacion_db.1 }}" disabled>
 												</div>
 											</div>	
 											<div class="col-xl-4 offset-lg-12">
 												<div class="form-group">
 													<label>Precio <strong class="text-danger">*</strong></label>
 													<input type="number" class="form-control" name="precio" min="1"
-														placeholder="Ingrese Precio Habitación" value="{{ habitacion.precio }}">
+														placeholder="Ingrese Precio Habitación" value="{{ habitacion_db.2 }}">
 												</div>
 											</div>																											
 										</div>
@@ -75,10 +75,10 @@
 													<label>Disponibilidad <strong class="text-danger">*</strong></label>
 													<select name="disp_sel" id="" class="cb-single form-control">
 														{% for estado in estados %}
-															{% if habitacion_m.estado_habitacion.id == estado.id %}
-															<option value="{{ estado.id }}" selected>{{ estado.descripcion }}</option>
+															{% if habitacion_db.4 == estado.0 %}
+															<option value="{{ estado.0 }}" selected>{{ estado.1 }}</option>
 															{% else %}
-															<option value="{{ estado.id }}">{{ estado.descripcion }}</option>
+															<option value="{{ estado.0 }}">{{ estado.1 }}</option>
 															{% endif %}
 														{% endfor %}
 													</select>
@@ -88,7 +88,7 @@
 												<div class="form-group">
 													<label>Estado <strong class="text-danger">*</strong></label>
 													<select name="estado" id="" class="cb-single form-control">
-														{% if habitacion.estado %}
+														{% if habitacion_db.6 == "1" %}
 															<option class="text-center" value="1" selected>Activa</option>
 															<option class="text-center" value="0">Inactiva</option>
 														{% else %}
@@ -102,7 +102,7 @@
 												<div class="form-group">
 													<label>Muestra Menú <strong class="text-danger">*</strong></label>
 													<select name="mues_sel" id="" class="cb-single form-control">
-														{% if habitacion.muestra_menu %}
+														{% if habitacion_db.7 == "1" %}
 															<option class="text-center" value="1" selected>Sí</option>
 															<option class="text-center" value="0">No</option>
 														{% else %}
@@ -118,7 +118,7 @@
 												<div class="form-group">
 													<label>Descripción <strong class="text-danger">*</strong></label>
 													<textarea class="form-control" name="descripcion" cols="30" rows="5"
-														placeholder="Ingrese Descripción de Habitación...">{{ habitacion.descripcion }}</textarea>
+														placeholder="Ingrese Descripción de Habitación...">{{ habitacion_db.3 }}</textarea>
 												</div>
 											</div>
 										</div>

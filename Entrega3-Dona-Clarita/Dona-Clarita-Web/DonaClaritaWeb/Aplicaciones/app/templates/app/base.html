@@ -24,6 +24,8 @@
 
     <!-- Template Main CSS File -->
     <link href="{% static 'app/assets/css/style.css' %}" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 </head>
 
 <body>
@@ -78,11 +80,6 @@
                             <a class="dropdown-item active" href="{% url 'habitaciones' %}">Ver Todas</a>
                             {% else %}
                             <a class="dropdown-item" href="{% url 'habitaciones' %}">Ver Todas</a>
-                            {% endif %}
-                            {% if request.path == '/det-habitacion/' %}
-                            <a class="dropdown-item active" href="{% url 'det-habitacion' %}">Habitación 1</a>
-                            {% else %}
-                            <a class="dropdown-item " href="{% url 'det-habitacion' %}">Habitación 1</a>
                             {% endif %}
                         </div>
                     </li>
@@ -256,6 +253,10 @@
     <script src="{% static 'app/assets/js/jquery-3.2.1.min.js' %}"></script>
     <script src="{% static 'app/assets/js/popper.min.js' %}"></script>
     <script src="{% static 'app/assets/js/bootstrap.min.js' %}"></script>
+
+    {% block js %}
+
+    {% endblock %}
 </body>
 
 </html>

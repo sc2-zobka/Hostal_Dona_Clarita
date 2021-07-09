@@ -27,7 +27,7 @@
                 <label>Servicios Adicionales</label>
                 <select class="cb-multiple form-control" name="servicio_ad" multiple="multiple" id="servicio_ad">
                     {% for servicio in servicios_list %}
-                        <option value="{{ servicio.id }}">{{ servicio.nombre }} | {% if servicio.precio == 0 %}Gratis{% else %}${{ servicio.precio }}{% endif %} </option>
+                        <option value="{{ servicio.id_servicio }}">{{ servicio.nombre }} | {% if servicio.precio == 0 %}Gratis{% else %}${{ servicio.precio }}{% endif %} </option>
                     {% endfor %}
                 </select><br>
                 <small><i class="fa fa-info-circle"></i> <strong>Tenga en

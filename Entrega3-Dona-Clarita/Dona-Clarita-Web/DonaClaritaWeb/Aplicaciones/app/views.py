@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.shortcuts import redirect, render
 from django.db import connection
 from random import sample
 
@@ -88,10 +89,94 @@ def acercade(request):
     return render(request, 'app/acercade.html')
 
 def habitaciones(request):
-    return render(request, 'app/habitaciones.html')
+    data = {}
 
-def det_habitacion(request):
-    return render(request, 'app/det-habitacion.html')
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                SELECT TM.VALOR_PESO, TM.CODIGO_MONEDA
+                FROM TIPO_MONEDA TM 
+                JOIN CONFIGURACION CO ON TM.CODIGO_MONEDA = DIVISA_PRINCIPAL
+            """)
+            divisa_principal = cursor.fetchone()
+            print(divisa_principal)
+            data["codigo_moneda_p"] = divisa_principal[1]
+
+            cursor.execute("""
+                SELECT TM.VALOR_PESO, TM.CODIGO_MONEDA
+                FROM TIPO_MONEDA TM  
+                JOIN CONFIGURACION CO ON TM.CODIGO_MONEDA = DIVISA_SECUNDARIA
+            """)
+            divisa_secundaria = cursor.fetchone()
+            print(divisa_secundaria)
+            data["codigo_moneda_s"] = divisa_secundaria[1]
+
+            cursor.execute(f"""
+                        SELECT HA.ID_HABITACION AS "0", HA.NUMERO_HABITACION AS "1", HA.PRECIO * {divisa_principal[0]} AS "2", ROUND(HA.PRECIO / {divisa_secundaria[0]}, 2) AS "3", 
+                        HA.DESCRIPCION AS "4", HA.ID_ESTADO_HABITACION AS "5", HA.ID_TIPO_HABITACION AS "6", HA.IMAGEN AS "7", THA.CAPACIDAD AS "8" 
+                        FROM HABITACION HA
+                        JOIN TIPO_HABITACION THA ON HA.ID_TIPO_HABITACION = THA.ID_TIPO_HABITACION
+                        WHERE MUESTRA_MENU = 1
+                    """)
+            habitaciones = list(cursor.fetchall())
+            data["habitaciones"] = habitaciones
+    except Exception as e:
+        print(e)
+        pass
+
+    return render(request, 'app/habitaciones.html', data)
+
+def det_habitacion(request, id):
+    data = {}
+
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                SELECT TM.VALOR_PESO, TM.CODIGO_MONEDA
+                FROM TIPO_MONEDA TM 
+                JOIN CONFIGURACION CO ON TM.CODIGO_MONEDA = DIVISA_PRINCIPAL
+            """)
+            divisa_principal = cursor.fetchone()
+            print(divisa_principal)
+            data["codigo_moneda_p"] = divisa_principal[1]
+
+            cursor.execute("""
+                SELECT TM.VALOR_PESO, TM.CODIGO_MONEDA
+                FROM TIPO_MONEDA TM  
+                JOIN CONFIGURACION CO ON TM.CODIGO_MONEDA = DIVISA_SECUNDARIA
+            """)
+            divisa_secundaria = cursor.fetchone()
+            print(divisa_secundaria)
+            data["codigo_moneda_s"] = divisa_secundaria[1]
+
+            cursor.execute(f"""
+                        SELECT HA.ID_HABITACION AS "0", HA.NUMERO_HABITACION AS "1", HA.PRECIO * {divisa_principal[0]} AS "2", ROUND(HA.PRECIO / {divisa_secundaria[0]}, 2) AS "3", 
+                        HA.DESCRIPCION AS "4", HA.ID_ESTADO_HABITACION AS "5", HA.ID_TIPO_HABITACION AS "6", HA.IMAGEN AS "7", THA.CAPACIDAD AS "8" 
+                        FROM HABITACION HA
+                        JOIN TIPO_HABITACION THA ON HA.ID_TIPO_HABITACION = THA.ID_TIPO_HABITACION
+                        WHERE MUESTRA_MENU = 1 AND HA.ID_HABITACION = {id}
+                    """)
+            habitacion = cursor.fetchone()
+            data["habitacion"] = habitacion
+
+            cursor.execute(f"""
+                        SELECT HA.ID_HABITACION AS "0", HA.NUMERO_HABITACION AS "1", HA.PRECIO * {divisa_principal[0]} AS "2", ROUND(HA.PRECIO / {divisa_secundaria[0]}, 2) AS "3", 
+                        HA.DESCRIPCION AS "4", HA.ID_ESTADO_HABITACION AS "5", HA.ID_TIPO_HABITACION AS "6", HA.IMAGEN AS "7", THA.CAPACIDAD AS "8" 
+                        FROM HABITACION HA
+                        JOIN TIPO_HABITACION THA ON HA.ID_TIPO_HABITACION = THA.ID_TIPO_HABITACION
+                        WHERE MUESTRA_MENU = 1
+                    """)
+            habitaciones = list(cursor.fetchall())
+            data["habitaciones"] = habitaciones
+    except Exception as e:
+        print(e)
+        pass
+
+    return render(request, 'app/det-habitacion.html', data)
 
 def contacto(request):
+    if request.method == "POST":
+        messages.success(request, "Contacto agregado correctamente. Prontamente nos pondremos en contacto con usted")
+        return redirect("contacto")
+
     return render(request, 'app/contacto.html')

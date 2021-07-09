@@ -108,7 +108,7 @@
 													<td>{{ tipo_habitacion.descripcion }}</td>
 													<td>{{ tipo_habitacion.capacidad }}</td>
 													<td class="text-center">
-														{% if tipo_habitacion.estado %}
+														{% if tipo_habitacion.estado == "1" %}
 														<span
 															class="badge badge-pill bg-success inv-badge">Activo</span>
 														{% else %}
@@ -122,7 +122,7 @@
 																href="{% url 'edit-tipo-habitacion' tipo_habitacion.id %}">
 																<i class="fa fa-pencil"></i> Editar
 															</a>
-															{% if tipo_habitacion.estado %}
+															{% if tipo_habitacion.estado == "1" %}
 															<a class="btn btn-sm bg-danger-light"
 																onClick="eliminar({{ tipo_habitacion.id }})" href="#">
 																<i class="fa fa-trash"></i> Eliminar

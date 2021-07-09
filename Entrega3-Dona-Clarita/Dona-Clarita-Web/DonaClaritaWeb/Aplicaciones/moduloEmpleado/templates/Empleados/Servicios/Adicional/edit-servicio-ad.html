@@ -60,7 +60,7 @@
 												<div class="form-group">
 													<label>¿Muestra Menú? <strong class="text-danger">*</strong></label>
 													<select name="muestra" id="" class="cb-single form-control">
-														{% if servicio_edit.4 %}
+														{% if servicio_edit.4 == "1" %}
 														<option value="1"selected>Si</option>
 														<option value="0">No</option>
 														{% else %}
@@ -74,7 +74,7 @@
 												<div class="form-group">
 													<label>Estado <strong class="text-danger">*</strong></label>
 													<select name="estado" id="" class="cb-single form-control">
-														{% if servicio_edit.6 %}
+														{% if servicio_edit.6 == "1" %}
 														<option value="1"selected>Activo</option>
 														<option value="0">Inactivo</option>
 														{% else %}

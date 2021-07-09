@@ -68,9 +68,9 @@
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                         
                         {% if user.imagen != '' and not user.is_empleado%}
-                        <span class="user-img"><img class="rounded-circle" src="./../../media/Usuarios/{{user}}/{{user.imagen}}" width="31" height ="31" alt="{{nom}}" style="object-fit: cover;"></span>
+                        <span class="user-img"><img class="rounded-circle" src="./../../media/Usuarios/{{user}}/{{ user.imagen }}" width="31" height ="31" alt="{{nom}}" style="object-fit: cover;"></span>
                         {% elif user.imagen != '' and user.is_empleado or user.is_superuser %}
-                        <span class="user-img"><img class="rounded-circle" src="./../../media/Empleados/{{user}}/{{user.imagen}}" width="31" height ="31" alt="{{nom}}" style="object-fit: cover;"></span>                        
+                        <span class="user-img"><img class="rounded-circle" src="./../../media/Empleados/{{user}}/{{ user.imagen }}" width="31" height ="31" alt="{{nom}}" style="object-fit: cover;"></span>                        
                         {% else %}
                         <span class="user-img"><img class="rounded-circle" src="{% static 'appADM/assets/img/us-none.png' %}" width="31" height ="31" alt="avatar"></span>
                         {% endif %}

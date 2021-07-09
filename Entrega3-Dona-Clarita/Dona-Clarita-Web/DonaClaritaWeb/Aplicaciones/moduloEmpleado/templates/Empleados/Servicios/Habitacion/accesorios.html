@@ -96,7 +96,7 @@
 												<tr>
 													<td>{{ accesorio.descripcion }}</td>
 													<td class="text-center">
-														{% if accesorio.estatus %}
+														{% if accesorio.estatus == "1" %}
 														<span class="badge badge-pill bg-success inv-badge">Activo</span>
 														{% else %}
 														<span class="badge badge-pill bg-danger inv-badge">Inactivo</span>
@@ -104,11 +104,11 @@
 													</td>
 													<td class="text-center">
 														<div class="actions">
-															<a class="btn btn-sm bg-success-light" href="{% url 'edit-accesorio' accesorio.id %}">
+															<a class="btn btn-sm bg-success-light" href="{% url 'edit-accesorio' accesorio.id_accesorio %}">
 																<i class="fa fa-pencil"></i> Editar
 															</a>
-															{% if accesorio.estatus %}
-															<a class="btn btn-sm bg-danger-light" onClick="eliminar({{ accesorio.id }})" href="#">
+															{% if accesorio.estatus == "1" %}
+															<a class="btn btn-sm bg-danger-light" onClick="eliminar({{ accesorio.id_accesorio }})" href="#">
 																<i class="fa fa-trash"></i> Eliminar
 															</a>
 															{% endif %}

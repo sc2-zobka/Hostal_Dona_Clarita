@@ -287,7 +287,7 @@ def nueva_orden_compra(request):
 
                     for servicio in servicios_adicionales_db:
                         servicio_m = ServicioAdicional()
-                        servicio_m.id = servicio[0]
+                        servicio_m.id_servicio = servicio[0]
                         servicio_m.nombre = servicio[1]
                         servicio_m.precio = servicio[2]
                         servicio_list.append(servicio_m)
@@ -822,7 +822,7 @@ def factura_print(request, id):
     return render(request, 'Clientes/factura.html',data)
 
 def nueva_opinion(request, id):
-    opinion = None
+    opinion = ''
 
     with connection.cursor() as cursor:
             try:

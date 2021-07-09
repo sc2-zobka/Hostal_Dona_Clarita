@@ -59,7 +59,7 @@
 												<div class="form-group">
 													<label>Estado <strong class="text-danger">*</strong></label>
 													<select name="est-sel" id="" class="form-control cb-single">
-														{% if tipo_habitacion.estado %}
+														{% if tipo_habitacion.estado == "1" %}
 														<option value="1" selected>Activo</option>
 														<option value="0">Inactivo</option>
 														{% else %}
@@ -76,10 +76,10 @@
 												<select class="js-example-basic-multiple form-control" name="accesorios" multiple="multiple">
 													{% for accesorio_i in accesorios_list %}
 														{% for accesorio_j in  accesorios_tip_hab %}
-															{% if accesorio_j.id == accesorio_i.id %}
-															<option value="{{ accesorio_i.id }}" selected>{{ accesorio_i.descripcion }}</option>
+															{% if accesorio_j.id_accesorio == accesorio_i.id_accesorio %}
+															<option value="{{ accesorio_i.id_accesorio }}" selected>{{ accesorio_i.descripcion }}</option>
 															{% else %}
-															<option value="{{ accesorio_i.id }}">{{ accesorio_i.descripcion }}</option>
+															<option value="{{ accesorio_i.id_accesorio }}">{{ accesorio_i.descripcion }}</option>
 															{% endif %}
 														{% endfor %}
 													{% endfor %}

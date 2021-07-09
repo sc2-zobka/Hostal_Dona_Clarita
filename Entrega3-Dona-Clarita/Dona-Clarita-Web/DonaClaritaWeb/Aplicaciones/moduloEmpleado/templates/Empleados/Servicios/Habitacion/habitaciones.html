@@ -68,7 +68,7 @@
 										</td>
 										<td class="text-center">${{ habitacion.2 }}</td>
 										<td class="text-center">
-											{% if habitacion.3 %}
+											{% if habitacion.3 == "1" %}
 											<span class="badge badge-pill bg-success inv-badge">Activo</span>
 											{% else %}
 											<span class="badge badge-pill bg-danger inv-badge">Inactivo</span>
@@ -79,7 +79,7 @@
 											<a>{{ habitacion.7 }}</a>
 										</td>			
 										<td class="text-center">
-											{% if habitacion.5 %}
+											{% if habitacion.5 == "1" %}
 											<a>Sí</a>
 											{% else %}
 											<a>No</a>
@@ -91,7 +91,7 @@
 													href="{% url 'edit-habitacion' habitacion.0 %}">
 													<i class="fa fa-pencil"></i> Editar
 												</a>
-												{% if habitacion.3 %}
+												{% if habitacion.3 == "1" %}
 												<a 	class="btn btn-sm bg-danger-light" onClick="eliminar({{ habitacion.0 }})">
 													<i class="fa fa-trash"></i> Eliminar
 												</a>

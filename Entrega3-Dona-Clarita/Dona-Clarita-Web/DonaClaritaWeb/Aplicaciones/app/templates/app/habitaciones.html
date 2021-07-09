@@ -1,6 +1,9 @@
 {% extends 'app/base.html' %}
 {% load static %}
 {% block title %}Habitaciones{% endblock%}
+
+{% load humanize %}
+
 {% block contenido %}
 <!-- ======= Intro Single ======= -->
 <section class="intro-single">
@@ -34,16 +37,60 @@
       <div class="col-sm-12">
         <div class="grid-option">
           <form>
-            <select class="custom-select">
-              <option selected>Todas</option>
-              <option value="1">Filtro 1</option>
-              <option value="2">Filtro 2</option>
-              <option value="3">Filtro 3</option>
-            </select>
           </form>
         </div>
       </div>
-      <div class="col-md-4">
+      {% for habitacion in habitaciones %}
+        <div class="col-md-4">
+          <div class="card-box-a card-shadow">
+            <div class="img-box-a">
+              {% if habitacion.7 %}
+              <img src="../../media/Habitaciones/{{habitacion.7}}" alt="Imagen habitacion" class="img-a img-fluid">
+              {% else %}
+              <img src="{% static 'appADM/assets/img/noimagen.png' %}" alt="Imagen habitacion" class="img-a img-fluid">
+              {% endif %}
+            </div>
+            <div class="card-overlay">
+              <div class="card-overlay-a-content">
+                <div class="card-header-a">
+                  <h2 class="card-title-a">
+                    <a href="{% url 'det-habitacion' habitacion.0 %}">Habitación
+                      <br>N° {{ habitacion.1 }}</a>
+                  </h2>
+                </div>
+                <div class="card-body-a">
+                  <div class="price-box d-flex">
+                    <span class="price-a">Valor Noche | {{ habitacion.2|intcomma }} {{ codigo_moneda_p }}</span>
+                  </div>
+                  <div class="price-box d-flex">
+                    <span class="price-a">Valor Noche | {{ habitacion.3|intcomma }} {{ codigo_moneda_s }}</span>
+                  </div>
+                  <a href="{% url 'det-habitacion' habitacion.0 %}" class="link-a">Ver más
+                    <span class="bi bi-chevron-right"></span>
+                  </a>
+                </div>
+                <div class="card-footer-a">
+                  <ul class="card-info d-flex justify-content-around">
+                    <li>
+                      <h4 class="card-info-title">Camas</h4>
+                      <span>{{ habitacion.8 }}</span>
+                    </li>
+                    <li>
+                      <h4 class="card-info-title">Baños</h4>
+                      <span>1</span>
+                    </li>
+                    <li>
+                      <h4 class="card-info-title">Comida</h4>
+                      <span>Si</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      {% comment %} <div class="col-md-4">
         <div class="card-box-a card-shadow">
           <div class="img-box-a">
             <img src="{% static 'app/assets/img/banner1.jpg' %}" alt="Imagen habitacion" class="img-a img-fluid">
@@ -294,7 +341,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> {% endcomment %}
       <div class="row">
         <div class="col-sm-12">
           <nav class="pagination-a">
